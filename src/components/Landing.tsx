@@ -21,10 +21,10 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
             <span className="text-xl font-bold text-white">LaunchScope</span>
           </div>
           <div className="flex items-center space-x-2">
-            <Button variant="outline" size="sm" onClick={onSignIn} className="text-white border-white hover:bg-white hover:text-indigo-500 px-3 py-2 text-sm">
+            <Button variant="outline" size="sm" onClick={onSignIn} className="text-white border-white hover:bg-white hover:text-indigo-500 px-2 py-1 text-xs sm:px-3 sm:py-2 sm:text-sm">
               Sign In
             </Button>
-            <Button variant="secondary" size="sm" onClick={onGetStarted} className="px-3 py-2 text-sm">
+            <Button variant="secondary" size="sm" onClick={onGetStarted} className="px-2 py-1 text-xs sm:px-3 sm:py-2 sm:text-sm">
               Get Started
             </Button>
           </div>

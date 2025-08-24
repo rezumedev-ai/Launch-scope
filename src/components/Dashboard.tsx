@@ -277,19 +277,19 @@ export function Dashboard() {
       {/* Header */}
       <header className="bg-white/10 backdrop-blur-sm border-b border-white/20 px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center space-x-2 sm:space-x-3">
-            <div className="w-6 h-6 sm:w-10 sm:h-10 bg-white rounded-lg sm:rounded-xl flex items-center justify-center">
+          <div className="flex items-center space-x-1 sm:space-x-3">
+            <div className="w-6 h-6 sm:w-10 sm:h-10 bg-white rounded-md sm:rounded-xl flex items-center justify-center">
               <Rocket className="w-3 h-3 sm:w-6 sm:h-6 text-indigo-500" />
             </div>
-            <span className="text-sm sm:text-2xl font-bold text-white">LaunchScope</span>
+            <span className="text-xs sm:text-2xl font-bold text-white">LaunchScope</span>
           </div>
           
-          <div className="flex items-center space-x-2 sm:space-x-4">
+          <div className="flex items-center space-x-1 sm:space-x-4">
             <span className="hidden sm:inline text-blue-100">Welcome, {user?.email}</span>
-            <Button variant="secondary" size="sm" onClick={handleSignOut} className="text-xs sm:text-sm px-1 py-1 sm:px-4 sm:py-2">
+            <Button variant="secondary" size="sm" onClick={handleSignOut} className="text-xs sm:text-sm px-2 py-1 sm:px-4 sm:py-2">
               <LogOut className="w-4 h-4 mr-2" />
               <span className="hidden sm:inline">Sign Out</span>
-              <span className="sm:hidden text-xs">Out</span>
+              <span className="sm:hidden">Out</span>
             </Button>
           </div>
         </div>

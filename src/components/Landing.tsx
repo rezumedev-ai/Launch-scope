@@ -10,21 +10,21 @@ interface LandingProps {
 
 export function Landing({ onGetStarted, onSignIn }: LandingProps) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-500 to-blue-500">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-500 to-blue-500 overflow-x-hidden">
       {/* Header */}
-      <header className="px-6 py-4">
+      <header className="px-4 sm:px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
               <Rocket className="w-6 h-6 text-indigo-500" />
             </div>
-            <span className="text-2xl font-bold text-white">LaunchScope</span>
+            <span className="text-xl sm:text-2xl font-bold text-white">LaunchScope</span>
           </div>
-          <div className="flex items-center space-x-3">
-            <Button variant="outline" size="sm" onClick={onSignIn} className="text-white border-white hover:bg-white hover:text-indigo-500">
+          <div className="flex items-center space-x-2 sm:space-x-3">
+            <Button variant="outline" size="sm" onClick={onSignIn} className="text-white border-white hover:bg-white hover:text-indigo-500 text-xs sm:text-sm px-3 sm:px-4">
               Sign In
             </Button>
-            <Button variant="secondary" size="sm" onClick={onGetStarted}>
+            <Button variant="secondary" size="sm" onClick={onGetStarted} className="text-xs sm:text-sm px-3 sm:px-4">
               Get Started
             </Button>
           </div>
@@ -32,7 +32,7 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
       </header>
 
       {/* Hero Section */}
-      <main className="px-6 py-20">
+      <main className="px-4 sm:px-6 py-12 sm:py-20">
         <div className="max-w-7xl mx-auto text-center text-white">
           <div className="max-w-4xl mx-auto">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
@@ -45,27 +45,27 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
             </p>
             
             {/* Animated Search Bar */}
-            <div className="mb-8">
+            <div className="mb-8 w-full flex justify-center">
               <SearchComponent />
             </div>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" onClick={onGetStarted} className="text-lg px-10 py-4">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center px-4">
+              <Button size="lg" onClick={onGetStarted} className="text-base sm:text-lg px-8 sm:px-10 py-4 w-full sm:w-auto">
                 Get Started Free
               </Button>
-              <Button variant="secondary" size="lg" className="text-lg px-10 py-4">
+              <Button variant="secondary" size="lg" className="text-base sm:text-lg px-8 sm:px-10 py-4 w-full sm:w-auto">
                 See How It Works
               </Button>
             </div>
           </div>
 
           {/* Features Grid */}
-          <div className="mt-24 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+          <div className="mt-16 sm:mt-24 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 px-4">
             <div className="bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
               <div className="w-12 h-12 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-xl flex items-center justify-center mb-4 mx-auto">
                 <Target className="w-6 h-6 text-white" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-3">Deep Analysis</h3>
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-3">Deep Analysis</h3>
               <p className="text-gray-600">
                 Uncover strengths, gaps, and hidden risks in your idea.
               </p>
@@ -75,7 +75,7 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
               <div className="w-12 h-12 bg-pink-500 rounded-xl flex items-center justify-center mb-4 mx-auto">
                 <TrendingUp className="w-6 h-6 text-white" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-3">Market Insights</h3>
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-3">Market Insights</h3>
               <p className="text-gray-600">
                 Spot real opportunities and understand customer needs.
               </p>
@@ -85,7 +85,7 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
               <div className="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center mb-4 mx-auto">
                 <Users className="w-6 h-6 text-white" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-3">Actionable Next Steps</h3>
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-3">Actionable Next Steps</h3>
               <p className="text-gray-600">
                 Clear guidance on what to build and prioritize first.
               </p>

@@ -273,20 +273,20 @@ export function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-500 to-blue-500">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-500 to-blue-500 overflow-x-hidden">
       {/* Header */}
-      <header className="bg-white/10 backdrop-blur-sm border-b border-white/20 px-6 py-4">
+      <header className="bg-white/10 backdrop-blur-sm border-b border-white/20 px-4 sm:px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center">
               <Rocket className="w-6 h-6 text-indigo-500" />
             </div>
-            <span className="text-2xl font-bold text-white">LaunchScope</span>
+            <span className="text-xl sm:text-2xl font-bold text-white">LaunchScope</span>
           </div>
           
-          <div className="flex items-center space-x-4">
-            <span className="text-blue-100">Welcome, {user?.email}</span>
-            <Button variant="secondary" size="sm" onClick={handleSignOut}>
+          <div className="flex items-center space-x-2 sm:space-x-4">
+            <span className="text-blue-100 text-sm sm:text-base hidden sm:inline">Welcome, {user?.email}</span>
+            <Button variant="secondary" size="sm" onClick={handleSignOut} className="text-xs sm:text-sm px-2 sm:px-4">
               <LogOut className="w-4 h-4 mr-2" />
               Sign Out
             </Button>
@@ -295,7 +295,7 @@ export function Dashboard() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-6 py-12">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         {/* Hero Section with Search Bar */}
         <div className="text-center text-white mb-16">
           <div className="max-w-4xl mx-auto">
@@ -308,7 +308,7 @@ export function Dashboard() {
             </p>
             
             {/* Animated Search Bar */}
-            <div className="mb-8">
+            <div className="mb-8 w-full flex justify-center">
               <SearchComponent 
                 value={searchValue}
                 onChange={setSearchValue}
@@ -349,16 +349,16 @@ export function Dashboard() {
               </div>
             )}
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center px-4">
               <Button 
                 size="lg" 
-                className="text-lg px-10 py-4"
+                className="text-base sm:text-lg px-8 sm:px-10 py-4 w-full sm:w-auto"
                 onClick={() => handleSearchSubmit(searchValue)}
                 disabled={isAnalyzing || !searchValue.trim()}
               >
                 Analyze My Idea
               </Button>
-              <Button variant="secondary" size="lg" className="text-lg px-10 py-4">
+              <Button variant="secondary" size="lg" className="text-base sm:text-lg px-8 sm:px-10 py-4 w-full sm:w-auto">
                 View Examples
               </Button>
             </div>

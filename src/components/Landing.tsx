@@ -35,12 +35,12 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
       <main className="px-6 py-20">
         <div className="max-w-7xl mx-auto text-center text-white">
           <div className="max-w-4xl mx-auto">
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
               Validate Your 
               <span className="text-pink-300"> Startup Ideas </span>
               Before You Build
             </h1>
-            <p className="text-xl text-blue-100 mb-8 leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-blue-100 mb-8 leading-relaxed">
               Get instant clarity on your startup idea with deep insights into risks, opportunities, and what matters most to customers.
             </p>
             
@@ -60,7 +60,7 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
           </div>
 
           {/* Features Grid */}
-          <div className="mt-24 grid md:grid-cols-3 gap-8">
+          <div className="mt-24 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
             <div className="bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
               <div className="w-12 h-12 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-xl flex items-center justify-center mb-4 mx-auto">
                 <Target className="w-6 h-6 text-white" />
@@ -98,10 +98,10 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
       <section className="px-6 py-20 bg-gradient-to-br from-indigo-500 to-blue-500">
         <div className="max-w-7xl mx-auto text-center text-white">
           <div className="max-w-4xl mx-auto mb-16">
-            <h2 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
               Most Startups Fail Before They Even Launch
             </h2>
-            <p className="text-xl text-blue-100 mb-8 leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-blue-100 mb-8 leading-relaxed">
               Founders spend months building products nobody asked for. They burn money, time, and energy — only to realize customers didn't want it.
             </p>
           </div>
@@ -153,7 +153,7 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
                   </div>
                   
                   {/* Key pain points */}
-                  <div className="mt-8 flex flex-wrap justify-center gap-3 max-w-3xl mx-auto">
+                  <div className="mt-8 flex flex-wrap justify-center gap-2 sm:gap-3 max-w-3xl mx-auto">
                     <span className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-white/70 text-sm">
                       Building in isolation
                     </span>
@@ -176,7 +176,7 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
           </div>
 
           {/* Problem Cards */}
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
             <div className="bg-white/10 backdrop-blur-sm p-6 rounded-lg border border-white/20 hover:bg-white/15 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
               <div className="flex items-start space-x-4 text-left">
                 <div className="flex-shrink-0 mt-1">
@@ -229,10 +229,10 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
       <section className="px-6 py-20 bg-gradient-to-br from-indigo-500 to-blue-500">
         <div className="max-w-7xl mx-auto text-center text-white">
           <div className="max-w-4xl mx-auto mb-16">
-            <h2 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
               Building is Easy. <span className="text-pink-300">Building the Right Thing is Hard.</span>
             </h2>
-            <div className="space-y-4 text-xl text-blue-100 leading-relaxed">
+            <div className="space-y-4 text-base sm:text-lg md:text-xl text-blue-100 leading-relaxed">
               <p>
                 AI has leveled the playing field. Cursor, Claude, GPT-5 — they've made coding frictionless. Shipping an MVP is no longer the challenge.
               </p>
@@ -349,7 +349,7 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
 
           {/* Supporting Points */}
           <div className="mb-16">
-            <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 max-w-5xl mx-auto">
               <div className="bg-white/10 backdrop-blur-sm p-6 rounded-lg border border-white/20 hover:bg-white/15 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
                 <div className="flex items-start space-x-4 text-left">
                   <div className="flex-shrink-0 mt-1">
@@ -418,10 +418,10 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
       <section className="px-6 py-20 bg-gradient-to-br from-indigo-500 to-blue-500">
         <div className="max-w-7xl mx-auto text-center text-white">
           <div className="max-w-4xl mx-auto mb-16">
-            <h2 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
               The LaunchScope Solution: Build What Matters
             </h2>
-            <p className="text-xl text-blue-100 mb-8 leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-blue-100 mb-8 leading-relaxed">
               LaunchScope empowers you to make data-driven decisions, ensuring every hour and dollar you invest goes into building products customers truly desire.
             </p>
           </div>
@@ -450,7 +450,7 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
                   <h3 className="text-white/90 text-lg font-medium mb-8">Transform Ideas Into Validated Opportunities</h3>
                   
                   {/* Solution benefits grid */}
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 max-w-4xl mx-auto">
                     <div className="bg-white/5 border border-white/10 rounded-lg p-6 text-center hover:bg-white/10 transition-all duration-500 transform hover:-translate-y-1 hover:shadow-lg group">
                       <div className="w-12 h-12 bg-gradient-to-r from-indigo-400 to-blue-400 rounded-xl flex items-center justify-center mb-4 mx-auto group-hover:scale-110 transition-transform duration-300">
                         <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -502,7 +502,7 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
           {/* How It Works Process */}
           <div className="mb-16">
             <h3 className="text-3xl font-bold text-white mb-12">How LaunchScope Works</h3>
-            <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 max-w-5xl mx-auto">
               <div className="relative group">
                 <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20 hover:bg-white/15 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-xl">
                   <div className="w-12 h-12 bg-gradient-to-r from-indigo-400 to-blue-400 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
@@ -552,16 +552,16 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
       <section className="px-6 py-20 bg-gradient-to-br from-indigo-500 to-blue-500">
         <div className="max-w-7xl mx-auto text-center text-white">
           <div className="max-w-4xl mx-auto mb-16">
-            <h2 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
               Ready to Validate Your Idea?
             </h2>
-            <p className="text-xl text-blue-100 mb-8 leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-blue-100 mb-8 leading-relaxed">
               Get started for free or unlock unlimited analysis with our paid plan. Validate your idea, reduce risk, and stop building what nobody wants.
             </p>
           </div>
 
           {/* Pricing Cards */}
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-4xl mx-auto mb-16">
             {/* Free Plan */}
             <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20 hover:bg-white/15 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-xl group">
               <div className="text-center">
@@ -676,10 +676,10 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
       <section className="px-6 py-20 bg-gradient-to-br from-indigo-500 to-blue-500">
         <div className="max-w-7xl mx-auto text-center text-white">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
               Don't Waste Months Building the Wrong Thing
             </h2>
-            <p className="text-xl text-blue-100 mb-12 leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-blue-100 mb-12 leading-relaxed">
               Get clarity in minutes. LaunchScope gives you the insights you need before you write a single line of code.
             </p>
             

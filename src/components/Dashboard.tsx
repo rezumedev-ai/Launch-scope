@@ -299,11 +299,11 @@ export function Dashboard() {
         {/* Hero Section with Search Bar */}
         <div className="text-center text-white mb-16">
           <div className="max-w-4xl mx-auto">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 leading-tight">
               Ready to Validate Your 
               <span className="text-pink-300"> Next Big Idea?</span>
             </h1>
-            <p className="text-xl text-blue-100 mb-8 leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-blue-100 mb-8 leading-relaxed">
               Submit your startup concept and get instant insights into market demand, risks, and opportunities.
             </p>
             
@@ -366,7 +366,7 @@ export function Dashboard() {
         </div>
 
         {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-12">
           <div className="bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 hover:bg-white/15 transition-all duration-300 transform hover:-translate-y-1">
             <div className="flex items-center justify-between mb-4">
               <div className="w-12 h-12 bg-gradient-to-r from-indigo-400 to-blue-400 rounded-xl flex items-center justify-center">
@@ -413,7 +413,7 @@ export function Dashboard() {
         </div>
 
         {/* Recent Activity & Features */}
-        <div className="grid lg:grid-cols-2 gap-8 mb-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 mb-12">
           {/* Recent Activity */}
           <div className="bg-white rounded-3xl shadow-2xl p-8">
             <div className="flex items-center justify-between mb-6">
@@ -508,12 +508,12 @@ export function Dashboard() {
         <div className="bg-white rounded-3xl shadow-2xl p-8 mb-8">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold text-gray-800 mb-4">What You Can Do With LaunchScope</h2>
-            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+            <p className="text-gray-600 text-base sm:text-lg max-w-2xl mx-auto">
               Powerful tools to validate, analyze, and refine your startup ideas before you build
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
             <div className="text-center group">
               <div className="w-16 h-16 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-2xl flex items-center justify-center mb-4 mx-auto group-hover:scale-110 transition-transform duration-300">
                 <Lightbulb className="w-8 h-8 text-white" />
@@ -549,21 +549,21 @@ export function Dashboard() {
         {/* Getting Started Guide */}
         <div className="bg-gradient-to-r from-indigo-500 to-blue-500 rounded-3xl p-8 text-white text-center">
           <h2 className="text-3xl font-bold mb-4">Ready to Get Started?</h2>
-          <p className="text-blue-100 text-lg mb-6 max-w-2xl mx-auto">
+          <p className="text-blue-100 text-base sm:text-lg mb-6 max-w-2xl mx-auto">
             Use the search bar above to submit your first startup idea and get instant validation insights.
           </p>
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex flex-wrap justify-center gap-2 sm:gap-4">
             <div className="flex items-center bg-white/10 backdrop-blur-sm rounded-full px-4 py-2">
               <span className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center mr-2 text-sm font-bold">1</span>
-              <span>Describe your idea</span>
+              <span className="text-sm sm:text-base">Describe your idea</span>
             </div>
             <div className="flex items-center bg-white/10 backdrop-blur-sm rounded-full px-4 py-2">
               <span className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center mr-2 text-sm font-bold">2</span>
-              <span>Get instant analysis</span>
+              <span className="text-sm sm:text-base">Get instant analysis</span>
             </div>
             <div className="flex items-center bg-white/10 backdrop-blur-sm rounded-full px-4 py-2">
               <span className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center mr-2 text-sm font-bold">3</span>
-              <span>Build with confidence</span>
+              <span className="text-sm sm:text-base">Build with confidence</span>
             </div>
           </div>
         </div>

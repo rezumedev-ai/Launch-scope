@@ -99,7 +99,7 @@ const SearchComponent = ({
               value={value}
               onChange={handleInputChange}
               disabled={disabled}
-              className="bg-white border-none w-[450px] h-[56px] rounded-lg text-gray-800 px-[59px] text-lg focus:outline-none placeholder-gray-500 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed" 
+              className="bg-white border-none w-full max-w-[450px] h-[56px] rounded-lg text-gray-800 px-12 sm:px-[59px] text-base sm:text-lg focus:outline-none placeholder-gray-500 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed" 
             />
           </form>
         </div>

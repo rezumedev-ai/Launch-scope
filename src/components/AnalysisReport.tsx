@@ -71,7 +71,7 @@ export function AnalysisReport({ analysis, idea, onBack }: AnalysisReportProps) 
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-900">
       {/* Header */}
       <header className="bg-black/20 backdrop-blur-sm border-b border-white/10 px-6 py-4">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center sm:justify-between gap-4">
           <Button 
             variant="secondary" 
             size="sm" 
@@ -87,7 +87,7 @@ export function AnalysisReport({ analysis, idea, onBack }: AnalysisReportProps) 
             <p className="text-slate-300 text-sm">Brutally honest startup validation</p>
           </div>
           
-          <div className="w-32"></div> {/* Spacer for centering */}
+          <div className="hidden sm:block w-32"></div> {/* Spacer for centering on desktop */}
         </div>
       </header>
 
@@ -95,7 +95,7 @@ export function AnalysisReport({ analysis, idea, onBack }: AnalysisReportProps) 
       <main className="max-w-7xl mx-auto px-6 py-8">
         {/* Idea Summary Card */}
         <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 mb-8">
-          <div className="flex items-start space-x-4 mb-6">
+          <div className="flex flex-col sm:flex-row items-start space-y-4 sm:space-y-0 sm:space-x-4 mb-6">
             <div className="w-12 h-12 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center flex-shrink-0">
               <Lightbulb className="w-6 h-6 text-white" />
             </div>
@@ -112,7 +112,7 @@ export function AnalysisReport({ analysis, idea, onBack }: AnalysisReportProps) 
         </div>
 
         {/* Verdict & Key Metrics Row */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-8">
           {/* Verdict */}
           <div className="lg:col-span-2">
             <div className={`bg-black/20 backdrop-blur-sm border rounded-2xl p-6 ${getVerdictColor(analysis.verdict)}`}>
@@ -140,7 +140,7 @@ export function AnalysisReport({ analysis, idea, onBack }: AnalysisReportProps) 
         </div>
 
         {/* Build Metrics Row */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-8">
           <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 text-center">
             <div className="w-12 h-12 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-xl flex items-center justify-center mb-4 mx-auto">
               <DollarSign className="w-6 h-6 text-white" />
@@ -170,7 +170,7 @@ export function AnalysisReport({ analysis, idea, onBack }: AnalysisReportProps) 
         </div>
 
         {/* Strengths & Challenges */}
-        <div className="grid lg:grid-cols-2 gap-8 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 mb-8">
           {/* Strengths */}
           <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6">
             <div className="flex items-center mb-4">
@@ -243,7 +243,7 @@ export function AnalysisReport({ analysis, idea, onBack }: AnalysisReportProps) 
             <h3 className="text-xl font-bold text-white">Lean MVP Features</h3>
           </div>
           {analysis.leanMVP.length > 0 ? (
-            <div className="grid md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {analysis.leanMVP.map((feature, index) => (
                 <div key={index} className="flex items-start space-x-3 bg-slate-800/30 rounded-lg p-4">
                   <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -259,7 +259,7 @@ export function AnalysisReport({ analysis, idea, onBack }: AnalysisReportProps) 
         </div>
 
         {/* Distribution & Monetization */}
-        <div className="grid lg:grid-cols-2 gap-8 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 mb-8">
           {/* Distribution */}
           <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6">
             <div className="flex items-center mb-4">

@@ -62,7 +62,7 @@ export function AuthForm({ onBack }: AuthFormProps) {
             </div>
             <span className="text-3xl font-bold">LaunchScope</span>
           </div>
-          <h2 className="text-2xl font-semibold">
+          <h2 className="text-xl sm:text-2xl font-semibold">
             {isSignUp ? 'Create your account' : 'Welcome back'}
           </h2>
           <p className="text-blue-100 mt-2">
@@ -71,7 +71,7 @@ export function AuthForm({ onBack }: AuthFormProps) {
         </div>
 
         {/* Auth Form */}
-        <div className="bg-white p-8 rounded-3xl shadow-2xl">
+        <div className="bg-white p-6 sm:p-8 rounded-3xl shadow-2xl">
           <form onSubmit={handleSubmit} className="space-y-6">
             <Input
               label="Email"

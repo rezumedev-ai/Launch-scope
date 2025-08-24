@@ -273,20 +273,20 @@ export function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-500 to-blue-500 overflow-x-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-500 to-blue-500">
       {/* Header */}
-      <header className="bg-white/10 backdrop-blur-sm border-b border-white/20 px-3 py-3">
-        <div className="w-full max-w-full mx-auto flex items-center justify-between overflow-hidden">
+      <header className="bg-white/10 backdrop-blur-sm border-b border-white/20 px-6 py-4">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center">
               <Rocket className="w-6 h-6 text-indigo-500" />
             </div>
-            <span className="text-lg sm:text-xl md:text-2xl font-bold text-white">LaunchScope</span>
+            <span className="text-2xl font-bold text-white">LaunchScope</span>
           </div>
           
-          <div className="flex items-center space-x-1 sm:space-x-2">
-            <span className="text-blue-100 text-xs hidden md:inline truncate max-w-32">Welcome, {user?.email}</span>
-            <Button variant="secondary" size="sm" onClick={handleSignOut} className="text-xs px-2 py-1 sm:px-3 sm:py-2">
+          <div className="flex items-center space-x-4">
+            <span className="text-blue-100">Welcome, {user?.email}</span>
+            <Button variant="secondary" size="sm" onClick={handleSignOut}>
               <LogOut className="w-4 h-4 mr-2" />
               Sign Out
             </Button>
@@ -295,10 +295,10 @@ export function Dashboard() {
       </header>
 
       {/* Main Content */}
-      <main className="w-full max-w-full mx-auto px-3 py-6 sm:py-8 md:py-12 overflow-hidden">
+      <main className="max-w-7xl mx-auto px-6 py-12">
         {/* Hero Section with Search Bar */}
         <div className="text-center text-white mb-16">
-          <div className="w-full max-w-full mx-auto px-2">
+          <div className="max-w-4xl mx-auto">
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 leading-tight">
               Ready to Validate Your 
               <span className="text-pink-300"> Next Big Idea?</span>
@@ -308,7 +308,7 @@ export function Dashboard() {
             </p>
             
             {/* Animated Search Bar */}
-            <div className="mb-8 w-full flex justify-center">
+            <div className="mb-8">
               <SearchComponent 
                 value={searchValue}
                 onChange={setSearchValue}
@@ -321,16 +321,16 @@ export function Dashboard() {
             {/* Loading State */}
             {isAnalyzing && (
               <div className="mb-8 text-center">
-                <div className="inline-flex items-center bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 border border-white/20 max-w-full">
+                <div className="inline-flex items-center bg-white/10 backdrop-blur-sm rounded-full px-6 py-3 border border-white/20">
                   <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
-                  <span className="text-white text-sm">Analyzing your idea with AI...</span>
+                  <span className="text-white">Analyzing your idea with AI...</span>
                 </div>
               </div>
             )}
             
             {/* Error State */}
             {error && (
-              <div className="mb-8 w-full max-w-full mx-auto px-2">
+              <div className="mb-8 max-w-2xl mx-auto">
                 <div className="bg-red-500/10 backdrop-blur-sm border border-red-500/20 rounded-2xl p-6">
                   <div className="flex items-center mb-2">
                     <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center mr-3">
@@ -338,7 +338,7 @@ export function Dashboard() {
                     </div>
                     <h3 className="text-red-100 font-semibold">Analysis Failed</h3>
                   </div>
-                  <p className="text-red-200 text-sm break-words">{error}</p>
+                  <p className="text-red-200">{error}</p>
                   <button 
                     onClick={() => setError(null)}
                     className="mt-3 text-red-300 hover:text-red-100 text-sm underline"
@@ -349,16 +349,16 @@ export function Dashboard() {
               </div>
             )}
             
-            <div className="flex flex-col gap-3 justify-center px-2">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
                 size="lg" 
-                className="text-base px-6 py-3 w-full max-w-xs mx-auto"
+                className="text-lg px-10 py-4"
                 onClick={() => handleSearchSubmit(searchValue)}
                 disabled={isAnalyzing || !searchValue.trim()}
               >
                 Analyze My Idea
               </Button>
-              <Button variant="secondary" size="lg" className="text-base px-6 py-3 w-full max-w-xs mx-auto">
+              <Button variant="secondary" size="lg" className="text-lg px-10 py-4">
                 View Examples
               </Button>
             </div>
@@ -366,7 +366,7 @@ export function Dashboard() {
         </div>
 
         {/* Quick Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-12 px-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-12">
           <div className="bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 hover:bg-white/15 transition-all duration-300 transform hover:-translate-y-1">
             <div className="flex items-center justify-between mb-4">
               <div className="w-12 h-12 bg-gradient-to-r from-indigo-400 to-blue-400 rounded-xl flex items-center justify-center">

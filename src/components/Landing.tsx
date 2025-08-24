@@ -14,17 +14,17 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
       {/* Header */}
       <header className="px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-2 sm:space-x-3">
             <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
               <Rocket className="w-4 h-4 text-indigo-500" />
             </div>
-            <span className="text-xl font-bold text-white">LaunchScope</span>
+            <span className="text-lg sm:text-xl font-bold text-white">LaunchScope</span>
           </div>
-          <div className="flex items-center space-x-2">
-            <Button variant="outline" size="sm" onClick={onSignIn} className="text-white border-white hover:bg-white hover:text-indigo-500 px-2 py-1 text-xs sm:px-3 sm:py-2 sm:text-sm">
+          <div className="flex items-center space-x-1 sm:space-x-2">
+            <Button variant="outline" size="sm" onClick={onSignIn} className="text-white border-white hover:bg-white hover:text-indigo-500 px-1.5 py-0.5 text-xs sm:px-3 sm:py-2 sm:text-sm">
               Sign In
             </Button>
-            <Button variant="secondary" size="sm" onClick={onGetStarted} className="px-2 py-1 text-xs sm:px-3 sm:py-2 sm:text-sm">
+            <Button variant="secondary" size="sm" onClick={onGetStarted} className="px-1.5 py-0.5 text-xs sm:px-3 sm:py-2 sm:text-sm">
               Get Started
             </Button>
           </div>

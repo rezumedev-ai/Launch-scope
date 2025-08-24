@@ -44,11 +44,6 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
               Get instant clarity on your startup idea with deep insights into risks, opportunities, and what matters most to customers.
             </p>
             
-            {/* Animated Search Bar */}
-            <div className="mb-8">
-              <SearchComponent />
-            </div>
-            
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" onClick={onGetStarted} className="text-lg px-10 py-4">
                 Get Started Free

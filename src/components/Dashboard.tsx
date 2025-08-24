@@ -23,7 +23,7 @@ interface DashboardStats {
 }
 
 export function Dashboard() {
-  const { user, signOut } = useAuth();
+  const { user, signOut, forceSignOut } = useAuth();
   const [searchValue, setSearchValue] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisResult, setAnalysisResult] = useState<any>(null);
@@ -105,7 +105,12 @@ export function Dashboard() {
   };
 
   const handleSignOut = async () => {
-    await signOut();
+    try {
+      await signOut();
+    } catch (error) {
+      console.error('Sign out failed, forcing local logout:', error);
+      forceSignOut();
+    }
   };
 
   const handleSearchSubmit = async (idea: string) => {

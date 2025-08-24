@@ -6,6 +6,7 @@ interface AuthContextType extends AuthState {
   signUp: (email: string, password: string) => Promise<{ error: any }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
+  forceSignOut: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -64,8 +65,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const forceSignOut = () => {
+    // Force clear the local session state without making API calls
+    setUser(null);
+    // Clear any stored session data
+    localStorage.removeItem('supabase.auth.token');
+    // Force reload to clear any cached state
+    window.location.reload();
+  };
   return (
-    <AuthContext.Provider value={{ user, loading, signUp, signIn, signOut }}>
+    <AuthContext.Provider value={{ user, loading, signUp, signIn, signOut, forceSignOut }}>
       {children}
     </AuthContext.Provider>
   );

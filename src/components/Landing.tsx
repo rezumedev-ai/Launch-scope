@@ -46,7 +46,7 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" onClick={onGetStarted} className="text-lg px-10 py-4">
-                Get Started Free
+                <span className="relative z-10">Get Started Free</span>
               </Button>
               <Button variant="secondary" size="lg" className="text-lg px-10 py-4">
                 See How It Works

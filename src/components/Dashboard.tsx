@@ -1,12 +1,13 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { Rocket, LogOut, BarChart3, Users, Lightbulb, TrendingUp, Clock, CheckCircle } from 'lucide-react';
+import { Rocket, LogOut, BarChart3, Users, Lightbulb, TrendingUp, Clock, CheckCircle, Crown } from 'lucide-react';
 import { Button } from './ui/Button';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import SearchComponent from './ui/animated-glowing-search-bar';
 import { AnalysisReport } from './AnalysisReport';
 import { StripeTestPanel } from './StripeTestPanel';
+import { SubscriptionManager } from './SubscriptionManager';
 
 interface AnalysisHistory {
   id: string;
@@ -40,6 +41,7 @@ export function Dashboard() {
   });
   const [showHistory, setShowHistory] = useState(false);
   const [showStripeTest, setShowStripeTest] = useState(false);
+  const [showSubscription, setShowSubscription] = useState(false);
 
   // Load analysis history and stats on component mount
   useEffect(() => {
@@ -166,6 +168,16 @@ export function Dashboard() {
     setShowHistory(true);
   };
 
+  const handleShowSubscription = () => {
+    setShowSubscription(true);
+    setShowHistory(false);
+    setShowStripeTest(false);
+  };
+
+  const handleBackFromSubscription = () => {
+    setShowSubscription(false);
+  };
+
   // Show analysis report if we have results
   if (showReport && analysisResult) {
     return (
@@ -174,6 +186,40 @@ export function Dashboard() {
         idea={analyzedIdea}
         onBack={showHistory ? handleBackToHistory : handleBackToDashboard}
       />
+    );
+  }
+
+  // Show subscription management
+  if (showSubscription) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-indigo-500 to-blue-500">
+        {/* Header */}
+        <header className="bg-white/10 backdrop-blur-sm border-b border-white/20 px-6 py-4">
+          <div className="max-w-7xl mx-auto flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center">
+                <Rocket className="w-6 h-6 text-indigo-500" />
+              </div>
+              <span className="text-2xl font-bold text-white">LaunchScope</span>
+            </div>
+            
+            <div className="flex items-center space-x-4">
+              <Button variant="secondary" size="sm" onClick={handleBackFromSubscription}>
+                Back to Dashboard
+              </Button>
+              <Button variant="secondary" size="sm" onClick={handleSignOut}>
+                <LogOut className="w-4 h-4 mr-2" />
+                Sign Out
+              </Button>
+            </div>
+          </div>
+        </header>
+
+        {/* Subscription Content */}
+        <main className="max-w-7xl mx-auto px-6 py-12">
+          <SubscriptionManager />
+        </main>
+      </div>
     );
   }
 
@@ -194,6 +240,9 @@ export function Dashboard() {
             <div className="flex items-center space-x-4">
               <Button variant="secondary" size="sm" onClick={() => setShowHistory(false)}>
                 Back to Dashboard
+              </Button>
+              <Button variant="secondary" size="sm" onClick={handleShowSubscription}>
+                Subscription
               </Button>
               <Button variant="secondary" size="sm" onClick={handleSignOut}>
                 <LogOut className="w-4 h-4 mr-2" />
@@ -290,6 +339,10 @@ export function Dashboard() {
             <Button variant="secondary" size="sm" onClick={handleSignOut} className="text-sm px-3 py-2">
               <LogOut className="w-4 h-4 mr-2" />
               Sign Out
+            </Button>
+            <Button variant="secondary" size="sm" onClick={handleShowSubscription} className="text-sm px-3 py-2">
+              <Crown className="w-4 h-4 mr-2" />
+              Subscription
             </Button>
           </div>
         </div>
@@ -503,13 +556,16 @@ export function Dashboard() {
                 </div>
               </button>
 
-              <button className="w-full flex items-center p-4 bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl hover:from-amber-100 hover:to-orange-100 transition-all duration-300 transform hover:-translate-y-1 group">
+              <button 
+                onClick={handleShowSubscription}
+                className="w-full flex items-center p-4 bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl hover:from-amber-100 hover:to-orange-100 transition-all duration-300 transform hover:-translate-y-1 group"
+              >
                 <div className="w-10 h-10 bg-gradient-to-r from-amber-500 to-orange-500 rounded-lg flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
-                  <Users className="w-5 h-5 text-white" />
+                  <Crown className="w-5 h-5 text-white" />
                 </div>
                 <div className="text-left">
-                  <h3 className="font-semibold text-gray-800">Community Feedback</h3>
-                  <p className="text-gray-600 text-sm">Get insights from other makers</p>
+                  <h3 className="font-semibold text-gray-800">Manage Subscription</h3>
+                  <p className="text-gray-600 text-sm">Upgrade or manage your billing</p>
                 </div>
               </button>
             </div>

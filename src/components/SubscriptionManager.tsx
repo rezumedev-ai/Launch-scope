@@ -36,9 +36,9 @@ export function SubscriptionManager() {
       const { data, error } = await supabase
         .from('stripe_user_subscriptions')
         .select('*')
-        .single();
+        .maybeSingle();
 
-      if (error && error.code !== 'PGRST116') { // PGRST116 = no rows returned
+      if (error) {
         console.error('Error loading subscription:', error);
       } else {
         setSubscription(data);

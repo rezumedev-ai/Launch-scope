@@ -41,22 +41,44 @@ export function PricingCard({
 
     setLoading(true);
     try {
-      const { data, error: functionError } = await supabase.functions.invoke('create-checkout-session', {
-        body: { priceId, userId: user.id },
+      const { data, error: functionError } = await supabase.functions.invoke('stripe-checkout', {
+        body: { 
+          price_id: priceId,
+          success_url: `${window.location.origin}/dashboard?success=true`,
+          cancel_url: `${window.location.origin}/dashboard?canceled=true`,
+          mode: 'subscription'
+        },
       });
 
       if (functionError) {
+        console.error('Supabase function error:', functionError);
         throw new Error(functionError.message || 'Failed to create checkout session');
       }
 
-      const { sessionId } = data;
+      if (data.error) {
+        console.error('Stripe checkout error:', data.error);
+        throw new Error(data.error);
+      }
+
+      const sessionId = data.sessionId;
+      if (!sessionId) {
+        console.error('No session ID returned:', data);
+        throw new Error('No checkout session ID received');
+      }
+
       const stripe = await getStripe();
-      if (stripe) {
-        await stripe.redirectToCheckout({ sessionId });
+      if (!stripe) {
+        throw new Error('Stripe failed to initialize');
+      }
+      
+      const { error: stripeError } = await stripe.redirectToCheckout({ sessionId });
+      if (stripeError) {
+        console.error('Stripe redirect error:', stripeError);
+        throw new Error(stripeError.message || 'Failed to redirect to checkout');
       }
     } catch (error) {
       console.error('Error during subscription:', error);
-      alert(`Subscription failed: ${error.message}`);
+      alert(`Subscription failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       setLoading(false);
     }

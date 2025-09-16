@@ -6,6 +6,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import SearchComponent from './ui/animated-glowing-search-bar';
 import { AnalysisReport } from './AnalysisReport';
+import { StripeTestPanel } from './StripeTestPanel';
 
 interface AnalysisHistory {
   id: string;
@@ -38,6 +39,7 @@ export function Dashboard() {
     validatedIdeas: 0
   });
   const [showHistory, setShowHistory] = useState(false);
+  const [showStripeTest, setShowStripeTest] = useState(false);
 
   // Load analysis history and stats on component mount
   useEffect(() => {
@@ -360,8 +362,19 @@ export function Dashboard() {
               <Button variant="secondary" size="lg" className="text-lg px-10 py-4">
                 View Examples
               </Button>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => setShowStripeTest(!showStripeTest)}
+                className="text-white border-white hover:bg-white hover:text-indigo-500"
+              >
+                {showStripeTest ? 'Hide' : 'Show'} Stripe Test
+              </Button>
             </div>
           </div>
+          
+          {/* Stripe Test Panel */}
+          {showStripeTest && <StripeTestPanel />}
         </div>
 
         {/* Quick Stats */}

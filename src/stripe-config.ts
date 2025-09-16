@@ -1,7 +1,7 @@
 // Stripe Product Configuration
 export const STRIPE_PRODUCTS = {
   LAUNCHSCOPE_PRO: {
-    priceId: 'price_1QdoQnP123456789abcdefgh', // Replace with your actual Price ID from Stripe
+    priceId: 'price_1S7xjkKI1OQ24rwk9jS28EQ4',
     name: 'Launch-Scope Pro',
     description: 'Unlimited startup idea validations with advanced insights',
     mode: 'subscription' as const,

@@ -3,6 +3,7 @@ import { Rocket, Target, TrendingUp, Users } from 'lucide-react';
 import { Button } from './ui/Button';
 import SearchComponent from './ui/animated-glowing-search-bar';
 import { PricingCard } from './PricingCard';
+import { STRIPE_PRODUCTS } from '../stripe-config';
 
 interface LandingProps {
   onGetStarted: () => void;
@@ -583,7 +584,7 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
                 "Advanced insights"
               ]}
               isPopular={true}
-              priceId="price_YOUR_ACTUAL_PRICE_ID_HERE" // Replace with your actual Stripe Price ID from step 4
+              priceId={STRIPE_PRODUCTS.LAUNCHSCOPE_PRO.priceId}
               onGetStarted={onGetStarted}
             />
           </div>

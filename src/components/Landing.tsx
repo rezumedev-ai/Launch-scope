@@ -583,7 +583,7 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
                 "Advanced insights"
               ]}
               isPopular={true}
-              priceId="price_YOUR_STRIPE_PRICE_ID"
+              priceId="price_1234567890abcdef" // Replace with your actual Stripe Price ID
               onGetStarted={onGetStarted}
             />
           </div>

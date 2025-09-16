@@ -2,6 +2,7 @@ import React from 'react';
 import { Rocket, Target, TrendingUp, Users } from 'lucide-react';
 import { Button } from './ui/Button';
 import SearchComponent from './ui/animated-glowing-search-bar';
+import { PricingCard } from './PricingCard';
 
 interface LandingProps {
   onGetStarted: () => void;
@@ -558,111 +559,33 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
           {/* Pricing Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-4xl mx-auto mb-16">
             {/* Free Plan */}
-            <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20 hover:bg-white/15 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-xl group">
-              <div className="text-center">
-                <h3 className="text-2xl font-bold text-white mb-2">Free to Start</h3>
-                <div className="text-4xl font-bold text-white mb-4">
-                  $0<span className="text-lg text-blue-100 font-normal">/month</span>
-                </div>
-                <p className="text-blue-100 mb-6">Perfect for testing the waters</p>
-                
-                <div className="space-y-3 mb-8 text-left">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-5 h-5 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full flex items-center justify-center flex-shrink-0">
-                      <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                    <span className="text-white">3 validations per month</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-5 h-5 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full flex items-center justify-center flex-shrink-0">
-                      <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                    <span className="text-white">Basic market analysis</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-5 h-5 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full flex items-center justify-center flex-shrink-0">
-                      <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                    <span className="text-white">Risk assessment</span>
-                  </div>
-                </div>
-                
-                <Button 
-                  size="lg" 
-                  onClick={onGetStarted}
-                  className="w-full text-lg py-4 bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 transform hover:scale-105 transition-all duration-200"
-                >
-                  Start Free
-                </Button>
-              </div>
-            </div>
+            <PricingCard
+              title="Free to Start"
+              price="$0"
+              description="Perfect for testing the waters"
+              features={[
+                "3 validations per month",
+                "Basic market analysis",
+                "Risk assessment"
+              ]}
+              onGetStarted={onGetStarted}
+            />
 
             {/* Pro Plan */}
-            <div className="bg-white/15 backdrop-blur-sm p-8 rounded-2xl border-2 border-blue-400/50 hover:bg-white/20 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-2xl group relative">
-              {/* Popular badge */}
-              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                <div className="bg-gradient-to-r from-blue-400 to-indigo-400 text-white px-4 py-1 rounded-full text-sm font-medium">
-                  Most Popular
-                </div>
-              </div>
-              
-              <div className="text-center">
-                <h3 className="text-2xl font-bold text-white mb-2">Unlock Unlimited Insights</h3>
-                <div className="text-4xl font-bold text-white mb-4">
-                  $5<span className="text-lg text-blue-100 font-normal">/month</span>
-                </div>
-                <p className="text-blue-100 mb-6">For serious founders ready to scale</p>
-                
-                <div className="space-y-3 mb-8 text-left">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-5 h-5 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-full flex items-center justify-center flex-shrink-0">
-                      <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                    <span className="text-white font-medium">Unlimited validations</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-5 h-5 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-full flex items-center justify-center flex-shrink-0">
-                      <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                    <span className="text-white font-medium">Deep competitor analysis</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-5 h-5 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-full flex items-center justify-center flex-shrink-0">
-                      <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                    <span className="text-white font-medium">Priority support</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-5 h-5 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-full flex items-center justify-center flex-shrink-0">
-                      <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                    <span className="text-white font-medium">Advanced insights</span>
-                  </div>
-                </div>
-                
-                <Button 
-                  size="lg" 
-                  onClick={onGetStarted}
-                  className="w-full text-lg py-4 bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
-                >
-                  Get Started Now
-                </Button>
-              </div>
-            </div>
+            <PricingCard
+              title="Unlock Unlimited Insights"
+              price="$5"
+              description="For serious founders ready to scale"
+              features={[
+                "Unlimited validations",
+                "Deep competitor analysis",
+                "Priority support",
+                "Advanced insights"
+              ]}
+              isPopular={true}
+              priceId="price_YOUR_STRIPE_PRICE_ID"
+              onGetStarted={onGetStarted}
+            />
           </div>
         </div>
       </section>

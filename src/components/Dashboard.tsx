@@ -41,6 +41,7 @@ export function Dashboard() {
   });
   const [showHistory, setShowHistory] = useState(false);
   const [showSubscription, setShowSubscription] = useState(false);
+  const [showStripeTest, setShowStripeTest] = useState(false);
 
   // Load analysis history and stats on component mount
   useEffect(() => {

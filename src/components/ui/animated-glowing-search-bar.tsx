@@ -22,10 +22,6 @@ const SearchComponent = ({
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onChange(e.target.value);
-  };
-
   return (
     <div className="relative flex items-center justify-center">
       <div className="absolute z-[-1] w-full h-min-screen"></div>
@@ -92,14 +88,23 @@ const SearchComponent = ({
             </svg>
           </div>
           <form onSubmit={handleSubmit} className="w-full">
-            <input 
+            <textarea 
               placeholder={placeholder}
-              type="text" 
               name="text" 
               value={value}
-              onChange={handleInputChange}
+              onChange={(e) => onChange(e.target.value)}
               disabled={disabled}
-              className="bg-white border-none w-full max-w-[450px] h-[56px] rounded-lg text-gray-800 px-12 sm:px-[59px] text-base sm:text-lg focus:outline-none placeholder-gray-500 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed" 
+              rows={3}
+              className="bg-white border-none w-full max-w-[600px] min-h-[80px] max-h-[200px] rounded-lg text-gray-800 px-12 sm:px-[59px] py-4 text-base sm:text-lg focus:outline-none placeholder-gray-500 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed resize-none overflow-y-auto"
+              style={{
+                height: 'auto',
+                minHeight: '80px'
+              }}
+              onInput={(e) => {
+                const target = e.target as HTMLTextAreaElement;
+                target.style.height = 'auto';
+                target.style.height = Math.min(target.scrollHeight, 200) + 'px';
+              }}
             />
           </form>
         </div>

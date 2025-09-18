@@ -194,22 +194,23 @@ export function Dashboard() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-indigo-500 to-blue-500">
         {/* Header */}
-        <header className="bg-white/10 backdrop-blur-sm border-b border-white/20 px-6 py-4">
+        <header className="bg-white/10 backdrop-blur-sm border-b border-white/20 px-4 sm:px-6 py-4">
           <div className="max-w-7xl mx-auto flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center">
-                <Rocket className="w-6 h-6 text-indigo-500" />
+            <div className="flex items-center space-x-1 sm:space-x-3">
+              <div className="w-6 h-6 sm:w-10 sm:h-10 bg-white rounded-xl flex items-center justify-center">
+                <Rocket className="w-3 h-3 sm:w-6 sm:h-6 text-indigo-500" />
               </div>
-              <span className="text-2xl font-bold text-white">LaunchScope</span>
+              <span className="text-sm sm:text-2xl font-bold text-white">LaunchScope</span>
             </div>
             
-            <div className="flex items-center space-x-4">
-              <Button variant="secondary" size="sm" onClick={handleBackFromSubscription}>
-                Back to Dashboard
+            <div className="flex items-center space-x-1 sm:space-x-4">
+              <Button variant="secondary" onClick={handleBackFromSubscription} className="p-1 sm:px-3 sm:py-2 text-xs sm:text-sm">
+                <span className="sm:hidden">Back</span>
+                <span className="hidden sm:inline">Back to Dashboard</span>
               </Button>
-              <Button variant="secondary" size="sm" onClick={handleSignOut}>
-                <LogOut className="w-4 h-4 mr-2" />
-                Sign Out
+              <Button variant="secondary" onClick={handleSignOut} className="p-1 sm:px-3 sm:py-2 text-xs sm:text-sm">
+                <LogOut className="w-4 h-4 sm:mr-2" />
+                <span className="hidden sm:inline">Sign Out</span>
               </Button>
             </div>
           </div>

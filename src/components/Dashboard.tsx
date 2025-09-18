@@ -40,7 +40,6 @@ export function Dashboard() {
     validatedIdeas: 0
   });
   const [showHistory, setShowHistory] = useState(false);
-  const [showStripeTest, setShowStripeTest] = useState(false);
   const [showSubscription, setShowSubscription] = useState(false);
 
   // Load analysis history and stats on component mount

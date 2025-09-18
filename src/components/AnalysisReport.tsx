@@ -70,16 +70,16 @@ export function AnalysisReport({ analysis, idea, onBack }: AnalysisReportProps) 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-900">
       {/* Header */}
-      <header className="bg-black/20 backdrop-blur-sm border-b border-white/10 px-6 py-4">
+      <header className="bg-black/20 backdrop-blur-sm border-b border-white/10 px-4 sm:px-6 py-4">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center sm:justify-between gap-4">
           <Button 
             variant="secondary" 
-            size="sm" 
             onClick={onBack}
-            className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+            className="bg-white/10 border-white/20 text-white hover:bg-white/20 p-1 sm:px-3 sm:py-2 text-xs sm:text-sm"
           >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Dashboard
+            <ArrowLeft className="w-4 h-4 sm:mr-2" />
+            <span className="hidden sm:inline">Back to Dashboard</span>
+            <span className="sm:hidden">Back</span>
           </Button>
           
           <div className="text-center">

@@ -247,6 +247,25 @@ Respond strictly in the following JSON format:
         breakdown.overallJustification = parsedAnalysis.verdict || "Comprehensive viability analysis completed";
       }
     }
+
+    // Ensure new fields are present with defaults if missing
+    if (!parsedAnalysis.marketSignals) {
+      parsedAnalysis.marketSignals = {
+        searchVolume: "Data not available",
+        fundingActivity: "Data not available", 
+        competitionDensity: "Data not available",
+        adoptionStage: "Data not available"
+      };
+    }
+
+    if (!parsedAnalysis.validationSteps) {
+      parsedAnalysis.validationSteps = [
+        "Create a landing page to test interest",
+        "Conduct customer interviews",
+        "Build a simple prototype",
+        "Test with target users"
+      ];
+    }
     
     // Update the main viabilityScore to reflect the weighted score
     const weightedScore = parseFloat(parsedAnalysis.detailedViabilityBreakdown.weightedOverallScore);

@@ -15,6 +15,7 @@ serve(async (req) => {
     const { idea } = await req.json()
 
     if (!idea) {
+      return new Response(
         JSON.stringify({ error: 'Startup idea is required' }),
         { 
           status: 400, 
@@ -245,25 +246,6 @@ Respond strictly in the following JSON format:
       if (!breakdown.overallJustification) {
         breakdown.overallJustification = parsedAnalysis.verdict || "Comprehensive viability analysis completed";
       }
-    }
-
-    // Ensure new fields are present with defaults if missing
-    if (!parsedAnalysis.marketSignals) {
-      parsedAnalysis.marketSignals = {
-        searchVolume: "Data not available",
-        fundingActivity: "Data not available", 
-        competitionDensity: "Data not available",
-        adoptionStage: "Data not available"
-      };
-    }
-
-    if (!parsedAnalysis.validationSteps) {
-      parsedAnalysis.validationSteps = [
-        "Create a landing page to test interest",
-        "Conduct customer interviews",
-        "Build a simple prototype",
-        "Test with target users"
-      ];
     }
     
     // Update the main viabilityScore to reflect the weighted score

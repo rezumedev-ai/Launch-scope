@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Search, Sparkles, Zap } from 'lucide-react';
 
 interface SearchComponentProps {
   value: string;
@@ -15,6 +16,8 @@ const SearchComponent = ({
   placeholder = "Describe your startup idea...",
   disabled = false 
 }: SearchComponentProps) => {
+  const [isFocused, setIsFocused] = useState(false);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (value.trim()) {
@@ -22,93 +25,114 @@ const SearchComponent = ({
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+      e.preventDefault();
+      if (value.trim()) {
+        onSubmit(value.trim());
+      }
+    }
+  };
+
   return (
-    <div className="relative flex items-center justify-center">
-      <div className="absolute z-[-1] w-full h-min-screen"></div>
-      <div id="poda" className="relative flex items-center justify-center group">
-        <div className="absolute z-[-1] overflow-hidden h-full w-full max-h-[70px] max-w-[800px] rounded-xl blur-[3px] 
-                        before:absolute before:content-[''] before:z-[-2] before:w-[999px] before:h-[999px] before:bg-no-repeat before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:rotate-60
-                        before:bg-[conic-gradient(#000,#402fb5_5%,#000_38%,#000_50%,#cf30aa_60%,#000_87%)] before:transition-all before:duration-2000
-                        group-hover:before:rotate-[-120deg] group-focus-within:before:rotate-[420deg] group-focus-within:before:duration-[4000ms]">
-        </div>
-        <div className="absolute z-[-1] overflow-hidden h-full w-full max-h-[65px] max-w-[800px] rounded-xl blur-[3px] 
-                        before:absolute before:content-[''] before:z-[-2] before:w-[600px] before:h-[600px] before:bg-no-repeat before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:rotate-[82deg]
-                        before:bg-[conic-gradient(rgba(0,0,0,0),#18116a,rgba(0,0,0,0)_10%,rgba(0,0,0,0)_50%,#6e1b60,rgba(0,0,0,0)_60%)] before:transition-all before:duration-2000
-                        group-hover:before:rotate-[-98deg] group-focus-within:before:rotate-[442deg] group-focus-within:before:duration-[4000ms]">
-        </div>
-        <div className="absolute z-[-1] overflow-hidden h-full w-full max-h-[65px] max-w-[800px] rounded-xl blur-[3px] 
-                        before:absolute before:content-[''] before:z-[-2] before:w-[600px] before:h-[600px] before:bg-no-repeat before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:rotate-[82deg]
-                        before:bg-[conic-gradient(rgba(0,0,0,0),#18116a,rgba(0,0,0,0)_10%,rgba(0,0,0,0)_50%,#6e1b60,rgba(0,0,0,0)_60%)] before:transition-all before:duration-2000
-                        group-hover:before:rotate-[-98deg] group-focus-within:before:rotate-[442deg] group-focus-within:before:duration-[4000ms]">
-        </div>
-        <div className="absolute z-[-1] overflow-hidden h-full w-full max-h-[65px] max-w-[800px] rounded-xl blur-[3px] 
-                        before:absolute before:content-[''] before:z-[-2] before:w-[600px] before:h-[600px] before:bg-no-repeat before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:rotate-[82deg]
-                        before:bg-[conic-gradient(rgba(0,0,0,0),#18116a,rgba(0,0,0,0)_10%,rgba(0,0,0,0)_50%,#6e1b60,rgba(0,0,0,0)_60%)] before:transition-all before:duration-2000
-                        group-hover:before:rotate-[-98deg] group-focus-within:before:rotate-[442deg] group-focus-within:before:duration-[4000ms]">
-        </div>
+    <div className="w-full max-w-4xl mx-auto">
+      <form onSubmit={handleSubmit} className="relative group">
+        {/* Animated background gradient */}
+        <div className="absolute -inset-1 bg-gradient-to-r from-pink-400 via-purple-500 to-indigo-500 rounded-2xl blur-sm opacity-75 group-hover:opacity-100 group-focus-within:opacity-100 transition-all duration-500 animate-pulse"></div>
+        
+        {/* Main container */}
+        <div className="relative bg-white rounded-xl shadow-2xl border border-white/20 overflow-hidden">
+          {/* Top gradient bar */}
+          <div className="h-1 bg-gradient-to-r from-pink-400 via-purple-500 to-indigo-500"></div>
+          
+          {/* Input container */}
+          <div className="relative p-6">
+            {/* Search icon */}
+            <div className="absolute left-8 top-8 z-10">
+              <div className={`transition-all duration-300 ${isFocused ? 'text-purple-500 scale-110' : 'text-gray-400'}`}>
+                <Search className="w-6 h-6" />
+              </div>
+            </div>
 
-        <div className="absolute z-[-1] overflow-hidden h-full w-full max-h-[63px] max-w-[800px] rounded-lg blur-[2px] 
-                        before:absolute before:content-[''] before:z-[-2] before:w-[600px] before:h-[600px] before:bg-no-repeat before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:rotate-[83deg]
-                        before:bg-[conic-gradient(rgba(0,0,0,0)_0%,#a099d8,rgba(0,0,0,0)_8%,rgba(0,0,0,0)_50%,#dfa2da,rgba(0,0,0,0)_58%)] before:brightness-140
-                        before:transition-all before:duration-2000 group-hover:before:rotate-[-97deg] group-focus-within:before:rotate-[443deg] group-focus-within:before:duration-[4000ms]">
-        </div>
+            {/* Magic sparkle icon */}
+            <div className="absolute right-8 top-8 z-10">
+              <div className={`transition-all duration-300 ${isFocused ? 'text-pink-500 animate-pulse' : 'text-gray-400'}`}>
+                <Sparkles className="w-6 h-6" />
+              </div>
+            </div>
 
-        <div className="absolute z-[-1] overflow-hidden h-full w-full max-h-[59px] max-w-[800px] rounded-xl blur-[0.5px] 
-                        before:absolute before:content-[''] before:z-[-2] before:w-[600px] before:h-[600px] before:bg-no-repeat before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:rotate-[70deg]
-                        before:bg-[conic-gradient(#1c191c,#402fb5_5%,#1c191c_14%,#1c191c_50%,#cf30aa_60%,#1c191c_64%)] before:brightness-130
-                        before:transition-all before:duration-2000 group-hover:before:rotate-[-110deg] group-focus-within:before:rotate-[430deg] group-focus-within:before:duration-[4000ms]">
-        </div>
-
-        <div id="main" className="relative group">
-          <div id="pink-mask" className="pointer-events-none w-[30px] h-[20px] absolute bg-[#cf30aa] top-[10px] left-[5px] blur-2xl opacity-80 transition-all duration-2000 group-hover:opacity-0"></div>
-          <div className="absolute h-[42px] w-[40px] overflow-hidden top-[7px] right-[7px] rounded-lg bg-white/90
-                          before:absolute before:content-[''] before:w-[600px] before:h-[600px] before:bg-no-repeat before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:rotate-90
-                          before:bg-[conic-gradient(rgba(0,0,0,0),#3d3a4f,rgba(0,0,0,0)_50%,rgba(0,0,0,0)_50%,#3d3a4f,rgba(0,0,0,0)_100%)]
-                          before:brightness-135 before:animate-spin-slow">
-          </div>
-          <div id="filter-icon" className="absolute top-2 right-2 flex items-center justify-center z-[2] max-h-10 max-w-[38px] h-full w-full [isolation:isolate] overflow-hidden rounded-lg bg-gradient-to-b from-gray-100 via-white to-gray-50 border border-gray-200 shadow-sm">
-            <svg preserveAspectRatio="none" height="27" width="27" viewBox="4.8 4.56 14.832 15.408" fill="none">
-              <path d="M8.16 6.65002H15.83C16.47 6.65002 16.99 7.17002 16.99 7.81002V9.09002C16.99 9.56002 16.7 10.14 16.41 10.43L13.91 12.64C13.56 12.93 13.33 13.51 13.33 13.98V16.48C13.33 16.83 13.1 17.29 12.81 17.47L12 17.98C11.24 18.45 10.2 17.92 10.2 16.99V13.91C10.2 13.5 9.97 12.98 9.73 12.69L7.52 10.36C7.23 10.08 7 9.55002 7 9.20002V7.87002C7 7.17002 7.52 6.65002 8.16 6.65002Z" stroke="#6b7280" strokeWidth="1" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"></path>
-            </svg>
-          </div>
-          <div id="search-icon" className="absolute left-5 top-[15px]">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" height="24" fill="none" className="feather feather-search">
-              <circle stroke="url(#searchWhite)" r="8" cy="11" cx="11"></circle>
-              <line stroke="url(#searchlWhite)" y2="16.65" y1="22" x2="16.65" x1="22"></line>
-              <defs>
-                <linearGradient gradientTransform="rotate(50)" id="searchWhite">
-                  <stop stopColor="#6366f1" offset="0%"></stop>
-                  <stop stopColor="#8b5cf6" offset="50%"></stop>
-                </linearGradient>
-                <linearGradient id="searchlWhite">
-                  <stop stopColor="#8b5cf6" offset="0%"></stop>
-                  <stop stopColor="#6366f1" offset="50%"></stop>
-                </linearGradient>
-              </defs>
-            </svg>
-          </div>
-          <form onSubmit={handleSubmit} className="w-full">
-            <textarea 
-              placeholder={placeholder}
-              name="text" 
+            {/* Textarea */}
+            <textarea
               value={value}
               onChange={(e) => onChange(e.target.value)}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
+              onKeyDown={handleKeyDown}
+              placeholder={placeholder}
               disabled={disabled}
               rows={3}
-              className="bg-white border-none w-full max-w-full min-h-[60px] max-h-[150px] rounded-lg text-gray-800 px-12 sm:px-[59px] py-4 text-base sm:text-lg focus:outline-none placeholder-gray-500 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed resize-none overflow-y-auto"
+              className={`
+                w-full px-16 py-4 text-lg text-gray-800 placeholder-gray-500 
+                bg-transparent border-none outline-none resize-none
+                transition-all duration-300 min-h-[80px] max-h-[200px]
+                ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
+                ${isFocused ? 'text-gray-900' : ''}
+              `}
               style={{
                 height: 'auto',
-                minHeight: '60px'
+                minHeight: '80px'
               }}
               onInput={(e) => {
                 const target = e.target as HTMLTextAreaElement;
                 target.style.height = 'auto';
-                target.style.height = Math.min(target.scrollHeight, 150) + 'px';
+                target.style.height = Math.min(target.scrollHeight, 200) + 'px';
               }}
             />
-          </form>
+
+            {/* Submit button */}
+            <div className="flex justify-between items-center mt-4 pt-4 border-t border-gray-100">
+              <div className="flex items-center space-x-2 text-sm text-gray-500">
+                <Zap className="w-4 h-4" />
+                <span>Press Cmd/Ctrl + Enter to analyze</span>
+              </div>
+              
+              <button
+                type="submit"
+                disabled={disabled || !value.trim()}
+                className={`
+                  px-8 py-3 rounded-xl font-semibold text-white
+                  bg-gradient-to-r from-purple-500 to-pink-500
+                  hover:from-purple-600 hover:to-pink-600
+                  focus:outline-none focus:ring-4 focus:ring-purple-500/25
+                  transform transition-all duration-200
+                  ${disabled || !value.trim() 
+                    ? 'opacity-50 cursor-not-allowed scale-100' 
+                    : 'hover:scale-105 hover:shadow-lg active:scale-95'
+                  }
+                `}
+              >
+                {disabled ? (
+                  <div className="flex items-center space-x-2">
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                    <span>Analyzing...</span>
+                  </div>
+                ) : (
+                  'Analyze Idea'
+                )}
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
+
+        {/* Floating particles effect */}
+        {isFocused && (
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute top-4 left-1/4 w-2 h-2 bg-pink-400 rounded-full animate-ping opacity-75"></div>
+            <div className="absolute top-8 right-1/3 w-1 h-1 bg-purple-400 rounded-full animate-ping opacity-50" style={{ animationDelay: '0.5s' }}></div>
+            <div className="absolute bottom-6 left-1/3 w-1.5 h-1.5 bg-indigo-400 rounded-full animate-ping opacity-60" style={{ animationDelay: '1s' }}></div>
+          </div>
+        )}
+      </form>
     </div>
   );
 };

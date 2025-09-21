@@ -55,8 +55,18 @@ interface AnalysisReportProps {
 }
 
 export function AnalysisReport({ analysis, idea, onBack }: AnalysisReportProps) {
+  // Helper function to get the numeric viability score
+  const getViabilityScoreValue = (analysis: AnalysisData): number => {
+    // Prioritize weighted overall score from detailed breakdown
+    if (analysis.detailedViabilityBreakdown?.weightedOverallScore) {
+      return parseFloat(analysis.detailedViabilityBreakdown.weightedOverallScore);
+    }
+    // Fallback to parsing the original viabilityScore
+    return parseInt(analysis.viabilityScore.split(' ')[0]) || 5;
+  };
+
   const getViabilityColor = (score: string) => {
-    const numScore = parseInt(score);
+    const numScore = typeof score === 'string' ? parseInt(score) : getViabilityScoreValue(analysis);
     if (numScore >= 8) return 'text-green-500';
     if (numScore >= 6) return 'text-yellow-500';
     if (numScore >= 4) return 'text-orange-500';
@@ -64,7 +74,7 @@ export function AnalysisReport({ analysis, idea, onBack }: AnalysisReportProps) 
   };
 
   const getViabilityBgColor = (score: string) => {
-    const numScore = parseInt(score);
+    const numScore = typeof score === 'string' ? parseInt(score) : getViabilityScoreValue(analysis);
     if (numScore >= 8) return 'from-green-400 to-emerald-400';
     if (numScore >= 6) return 'from-yellow-400 to-amber-400';
     if (numScore >= 4) return 'from-orange-400 to-red-400';
@@ -157,9 +167,12 @@ export function AnalysisReport({ analysis, idea, onBack }: AnalysisReportProps) 
             </div>
             <h3 className="text-sm font-medium text-slate-400 mb-2">Viability Score</h3>
             <p className={`text-4xl font-bold ${getViabilityColor(analysis.viabilityScore)} mb-2`}>
-              {analysis.viabilityScore.split(' ')[0]}/10
+              {analysis.detailedViabilityBreakdown?.weightedOverallScore || analysis.viabilityScore.split(' ')[0]}/10
             </p>
-            <p className="text-slate-400 text-sm">{analysis.viabilityScore.split(' ').slice(1).join(' ')}</p>
+            <p className="text-slate-400 text-sm">
+              {analysis.detailedViabilityBreakdown?.overallJustification?.substring(0, 50) + '...' || 
+               analysis.viabilityScore.split(' ').slice(1).join(' ')}
+            </p>
           </div>
         </div>
 
@@ -191,11 +204,11 @@ export function AnalysisReport({ analysis, idea, onBack }: AnalysisReportProps) 
                     <div className="relative">
                       {/* Outer glow ring */}
                       <div className={`w-48 h-48 rounded-full border-4 ${
-                        parseFloat(analysis.detailedViabilityBreakdown.weightedOverallScore) >= 8 
+                        getViabilityScoreValue(analysis) >= 8 
                           ? 'border-green-400/30 shadow-green-400/20' 
-                          : parseFloat(analysis.detailedViabilityBreakdown.weightedOverallScore) >= 6 
+                          : getViabilityScoreValue(analysis) >= 6 
                           ? 'border-yellow-400/30 shadow-yellow-400/20' 
-                          : parseFloat(analysis.detailedViabilityBreakdown.weightedOverallScore) >= 4 
+                          : getViabilityScoreValue(analysis) >= 4 
                           ? 'border-orange-400/30 shadow-orange-400/20' 
                           : 'border-red-400/30 shadow-red-400/20'
                       } shadow-2xl relative`}>
@@ -214,11 +227,11 @@ export function AnalysisReport({ analysis, idea, onBack }: AnalysisReportProps) 
                             <div className={`text-6xl font-bold mb-2 ${
                               parseFloat(analysis.detailedViabilityBreakdown.weightedOverallScore) >= 8 ? 'text-green-300' :
                               parseFloat(analysis.detailedViabilityBreakdown.weightedOverallScore) >= 6 ? 'text-yellow-300' :
-                              parseFloat(analysis.detailedViabilityBreakdown.weightedOverallScore) >= 4 ? 'text-orange-300' : 'text-red-300'
-                            }`}>
-                              {analysis.detailedViabilityBreakdown.weightedOverallScore}
+                            getViabilityScoreValue(analysis) >= 8 ? 'text-green-300' :
+                            getViabilityScoreValue(analysis) >= 6 ? 'text-yellow-300' :
+                            getViabilityScoreValue(analysis) >= 4 ? 'text-orange-300' : 'text-red-300'
                             </div>
-                            <div className="text-slate-300 text-xl font-semibold">/ 10</div>
+                            {analysis.detailedViabilityBreakdown?.weightedOverallScore || getViabilityScoreValue(analysis).toFixed(1)}
                           </div>
                         </div>
                       </div>
@@ -228,19 +241,22 @@ export function AnalysisReport({ analysis, idea, onBack }: AnalysisReportProps) 
                   {/* Score interpretation */}
                   <div className="max-w-3xl mx-auto relative z-10">
                     <div className={`inline-block px-6 py-3 rounded-full text-lg font-semibold mb-4 ${
-                      parseFloat(analysis.detailedViabilityBreakdown.weightedOverallScore) >= 8 
+                      getViabilityScoreValue(analysis) >= 8 
                         ? 'bg-green-500/20 text-green-200 border border-green-400/30' 
-                        : parseFloat(analysis.detailedViabilityBreakdown.weightedOverallScore) >= 6 
+                        : getViabilityScoreValue(analysis) >= 6 
                         ? 'bg-yellow-500/20 text-yellow-200 border border-yellow-400/30' 
-                        : parseFloat(analysis.detailedViabilityBreakdown.weightedOverallScore) >= 4 
+                        : getViabilityScoreValue(analysis) >= 4 
                         ? 'bg-orange-500/20 text-orange-200 border border-orange-400/30' 
                         : 'bg-red-500/20 text-red-200 border border-red-400/30'
                     }`}>
-                      {parseFloat(analysis.detailedViabilityBreakdown.weightedOverallScore) >= 8 ? '🚀 Excellent Viability' :
-                       parseFloat(analysis.detailedViabilityBreakdown.weightedOverallScore) >= 6 ? '✅ Good Viability' :
-                       parseFloat(analysis.detailedViabilityBreakdown.weightedOverallScore) >= 4 ? '⚠️ Fair Viability' : '❌ Poor Viability'}
+                      {getViabilityScoreValue(analysis) >= 8 ? '🚀 Excellent Viability' :
+                       getViabilityScoreValue(analysis) >= 6 ? '✅ Good Viability' :
+                       getViabilityScoreValue(analysis) >= 4 ? '⚠️ Fair Viability' : '❌ Poor Viability'}
                     </div>
-                    <p className="text-slate-300 text-lg leading-relaxed">{analysis.detailedViabilityBreakdown.overallJustification}</p>
+                    <p className="text-slate-300 text-lg leading-relaxed">
+                      {analysis.detailedViabilityBreakdown?.overallJustification || 
+                       'Comprehensive analysis completed with detailed scoring across all key viability factors.'}
+                    </p>
                   </div>
                 </div>
               </div>

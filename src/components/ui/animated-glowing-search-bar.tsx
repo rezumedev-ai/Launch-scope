@@ -54,7 +54,7 @@ const SearchComponent = ({
         </div>
 
         <div className="absolute z-[-1] overflow-hidden h-full w-full max-h-[59px] max-w-[800px] rounded-xl blur-[0.5px] 
-                        before:absolute before:content-[''] before:z-[-2] before:w-[600px] before:h-[600px] before:bg-no-repeat before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:rotate-70
+                        before:absolute before:content-[''] before:z-[-2] before:w-[600px] before:h-[600px] before:bg-no-repeat before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:rotate-[70deg]
                         before:bg-[conic-gradient(#1c191c,#402fb5_5%,#1c191c_14%,#1c191c_50%,#cf30aa_60%,#1c191c_64%)] before:brightness-130
                         before:transition-all before:duration-2000 group-hover:before:rotate-[-110deg] group-focus-within:before:rotate-[430deg] group-focus-within:before:duration-[4000ms]">
         </div>
@@ -110,7 +110,6 @@ const SearchComponent = ({
         </div>
       </div>
     </div>
-  )
   );
 };
 

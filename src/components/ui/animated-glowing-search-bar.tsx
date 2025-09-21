@@ -111,6 +111,7 @@ const SearchComponent = ({
         </div>
       </div>
     </div>
+  )
   );
 };
 

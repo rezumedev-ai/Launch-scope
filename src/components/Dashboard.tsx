@@ -416,19 +416,8 @@ export function Dashboard() {
               <Button variant="secondary" size="lg" className="text-lg px-10 py-4">
                 View Examples
               </Button>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                onClick={() => setShowStripeTest(!showStripeTest)}
-                className="text-white border-white hover:bg-white hover:text-indigo-500"
-              >
-                {showStripeTest ? 'Hide' : 'Show'} Stripe Test
-              </Button>
             </div>
           </div>
-          
-          {/* Stripe Test Panel */}
-          {showStripeTest && <StripeTestPanel />}
         </div>
 
         {/* Quick Stats */}

@@ -227,11 +227,11 @@ export function AnalysisReport({ analysis, idea, onBack }: AnalysisReportProps) 
                             <div className={`text-6xl font-bold mb-2 ${
                               parseFloat(analysis.detailedViabilityBreakdown.weightedOverallScore) >= 8 ? 'text-green-300' :
                               parseFloat(analysis.detailedViabilityBreakdown.weightedOverallScore) >= 6 ? 'text-yellow-300' :
-                            getViabilityScoreValue(analysis) >= 8 ? 'text-green-300' :
-                            getViabilityScoreValue(analysis) >= 6 ? 'text-yellow-300' :
-                            getViabilityScoreValue(analysis) >= 4 ? 'text-orange-300' : 'text-red-300'
+                              parseFloat(analysis.detailedViabilityBreakdown.weightedOverallScore) >= 4 ? 'text-orange-300' : 'text-red-300'
+                            }`}>
+                              {analysis.detailedViabilityBreakdown?.weightedOverallScore || getViabilityScoreValue(analysis).toFixed(1)}
                             </div>
-                            {analysis.detailedViabilityBreakdown?.weightedOverallScore || getViabilityScoreValue(analysis).toFixed(1)}
+                            <div className="text-slate-400 text-lg font-medium">/10</div>
                           </div>
                         </div>
                       </div>

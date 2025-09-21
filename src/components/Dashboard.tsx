@@ -88,7 +88,10 @@ export function Dashboard() {
 
   const saveAnalysisToHistory = async (idea: string, analysis: any) => {
     try {
-      const viabilityScore = parseInt(analysis.viabilityScore?.split(' ')[0]) || 0;
+      // Use weighted overall score if available, otherwise fall back to original viability score
+      const viabilityScore = analysis.detailedViabilityBreakdown?.weightedOverallScore 
+        ? Math.round(parseFloat(analysis.detailedViabilityBreakdown.weightedOverallScore))
+        : parseInt(analysis.viabilityScore?.split(' ')[0]) || 0;
       
       const { error } = await supabase
         .from('analysis_history')

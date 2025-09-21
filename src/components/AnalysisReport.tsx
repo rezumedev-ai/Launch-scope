@@ -22,6 +22,30 @@ interface AnalysisData {
   nextSteps: string[];
   verdict: string;
   viabilityScore: string;
+  detailedViabilityBreakdown?: {
+    marketDemand: {
+      score: number;
+      justification: string;
+    };
+    technicalFeasibility: {
+      score: number;
+      justification: string;
+    };
+    differentiation: {
+      score: number;
+      justification: string;
+    };
+    monetizationPotential: {
+      score: number;
+      justification: string;
+    };
+    timing: {
+      score: number;
+      justification: string;
+    };
+    weightedOverallScore: string;
+    overallJustification: string;
+  };
 }
 
 interface AnalysisReportProps {
@@ -139,6 +163,136 @@ export function AnalysisReport({ analysis, idea, onBack }: AnalysisReportProps) 
           </div>
         </div>
 
+        {/* Detailed Viability Breakdown */}
+        {analysis.detailedViabilityBreakdown && (
+          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 mb-8">
+            <div className="flex items-center mb-6">
+              <div className="w-8 h-8 bg-gradient-to-r from-purple-400 to-pink-400 rounded-lg flex items-center justify-center mr-3">
+                <Star className="w-5 h-5 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-white">Detailed Viability Analysis</h3>
+            </div>
+            
+            {/* Overall Weighted Score */}
+            <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700/50 mb-6">
+              <div className="flex items-center justify-between mb-4">
+                <h4 className="text-lg font-semibold text-white">Weighted Overall Score</h4>
+                <div className={`text-3xl font-bold ${
+                  parseFloat(analysis.detailedViabilityBreakdown.weightedOverallScore) >= 8 ? 'text-green-300' :
+                  parseFloat(analysis.detailedViabilityBreakdown.weightedOverallScore) >= 6 ? 'text-yellow-300' :
+                  parseFloat(analysis.detailedViabilityBreakdown.weightedOverallScore) >= 4 ? 'text-orange-300' : 'text-red-300'
+                }`}>
+                  {analysis.detailedViabilityBreakdown.weightedOverallScore}/10
+                </div>
+              </div>
+              <p className="text-slate-300 leading-relaxed">{analysis.detailedViabilityBreakdown.overallJustification}</p>
+            </div>
+
+            {/* Individual Categories */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* Market Demand */}
+              <div className="bg-slate-800/30 rounded-lg p-6 border border-slate-700/30">
+                <div className="flex items-center justify-between mb-3">
+                  <h4 className="font-semibold text-white">Market Demand</h4>
+                  <div className={`text-xl font-bold ${
+                    analysis.detailedViabilityBreakdown.marketDemand.score >= 8 ? 'text-green-300' :
+                    analysis.detailedViabilityBreakdown.marketDemand.score >= 6 ? 'text-yellow-300' :
+                    analysis.detailedViabilityBreakdown.marketDemand.score >= 4 ? 'text-orange-300' : 'text-red-300'
+                  }`}>
+                    {analysis.detailedViabilityBreakdown.marketDemand.score}/10
+                  </div>
+                </div>
+                <p className="text-slate-300 text-sm leading-relaxed">{analysis.detailedViabilityBreakdown.marketDemand.justification}</p>
+              </div>
+
+              {/* Technical Feasibility */}
+              <div className="bg-slate-800/30 rounded-lg p-6 border border-slate-700/30">
+                <div className="flex items-center justify-between mb-3">
+                  <h4 className="font-semibold text-white">Technical Feasibility</h4>
+                  <div className={`text-xl font-bold ${
+                    analysis.detailedViabilityBreakdown.technicalFeasibility.score >= 8 ? 'text-green-300' :
+                    analysis.detailedViabilityBreakdown.technicalFeasibility.score >= 6 ? 'text-yellow-300' :
+                    analysis.detailedViabilityBreakdown.technicalFeasibility.score >= 4 ? 'text-orange-300' : 'text-red-300'
+                  }`}>
+                    {analysis.detailedViabilityBreakdown.technicalFeasibility.score}/10
+                  </div>
+                </div>
+                <p className="text-slate-300 text-sm leading-relaxed">{analysis.detailedViabilityBreakdown.technicalFeasibility.justification}</p>
+              </div>
+
+              {/* Differentiation */}
+              <div className="bg-slate-800/30 rounded-lg p-6 border border-slate-700/30">
+                <div className="flex items-center justify-between mb-3">
+                  <h4 className="font-semibold text-white">Differentiation/Moat</h4>
+                  <div className={`text-xl font-bold ${
+                    analysis.detailedViabilityBreakdown.differentiation.score >= 8 ? 'text-green-300' :
+                    analysis.detailedViabilityBreakdown.differentiation.score >= 6 ? 'text-yellow-300' :
+                    analysis.detailedViabilityBreakdown.differentiation.score >= 4 ? 'text-orange-300' : 'text-red-300'
+                  }`}>
+                    {analysis.detailedViabilityBreakdown.differentiation.score}/10
+                  </div>
+                </div>
+                <p className="text-slate-300 text-sm leading-relaxed">{analysis.detailedViabilityBreakdown.differentiation.justification}</p>
+              </div>
+
+              {/* Monetization Potential */}
+              <div className="bg-slate-800/30 rounded-lg p-6 border border-slate-700/30">
+                <div className="flex items-center justify-between mb-3">
+                  <h4 className="font-semibold text-white">Monetization Potential</h4>
+                  <div className={`text-xl font-bold ${
+                    analysis.detailedViabilityBreakdown.monetizationPotential.score >= 8 ? 'text-green-300' :
+                    analysis.detailedViabilityBreakdown.monetizationPotential.score >= 6 ? 'text-yellow-300' :
+                    analysis.detailedViabilityBreakdown.monetizationPotential.score >= 4 ? 'text-orange-300' : 'text-red-300'
+                  }`}>
+                    {analysis.detailedViabilityBreakdown.monetizationPotential.score}/10
+                  </div>
+                </div>
+                <p className="text-slate-300 text-sm leading-relaxed">{analysis.detailedViabilityBreakdown.monetizationPotential.justification}</p>
+              </div>
+
+              {/* Timing */}
+              <div className="bg-slate-800/30 rounded-lg p-6 border border-slate-700/30">
+                <div className="flex items-center justify-between mb-3">
+                  <h4 className="font-semibold text-white">Timing</h4>
+                  <div className={`text-xl font-bold ${
+                    analysis.detailedViabilityBreakdown.timing.score >= 8 ? 'text-green-300' :
+                    analysis.detailedViabilityBreakdown.timing.score >= 6 ? 'text-yellow-300' :
+                    analysis.detailedViabilityBreakdown.timing.score >= 4 ? 'text-orange-300' : 'text-red-300'
+                  }`}>
+                    {analysis.detailedViabilityBreakdown.timing.score}/10
+                  </div>
+                </div>
+                <p className="text-slate-300 text-sm leading-relaxed">{analysis.detailedViabilityBreakdown.timing.justification}</p>
+              </div>
+
+              {/* Scoring Legend */}
+              <div className="bg-slate-800/30 rounded-lg p-6 border border-slate-700/30">
+                <h4 className="font-semibold text-white mb-3">Scoring Guide</h4>
+                <div className="space-y-2 text-xs">
+                  <div className="flex items-center">
+                    <div className="w-3 h-3 bg-green-400 rounded-full mr-2"></div>
+                    <span className="text-slate-300">8-10: Excellent</span>
+                  </div>
+                  <div className="flex items-center">
+                    <div className="w-3 h-3 bg-yellow-400 rounded-full mr-2"></div>
+                    <span className="text-slate-300">6-7: Good</span>
+                  </div>
+                  <div className="flex items-center">
+                    <div className="w-3 h-3 bg-orange-400 rounded-full mr-2"></div>
+                    <span className="text-slate-300">4-5: Fair</span>
+                  </div>
+                  <div className="flex items-center">
+                    <div className="w-3 h-3 bg-red-400 rounded-full mr-2"></div>
+                    <span className="text-slate-300">1-3: Poor</span>
+                  </div>
+                </div>
+                <p className="text-slate-400 text-xs mt-3">
+                  Weighted: Market Demand (25%), Monetization (25%), Technical (20%), Differentiation (20%), Timing (10%)
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
         {/* Build Metrics Row */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-8">
           <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 text-center">

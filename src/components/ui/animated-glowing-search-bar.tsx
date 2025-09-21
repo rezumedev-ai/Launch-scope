@@ -27,33 +27,34 @@ const SearchComponent = ({
       <div className="absolute z-[-1] w-full h-min-screen"></div>
       <div id="poda" className="relative flex items-center justify-center group">
         <div className="absolute z-[-1] overflow-hidden h-full w-full max-h-[70px] max-w-[464px] rounded-xl blur-[3px] 
+        <div className="absolute z-[-1] overflow-hidden h-full w-full max-h-[70px] max-w-[800px] rounded-xl blur-[3px] 
                         before:absolute before:content-[''] before:z-[-2] before:w-[999px] before:h-[999px] before:bg-no-repeat before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:rotate-60
                         before:bg-[conic-gradient(#000,#402fb5_5%,#000_38%,#000_50%,#cf30aa_60%,#000_87%)] before:transition-all before:duration-2000
                         group-hover:before:rotate-[-120deg] group-focus-within:before:rotate-[420deg] group-focus-within:before:duration-[4000ms]">
         </div>
-        <div className="absolute z-[-1] overflow-hidden h-full w-full max-h-[65px] max-w-[462px] rounded-xl blur-[3px] 
+        <div className="absolute z-[-1] overflow-hidden h-full w-full max-h-[65px] max-w-[800px] rounded-xl blur-[3px] 
                         before:absolute before:content-[''] before:z-[-2] before:w-[600px] before:h-[600px] before:bg-no-repeat before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:rotate-[82deg]
                         before:bg-[conic-gradient(rgba(0,0,0,0),#18116a,rgba(0,0,0,0)_10%,rgba(0,0,0,0)_50%,#6e1b60,rgba(0,0,0,0)_60%)] before:transition-all before:duration-2000
                         group-hover:before:rotate-[-98deg] group-focus-within:before:rotate-[442deg] group-focus-within:before:duration-[4000ms]">
         </div>
-        <div className="absolute z-[-1] overflow-hidden h-full w-full max-h-[65px] max-w-[462px] rounded-xl blur-[3px] 
+        <div className="absolute z-[-1] overflow-hidden h-full w-full max-h-[65px] max-w-[800px] rounded-xl blur-[3px] 
                         before:absolute before:content-[''] before:z-[-2] before:w-[600px] before:h-[600px] before:bg-no-repeat before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:rotate-[82deg]
                         before:bg-[conic-gradient(rgba(0,0,0,0),#18116a,rgba(0,0,0,0)_10%,rgba(0,0,0,0)_50%,#6e1b60,rgba(0,0,0,0)_60%)] before:transition-all before:duration-2000
                         group-hover:before:rotate-[-98deg] group-focus-within:before:rotate-[442deg] group-focus-within:before:duration-[4000ms]">
         </div>
-        <div className="absolute z-[-1] overflow-hidden h-full w-full max-h-[65px] max-w-[462px] rounded-xl blur-[3px] 
+        <div className="absolute z-[-1] overflow-hidden h-full w-full max-h-[65px] max-w-[800px] rounded-xl blur-[3px] 
                         before:absolute before:content-[''] before:z-[-2] before:w-[600px] before:h-[600px] before:bg-no-repeat before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:rotate-[82deg]
                         before:bg-[conic-gradient(rgba(0,0,0,0),#18116a,rgba(0,0,0,0)_10%,rgba(0,0,0,0)_50%,#6e1b60,rgba(0,0,0,0)_60%)] before:transition-all before:duration-2000
                         group-hover:before:rotate-[-98deg] group-focus-within:before:rotate-[442deg] group-focus-within:before:duration-[4000ms]">
         </div>
 
-        <div className="absolute z-[-1] overflow-hidden h-full w-full max-h-[63px] max-w-[457px] rounded-lg blur-[2px] 
+        <div className="absolute z-[-1] overflow-hidden h-full w-full max-h-[63px] max-w-[800px] rounded-lg blur-[2px] 
                         before:absolute before:content-[''] before:z-[-2] before:w-[600px] before:h-[600px] before:bg-no-repeat before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:rotate-[83deg]
                         before:bg-[conic-gradient(rgba(0,0,0,0)_0%,#a099d8,rgba(0,0,0,0)_8%,rgba(0,0,0,0)_50%,#dfa2da,rgba(0,0,0,0)_58%)] before:brightness-140
                         before:transition-all before:duration-2000 group-hover:before:rotate-[-97deg] group-focus-within:before:rotate-[443deg] group-focus-within:before:duration-[4000ms]">
         </div>
 
-        <div className="absolute z-[-1] overflow-hidden h-full w-full max-h-[59px] max-w-[453px] rounded-xl blur-[0.5px] 
+        <div className="absolute z-[-1] overflow-hidden h-full w-full max-h-[59px] max-w-[800px] rounded-xl blur-[0.5px] 
                         before:absolute before:content-[''] before:z-[-2] before:w-[600px] before:h-[600px] before:bg-no-repeat before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:rotate-70
                         before:bg-[conic-gradient(#1c191c,#402fb5_5%,#1c191c_14%,#1c191c_50%,#cf30aa_60%,#1c191c_64%)] before:brightness-130
                         before:transition-all before:duration-2000 group-hover:before:rotate-[-110deg] group-focus-within:before:rotate-[430deg] group-focus-within:before:duration-[4000ms]">
@@ -95,7 +96,7 @@ const SearchComponent = ({
               onChange={(e) => onChange(e.target.value)}
               disabled={disabled}
               rows={3}
-              className="bg-white border-none w-full max-w-[800px] min-h-[60px] max-h-[150px] rounded-lg text-gray-800 px-12 sm:px-[59px] py-4 text-base sm:text-lg focus:outline-none placeholder-gray-500 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed resize-none overflow-y-auto"
+              className="bg-white border-none w-full max-w-full min-h-[60px] max-h-[150px] rounded-lg text-gray-800 px-12 sm:px-[59px] py-4 text-base sm:text-lg focus:outline-none placeholder-gray-500 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed resize-none overflow-y-auto"
               style={{
                 height: 'auto',
                 minHeight: '60px'

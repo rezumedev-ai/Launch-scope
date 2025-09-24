@@ -6,10 +6,11 @@ import { useAuth } from '../../contexts/AuthContext';
 
 interface AuthFormProps {
   onBack: () => void;
+  initialMode: 'signup' | 'signin';
 }
 
-export function AuthForm({ onBack }: AuthFormProps) {
-  const [isSignUp, setIsSignUp] = useState(false);
+export function AuthForm({ onBack, initialMode }: AuthFormProps) {
+  const [isSignUp, setIsSignUp] = useState(initialMode === 'signup');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');

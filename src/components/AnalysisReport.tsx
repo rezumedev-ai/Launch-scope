@@ -1,6 +1,8 @@
 import React from 'react';
-import { ArrowLeft, AlertTriangle, Target, Users, DollarSign, Clock, CheckCircle, Star, Lightbulb, Zap, TrendingUp, Code, Rocket, Search, TrendingDown, BarChart3, Shield, Calendar, Eye, Activity, Globe, Layers } from 'lucide-react';
+import { ArrowLeft, AlertTriangle, Target, Users, DollarSign, Clock, CheckCircle, Star, Lightbulb, Zap, TrendingUp, Code, Rocket, Search, TrendingDown, BarChart3, Shield, Calendar, Eye, Activity, Globe, Layers, Edit3, RefreshCw, X, Save } from 'lucide-react';
 import { Button } from './ui/Button';
+import { Input } from './ui/Input';
+import { useState } from 'react';
 
 interface AnalysisData {
   summary: string;
@@ -59,9 +61,31 @@ interface AnalysisReportProps {
   analysis: AnalysisData;
   idea: string;
   onBack: () => void;
+  onRefineIdea?: (refinedData: RefinedIdeaData, parentAnalysisId?: string) => void;
+  analysisId?: string;
 }
 
-export function AnalysisReport({ analysis, idea, onBack }: AnalysisReportProps) {
+interface RefinedIdeaData {
+  idea: string;
+  problemFit?: string;
+  primaryAudience?: string;
+  secondaryAudience?: string;
+  leanMVP?: string[];
+  distribution?: string[];
+  monetization?: string[];
+}
+
+export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisId }: AnalysisReportProps) {
+  const [isRefining, setIsRefining] = useState(false);
+  const [refinedIdea, setRefinedIdea] = useState(idea);
+  const [refinedProblemFit, setRefinedProblemFit] = useState(analysis.problemFit);
+  const [refinedPrimaryAudience, setRefinedPrimaryAudience] = useState(analysis.audience.primary);
+  const [refinedSecondaryAudience, setRefinedSecondaryAudience] = useState(analysis.audience.secondary || '');
+  const [refinedLeanMVP, setRefinedLeanMVP] = useState(analysis.leanMVP.join('\n'));
+  const [refinedDistribution, setRefinedDistribution] = useState(analysis.distribution.join('\n'));
+  const [refinedMonetization, setRefinedMonetization] = useState(analysis.monetization.join('\n'));
+  const [isSubmittingRefinement, setIsSubmittingRefinement] = useState(false);
+
   // Helper function to get the numeric viability score
   const getViabilityScoreValue = (analysis: AnalysisData): number => {
     // Prioritize weighted overall score from detailed breakdown
@@ -97,6 +121,47 @@ export function AnalysisReport({ analysis, idea, onBack }: AnalysisReportProps) 
     return 'border-yellow-400/40 bg-yellow-500/10 text-yellow-100';
   };
 
+  const handleStartRefinement = () => {
+    setIsRefining(true);
+  };
+
+  const handleCancelRefinement = () => {
+    setIsRefining(false);
+    // Reset all fields to original values
+    setRefinedIdea(idea);
+    setRefinedProblemFit(analysis.problemFit);
+    setRefinedPrimaryAudience(analysis.audience.primary);
+    setRefinedSecondaryAudience(analysis.audience.secondary || '');
+    setRefinedLeanMVP(analysis.leanMVP.join('\n'));
+    setRefinedDistribution(analysis.distribution.join('\n'));
+    setRefinedMonetization(analysis.monetization.join('\n'));
+  };
+
+  const handleSubmitRefinement = async () => {
+    if (!onRefineIdea) return;
+    
+    setIsSubmittingRefinement(true);
+    
+    const refinedData: RefinedIdeaData = {
+      idea: refinedIdea,
+      problemFit: refinedProblemFit,
+      primaryAudience: refinedPrimaryAudience,
+      secondaryAudience: refinedSecondaryAudience,
+      leanMVP: refinedLeanMVP.split('\n').filter(item => item.trim()),
+      distribution: refinedDistribution.split('\n').filter(item => item.trim()),
+      monetization: refinedMonetization.split('\n').filter(item => item.trim()),
+    };
+    
+    try {
+      await onRefineIdea(refinedData, analysisId);
+      setIsRefining(false);
+    } catch (error) {
+      console.error('Error submitting refinement:', error);
+    } finally {
+      setIsSubmittingRefinement(false);
+    }
+  };
+
   const getBuildCostStyle = (estimate: string) => {
     switch (estimate.toLowerCase()) {
       case 'low': return 'bg-emerald-500/20 text-emerald-200 border-emerald-400/30';
@@ -119,10 +184,55 @@ export function AnalysisReport({ analysis, idea, onBack }: AnalysisReportProps) 
               variant="secondary" 
               onClick={onBack}
               className="bg-white/10 border-white/20 text-white hover:bg-white/20 backdrop-blur-sm"
+              disabled={isRefining}
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Dashboard
             </Button>
+            
+            {/* Refinement Controls */}
+            <div className="flex items-center space-x-3">
+              {!isRefining ? (
+                onRefineIdea && (
+                  <Button
+                    onClick={handleStartRefinement}
+                    className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
+                  >
+                    <Edit3 className="w-4 h-4 mr-2" />
+                    Refine Idea
+                  </Button>
+                )
+              ) : (
+                <div className="flex items-center space-x-2">
+                  <Button
+                    onClick={handleSubmitRefinement}
+                    disabled={isSubmittingRefinement}
+                    className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white"
+                  >
+                    {isSubmittingRefinement ? (
+                      <>
+                        <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                        Re-analyzing...
+                      </>
+                    ) : (
+                      <>
+                        <Save className="w-4 h-4 mr-2" />
+                        Re-analyze
+                      </>
+                    )}
+                  </Button>
+                  <Button
+                    onClick={handleCancelRefinement}
+                    variant="secondary"
+                    className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+                    disabled={isSubmittingRefinement}
+                  >
+                    <X className="w-4 h-4 mr-2" />
+                    Cancel
+                  </Button>
+                </div>
+              )}
+            </div>
             
             <div className="text-center">
               <div className="flex items-center justify-center space-x-3 mb-2">
@@ -142,6 +252,17 @@ export function AnalysisReport({ analysis, idea, onBack }: AnalysisReportProps) 
       <main className="max-w-7xl mx-auto px-6 py-8 space-y-8">
         {/* Hero Section - Idea & Executive Summary */}
         <section className="relative">
+          {/* Refinement Mode Indicator */}
+          {isRefining && (
+            <div className="mb-6 bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-400/30 rounded-2xl p-4">
+              <div className="flex items-center justify-center space-x-3 text-white">
+                <Edit3 className="w-5 h-5 text-purple-300" />
+                <span className="font-medium">Refinement Mode Active</span>
+                <span className="text-purple-200 text-sm">Make changes below and click "Re-analyze" to see updated results</span>
+              </div>
+            </div>
+          )}
+          
           <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/5 via-purple-500/5 to-pink-500/5 rounded-3xl"></div>
           <div className="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-8 shadow-2xl">
             {/* Floating decoration */}
@@ -155,16 +276,42 @@ export function AnalysisReport({ analysis, idea, onBack }: AnalysisReportProps) 
                 </div>
                 <div className="flex-1">
                   <h2 className="text-3xl font-bold text-white mb-4">Your Startup Idea</h2>
-                  <p className="text-xl text-slate-200 leading-relaxed font-medium">{idea}</p>
+                  {isRefining ? (
+                    <div className="space-y-2">
+                      <label className="block text-sm font-medium text-slate-300">Startup Idea</label>
+                      <textarea
+                        value={refinedIdea}
+                        onChange={(e) => setRefinedIdea(e.target.value)}
+                        className="w-full p-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-slate-400 focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+                        rows={3}
+                        placeholder="Describe your refined startup idea..."
+                      />
+                    </div>
+                  ) : (
+                    <p className="text-xl text-slate-200 leading-relaxed font-medium">{idea}</p>
+                  )}
                 </div>
               </div>
               
               <div className="bg-slate-800/50 rounded-2xl p-6 border border-slate-700/50">
                 <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
                   <Eye className="w-5 h-5 mr-2 text-indigo-400" />
-                  Executive Summary
+                  {isRefining ? 'Problem-Solution Fit' : 'Executive Summary'}
                 </h3>
-                <p className="text-slate-300 text-lg leading-relaxed">{analysis.summary}</p>
+                {isRefining ? (
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium text-slate-300">Problem-Solution Fit</label>
+                    <textarea
+                      value={refinedProblemFit}
+                      onChange={(e) => setRefinedProblemFit(e.target.value)}
+                      className="w-full p-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-slate-400 focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+                      rows={3}
+                      placeholder="Describe the problem your idea solves..."
+                    />
+                  </div>
+                ) : (
+                  <p className="text-slate-300 text-lg leading-relaxed">{analysis.summary}</p>
+                )}
               </div>
             </div>
           </div>
@@ -536,7 +683,17 @@ export function AnalysisReport({ analysis, idea, onBack }: AnalysisReportProps) 
                 <div className="w-2 h-2 bg-indigo-400 rounded-full mr-2"></div>
                 Primary Audience
               </h4>
-              <p className="text-slate-300 leading-relaxed">{analysis.audience.primary}</p>
+              {isRefining ? (
+                <textarea
+                  value={refinedPrimaryAudience}
+                  onChange={(e) => setRefinedPrimaryAudience(e.target.value)}
+                  className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-slate-400 focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none"
+                  rows={3}
+                  placeholder="Describe your primary target audience..."
+                />
+              ) : (
+                <p className="text-slate-300 leading-relaxed">{analysis.audience.primary}</p>
+              )}
             </div>
             {analysis.audience.secondary && (
               <div className="bg-purple-500/5 rounded-xl p-6 border border-purple-500/20">
@@ -544,7 +701,17 @@ export function AnalysisReport({ analysis, idea, onBack }: AnalysisReportProps) 
                   <div className="w-2 h-2 bg-purple-400 rounded-full mr-2"></div>
                   Secondary Audience
                 </h4>
-                <p className="text-slate-300 leading-relaxed">{analysis.audience.secondary}</p>
+                {isRefining ? (
+                  <textarea
+                    value={refinedSecondaryAudience}
+                    onChange={(e) => setRefinedSecondaryAudience(e.target.value)}
+                    className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-slate-400 focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+                    rows={3}
+                    placeholder="Describe your secondary target audience (optional)..."
+                  />
+                ) : (
+                  <p className="text-slate-300 leading-relaxed">{analysis.audience.secondary}</p>
+                )}
               </div>
             )}
           </div>
@@ -559,16 +726,29 @@ export function AnalysisReport({ analysis, idea, onBack }: AnalysisReportProps) 
             <h3 className="text-2xl font-bold text-white">Lean MVP Features</h3>
           </div>
           {analysis.leanMVP.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {analysis.leanMVP.map((feature, index) => (
-                <div key={index} className="flex items-start space-x-4 bg-blue-500/5 rounded-xl p-4 border border-blue-500/20">
-                  <div className="w-8 h-8 bg-blue-500 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <span className="text-white text-sm font-bold">{index + 1}</span>
+            isRefining ? (
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-slate-300">Lean MVP Features (one per line)</label>
+                <textarea
+                  value={refinedLeanMVP}
+                  onChange={(e) => setRefinedLeanMVP(e.target.value)}
+                  className="w-full p-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-slate-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                  rows={6}
+                  placeholder="List your core MVP features, one per line..."
+                />
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {analysis.leanMVP.map((feature, index) => (
+                  <div key={index} className="flex items-start space-x-4 bg-blue-500/5 rounded-xl p-4 border border-blue-500/20">
+                    <div className="w-8 h-8 bg-blue-500 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <span className="text-white text-sm font-bold">{index + 1}</span>
+                    </div>
+                    <span className="text-slate-200 leading-relaxed">{feature}</span>
                   </div>
-                  <span className="text-slate-200 leading-relaxed">{feature}</span>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )
           ) : (
             <p className="text-slate-400 italic text-center py-8">No viable MVP features identified</p>
           )}
@@ -585,16 +765,29 @@ export function AnalysisReport({ analysis, idea, onBack }: AnalysisReportProps) 
               <h3 className="text-2xl font-bold text-white">Distribution Channels</h3>
             </div>
             {analysis.distribution.length > 0 ? (
-              <div className="space-y-4">
-                {analysis.distribution.map((channel, index) => (
-                  <div key={index} className="bg-purple-500/5 rounded-xl p-4 border border-purple-500/20">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
-                      <span className="text-slate-200 leading-relaxed">{channel}</span>
+              isRefining ? (
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-slate-300">Distribution Channels (one per line)</label>
+                  <textarea
+                    value={refinedDistribution}
+                    onChange={(e) => setRefinedDistribution(e.target.value)}
+                    className="w-full p-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-slate-400 focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+                    rows={4}
+                    placeholder="List your distribution channels, one per line..."
+                  />
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {analysis.distribution.map((channel, index) => (
+                    <div key={index} className="bg-purple-500/5 rounded-xl p-4 border border-purple-500/20">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+                        <span className="text-slate-200 leading-relaxed">{channel}</span>
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )
             ) : (
               <p className="text-slate-400 italic text-center py-8">No viable distribution channels identified</p>
             )}
@@ -608,16 +801,29 @@ export function AnalysisReport({ analysis, idea, onBack }: AnalysisReportProps) 
               </div>
               <h3 className="text-2xl font-bold text-white">Revenue Models</h3>
             </div>
-            <div className="space-y-4">
-              {analysis.monetization.map((model, index) => (
-                <div key={index} className="bg-green-500/5 rounded-xl p-4 border border-green-500/20">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                    <span className="text-slate-200 leading-relaxed">{model}</span>
+            {isRefining ? (
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-slate-300">Revenue Models (one per line)</label>
+                <textarea
+                  value={refinedMonetization}
+                  onChange={(e) => setRefinedMonetization(e.target.value)}
+                  className="w-full p-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-slate-400 focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none"
+                  rows={4}
+                  placeholder="List your revenue models, one per line..."
+                />
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {analysis.monetization.map((model, index) => (
+                  <div key={index} className="bg-green-500/5 rounded-xl p-4 border border-green-500/20">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                      <span className="text-slate-200 leading-relaxed">{model}</span>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         </section>
 
@@ -667,6 +873,7 @@ export function AnalysisReport({ analysis, idea, onBack }: AnalysisReportProps) 
               size="lg" 
               onClick={onBack}
               className="bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white text-lg px-12 py-4 shadow-2xl hover:shadow-indigo-500/25 transform hover:scale-105 transition-all duration-300"
+              disabled={isRefining}
             >
               <Lightbulb className="w-5 h-5 mr-2" />
               Analyze Another Idea

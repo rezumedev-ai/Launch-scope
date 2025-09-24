@@ -12,9 +12,20 @@ serve(async (req) => {
   }
 
   try {
-    const { idea } = await req.json()
+    const { idea, refinedData, parentAnalysisId } = await req.json()
 
-    if (!idea) {
+    // Handle both original idea analysis and refinement
+    let ideaToAnalyze: string;
+    let isRefinement = false;
+    
+    if (refinedData) {
+      // This is a refinement request
+      isRefinement = true;
+      ideaToAnalyze = refinedData.idea;
+    } else if (idea) {
+      // This is a regular idea analysis
+      ideaToAnalyze = idea;
+    } else {
       return new Response(
         JSON.stringify({ error: 'Startup idea is required' }),
         { 
@@ -38,7 +49,7 @@ serve(async (req) => {
     }
 
     // Create the prompt for startup idea analysis
-    const prompt = `
+    let prompt = `
 You are LaunchScope AI — a brutally honest startup mentor for solo developers, indie hackers, and vibe coders. 
 Your role is NOT to validate every idea, but to give an unfiltered, professional, and reality-checked analysis. 
 Solo devs must walk away with clarity, not delusion.
@@ -53,7 +64,7 @@ Rules of engagement:
 
 Analyze the following startup idea:
 
-Startup Idea: "${idea}"
+Startup Idea: "${ideaToAnalyze}"
 
 Respond strictly in the following JSON format:
 
@@ -91,6 +102,23 @@ Respond strictly in the following JSON format:
   "viabilityScore": "Score 1-10 with justification focused only on indie viability (1 = unworkable, 10 = highly viable)"
 }
 `;
+
+    // If this is a refinement, modify the prompt to focus on the changes
+    if (isRefinement && refinedData) {
+      prompt += `
+
+REFINEMENT CONTEXT:
+This is a refined version of a previously analyzed idea. Pay special attention to these modified aspects:
+${refinedData.problemFit ? `- Problem-Solution Fit: ${refinedData.problemFit}` : ''}
+${refinedData.primaryAudience ? `- Primary Audience: ${refinedData.primaryAudience}` : ''}
+${refinedData.secondaryAudience ? `- Secondary Audience: ${refinedData.secondaryAudience}` : ''}
+${refinedData.leanMVP ? `- MVP Features: ${refinedData.leanMVP.join(', ')}` : ''}
+${refinedData.distribution ? `- Distribution Channels: ${refinedData.distribution.join(', ')}` : ''}
+${refinedData.monetization ? `- Revenue Models: ${refinedData.monetization.join(', ')}` : ''}
+
+Focus your analysis on how these refinements impact the overall viability and provide comparative insights where relevant.
+`;
+    }
 
     // Make request to OpenAI API
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -279,7 +307,9 @@ Respond strictly in the following JSON format:
       JSON.stringify({ 
         success: true, 
         analysis: parsedAnalysis,
-        idea: idea 
+        idea: ideaToAnalyze,
+        isRefinement: isRefinement,
+        parentAnalysisId: parentAnalysisId || null
       }),
       { 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' } 

@@ -9,6 +9,16 @@ import { AnalysisReport } from './AnalysisReport';
 import { StripeTestPanel } from './StripeTestPanel';
 import { SubscriptionManager } from './SubscriptionManager';
 
+interface RefinedIdeaData {
+  idea: string;
+  problemFit?: string;
+  primaryAudience?: string;
+  secondaryAudience?: string;
+  leanMVP?: string[];
+  distribution?: string[];
+  monetization?: string[];
+}
+
 interface AnalysisHistory {
   id: string;
   idea: string;
@@ -42,6 +52,7 @@ export function Dashboard() {
   const [showHistory, setShowHistory] = useState(false);
   const [showSubscription, setShowSubscription] = useState(false);
   const [showStripeTest, setShowStripeTest] = useState(false);
+  const [currentAnalysisId, setCurrentAnalysisId] = useState<string | null>(null);
 
   // Load analysis history and stats on component mount
   useEffect(() => {
@@ -86,23 +97,36 @@ export function Dashboard() {
     }
   };
 
-  const saveAnalysisToHistory = async (idea: string, analysis: any) => {
+  const saveAnalysisToHistory = async (idea: string, analysis: any, parentAnalysisId?: string) => {
     try {
       // Use weighted overall score if available, otherwise fall back to original viability score
       const viabilityScore = analysis.detailedViabilityBreakdown?.weightedOverallScore 
         ? Math.round(parseFloat(analysis.detailedViabilityBreakdown.weightedOverallScore))
         : parseInt(analysis.viabilityScore?.split(' ')[0]) || 0;
       
-      const { error } = await supabase
+      const insertData: any = {
+        user_id: user?.id,
+        idea,
+        analysis_result: analysis,
+        viability_score: viabilityScore
+      };
+      
+      if (parentAnalysisId) {
+        insertData.parent_analysis_id = parentAnalysisId;
+      }
+      
+      const { data: insertedData, error } = await supabase
         .from('analysis_history')
-        .insert({
-          user_id: user?.id,
-          idea,
-          analysis_result: analysis,
-          viability_score: viabilityScore
-        });
+        .insert(insertData)
+        .select('id')
+        .single();
 
       if (error) throw error;
+      
+      // Update current analysis ID for refinement tracking
+      if (insertedData) {
+        setCurrentAnalysisId(insertedData.id);
+      }
       
       // Reload history to update stats
       await loadAnalysisHistory();
@@ -141,7 +165,7 @@ export function Dashboard() {
       setSearchValue(''); // Clear the search after successful analysis
       
       // Save to history
-      await saveAnalysisToHistory(idea.trim(), data.analysis);
+      const savedAnalysis = await saveAnalysisToHistory(idea.trim(), data.analysis);
       
       setShowReport(true); // Show the report page
     } catch (err) {
@@ -162,8 +186,44 @@ export function Dashboard() {
   const handleViewHistoryReport = (historyItem: AnalysisHistory) => {
     setAnalysisResult(historyItem.analysis_result);
     setAnalyzedIdea(historyItem.idea);
+    setCurrentAnalysisId(historyItem.id);
     setShowReport(true);
     setShowHistory(false);
+  };
+
+  const handleRefineIdea = async (refinedData: RefinedIdeaData, parentAnalysisId?: string) => {
+    setIsAnalyzing(true);
+    setError(null);
+
+    try {
+      const { data, error: functionError } = await supabase.functions.invoke('analyze-idea', {
+        body: { 
+          refinedData,
+          parentAnalysisId 
+        }
+      });
+
+      if (functionError) {
+        throw new Error(functionError.message || 'Failed to analyze refined idea');
+      }
+
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
+      setAnalysisResult(data.analysis);
+      setAnalyzedIdea(refinedData.idea);
+      
+      // Save to history
+      await saveAnalysisToHistory(refinedData.idea, data.analysis, parentAnalysisId);
+      
+      // The report will automatically update since we're already showing it
+    } catch (err) {
+      console.error('Refinement error:', err);
+      setError(err instanceof Error ? err.message : 'An unexpected error occurred during refinement');
+    } finally {
+      setIsAnalyzing(false);
+    }
   };
 
   const handleBackToHistory = () => {
@@ -188,6 +248,8 @@ export function Dashboard() {
         analysis={analysisResult}
         idea={analyzedIdea}
         onBack={showHistory ? handleBackToHistory : handleBackToDashboard}
+        onRefineIdea={handleRefineIdea}
+        analysisId={currentAnalysisId || undefined}
       />
     );
   }

@@ -95,6 +95,9 @@ Respond strictly in the following JSON format:
   "monetization": [
     "2-3 revenue models that make sense, otherwise 'none viable'"
   ],
+  "nextSteps": [
+    "3-5 concrete, actionable next steps for the founder to take immediately"
+  ],
 `;
 
     // If this is a refinement, modify the prompt to focus on the changes
@@ -276,6 +279,16 @@ Focus your analysis on how these refinements impact the overall viability and pr
     }
 
     // Ensure new fields are present with defaults if missing
+    if (!parsedAnalysis.nextSteps || !Array.isArray(parsedAnalysis.nextSteps) || parsedAnalysis.nextSteps.length === 0) {
+      parsedAnalysis.nextSteps = [
+        "Validate the problem by interviewing 10-15 potential customers",
+        "Create a simple landing page to test market interest",
+        "Build a minimal prototype to demonstrate core functionality",
+        "Research and analyze direct competitors in detail",
+        "Define your go-to-market strategy and first distribution channel"
+      ];
+    }
+
     if (!parsedAnalysis.marketSignals) {
       parsedAnalysis.marketSignals = {
         searchVolume: "Data not available",

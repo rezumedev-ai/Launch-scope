@@ -293,6 +293,20 @@ Focus your analysis on how these refinements impact the overall viability and pr
         "Test with target users"
       ];
     }
+
+    // Ensure verdict is always present and is a string
+    if (!parsedAnalysis.verdict || typeof parsedAnalysis.verdict !== 'string') {
+      const weightedScore = parseFloat(parsedAnalysis.detailedViabilityBreakdown?.weightedOverallScore || '5');
+      if (weightedScore >= 8) {
+        parsedAnalysis.verdict = 'Excellent viability for indie development';
+      } else if (weightedScore >= 6) {
+        parsedAnalysis.verdict = 'Good viability with manageable risks';
+      } else if (weightedScore >= 4) {
+        parsedAnalysis.verdict = 'Fair viability requiring careful execution';
+      } else {
+        parsedAnalysis.verdict = 'Poor viability with significant challenges';
+      }
+    }
     
     // Update the main viabilityScore to reflect the weighted score
     const weightedScore = parseFloat(parsedAnalysis.detailedViabilityBreakdown.weightedOverallScore);

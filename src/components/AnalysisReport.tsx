@@ -634,7 +634,7 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
             </div>
             {analysis.strengths.length > 0 ? (
               <div className="space-y-4">
-                {analysis.strengths.map((strength, index) => (
+                {(analysis.strengths || []).map((strength, index) => (
                   <div key={index} className="flex items-start space-x-4 bg-emerald-500/5 rounded-xl p-4 border border-emerald-500/20">
                     <div className="w-6 h-6 bg-emerald-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                       <span className="text-white text-xs font-bold">✓</span>
@@ -657,7 +657,7 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
               <h3 className="text-2xl font-bold text-white">Key Challenges</h3>
             </div>
             <div className="space-y-4">
-              {analysis.challenges.map((challenge, index) => (
+              {(analysis.challenges || []).map((challenge, index) => (
                 <div key={index} className="flex items-start space-x-4 bg-red-500/5 rounded-xl p-4 border border-red-500/20">
                   <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                     <span className="text-white text-xs font-bold">!</span>
@@ -725,7 +725,7 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
             </div>
             <h3 className="text-2xl font-bold text-white">Lean MVP Features</h3>
           </div>
-          {analysis.leanMVP.length > 0 ? (
+          {(analysis.leanMVP || []).length > 0 ? (
             isRefining ? (
               <div className="space-y-2">
                 <label className="block text-sm font-medium text-slate-300">Lean MVP Features (one per line)</label>
@@ -739,7 +739,7 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {analysis.leanMVP.map((feature, index) => (
+                {(analysis.leanMVP || []).map((feature, index) => (
                   <div key={index} className="flex items-start space-x-4 bg-blue-500/5 rounded-xl p-4 border border-blue-500/20">
                     <div className="w-8 h-8 bg-blue-500 rounded-xl flex items-center justify-center flex-shrink-0">
                       <span className="text-white text-sm font-bold">{index + 1}</span>
@@ -764,7 +764,7 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
               </div>
               <h3 className="text-2xl font-bold text-white">Distribution Channels</h3>
             </div>
-            {analysis.distribution.length > 0 ? (
+            {(analysis.distribution || []).length > 0 ? (
               isRefining ? (
                 <div className="space-y-2">
                   <label className="block text-sm font-medium text-slate-300">Distribution Channels (one per line)</label>
@@ -778,7 +778,7 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {analysis.distribution.map((channel, index) => (
+                  {(analysis.distribution || []).map((channel, index) => (
                     <div key={index} className="bg-purple-500/5 rounded-xl p-4 border border-purple-500/20">
                       <div className="flex items-center space-x-3">
                         <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
@@ -814,7 +814,7 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
               </div>
             ) : (
               <div className="space-y-4">
-                {analysis.monetization.map((model, index) => (
+                {(analysis.monetization || []).map((model, index) => (
                   <div key={index} className="bg-green-500/5 rounded-xl p-4 border border-green-500/20">
                     <div className="flex items-center space-x-3">
                       <div className="w-2 h-2 bg-green-400 rounded-full"></div>
@@ -828,7 +828,7 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
         </section>
 
         {/* Validation Steps */}
-        {analysis.validationSteps && analysis.validationSteps.length > 0 && (
+        {(analysis.validationSteps || []).length > 0 && (
           <section className="bg-gradient-to-br from-amber-500/10 to-orange-500/10 backdrop-blur-sm border border-amber-400/30 rounded-2xl p-8 shadow-xl">
             <div className="flex items-center mb-6">
               <div className="w-10 h-10 bg-amber-500/20 rounded-xl flex items-center justify-center mr-4">
@@ -837,7 +837,7 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
               <h3 className="text-2xl font-bold text-white">Validation Roadmap</h3>
             </div>
             <div className="grid md:grid-cols-2 gap-4">
-              {analysis.validationSteps.map((step, index) => (
+              {(analysis.validationSteps || []).map((step, index) => (
                 <div key={index} className="flex items-start space-x-4 bg-amber-500/5 rounded-xl p-4 border border-amber-500/20">
                   <div className="w-8 h-8 bg-amber-500 rounded-xl flex items-center justify-center flex-shrink-0">
                     <span className="text-white text-sm font-bold">{index + 1}</span>
@@ -858,7 +858,7 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
             <h3 className="text-3xl font-bold">Recommended Action Plan</h3>
           </div>
           <div className="grid md:grid-cols-2 gap-4 mb-8">
-            {analysis.nextSteps.map((step, index) => (
+            {(analysis.nextSteps || []).map((step, index) => (
               <div key={index} className="flex items-start space-x-4 bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:bg-white/10 transition-all duration-300">
                 <div className="w-10 h-10 bg-indigo-500 rounded-xl flex items-center justify-center flex-shrink-0">
                   <span className="text-white font-bold">{index + 1}</span>

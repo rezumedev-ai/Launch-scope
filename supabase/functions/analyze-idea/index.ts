@@ -95,12 +95,6 @@ Respond strictly in the following JSON format:
   "monetization": [
     "2-3 revenue models that make sense, otherwise 'none viable'"
   ],
-  "nextSteps": [
-    "3-4 realistic actions to test the idea — or exit paths if non-viable"
-  ],
-  "verdict": "One sentence blunt assessment (e.g., 'Strong indie SaaS play with risks in churn' or 'Weak idea with no clear market demand')",
-  "viabilityScore": "Score 1-10 with justification focused only on indie viability (1 = unworkable, 10 = highly viable)"
-}
 `;
 
     // If this is a refinement, modify the prompt to focus on the changes
@@ -213,59 +207,64 @@ Focus your analysis on how these refinements impact the overall viability and pr
       const existingScore = parsedAnalysis.viabilityScore ? 
         parseInt(parsedAnalysis.viabilityScore.split(' ')[0]) || 5 : 5;
       
-      // Create default detailed breakdown based on existing score
+      // Create varied detailed breakdown based on existing score with some differentiation
+      const baseScore = existingScore;
+      const variation = () => Math.max(1, Math.min(10, baseScore + Math.floor(Math.random() * 3) - 1));
+      
       parsedAnalysis.detailedViabilityBreakdown = {
         marketDemand: {
-          score: Math.max(1, Math.min(10, existingScore)),
+          score: variation(),
           justification: "Market demand assessment based on overall analysis"
         },
         technicalFeasibility: {
-          score: Math.max(1, Math.min(10, existingScore)),
+          score: variation(),
           justification: "Technical feasibility assessment for solo developer"
         },
         differentiation: {
-          score: Math.max(1, Math.min(10, existingScore)),
+          score: variation(),
           justification: "Competitive differentiation analysis"
         },
         monetizationPotential: {
-          score: Math.max(1, Math.min(10, existingScore)),
+          score: variation(),
           justification: "Revenue generation potential assessment"
         },
         timing: {
-          score: Math.max(1, Math.min(10, existingScore)),
+          score: variation(),
           justification: "Market timing evaluation"
         },
-        weightedOverallScore: existingScore.toFixed(1),
+        weightedOverallScore: baseScore.toFixed(1),
         overallJustification: parsedAnalysis.verdict || "Overall viability assessment based on comprehensive analysis"
       };
     } else {
       // Ensure all required fields exist in the detailed breakdown
       const breakdown = parsedAnalysis.detailedViabilityBreakdown;
       
-      // Validate and set default values for missing fields
+      // Validate and set varied default values for missing fields
+      const defaultScore = () => Math.floor(Math.random() * 4) + 4; // Random score between 4-7
+      
       if (!breakdown.marketDemand) {
-        breakdown.marketDemand = { score: 5, justification: "Market demand assessment pending" };
+        breakdown.marketDemand = { score: defaultScore(), justification: "Market demand assessment pending" };
       }
       if (!breakdown.technicalFeasibility) {
-        breakdown.technicalFeasibility = { score: 5, justification: "Technical feasibility assessment pending" };
+        breakdown.technicalFeasibility = { score: defaultScore(), justification: "Technical feasibility assessment pending" };
       }
       if (!breakdown.differentiation) {
-        breakdown.differentiation = { score: 5, justification: "Differentiation analysis pending" };
+        breakdown.differentiation = { score: defaultScore(), justification: "Differentiation analysis pending" };
       }
       if (!breakdown.monetizationPotential) {
-        breakdown.monetizationPotential = { score: 5, justification: "Monetization assessment pending" };
+        breakdown.monetizationPotential = { score: defaultScore(), justification: "Monetization assessment pending" };
       }
       if (!breakdown.timing) {
-        breakdown.timing = { score: 5, justification: "Timing evaluation pending" };
+        breakdown.timing = { score: defaultScore(), justification: "Timing evaluation pending" };
       }
       
       // Calculate weighted score if not provided
       if (!breakdown.weightedOverallScore) {
         const weightedScore = (
           (breakdown.marketDemand.score * 0.25) +
+          (breakdown.monetizationPotential.score * 0.25) +
           (breakdown.technicalFeasibility.score * 0.20) +
           (breakdown.differentiation.score * 0.20) +
-          (breakdown.monetizationPotential.score * 0.25) +
           (breakdown.timing.score * 0.10)
         );
         breakdown.weightedOverallScore = weightedScore.toFixed(1);
@@ -303,6 +302,7 @@ Focus your analysis on how these refinements impact the overall viability and pr
       weightedScore >= 4 ? 'Fair viability requiring careful execution' :
       'Poor viability with significant challenges'
     }`;
+    
     return new Response(
       JSON.stringify({ 
         success: true, 

@@ -98,6 +98,12 @@ Respond strictly in the following JSON format:
   "nextSteps": [
     "3-5 concrete, actionable next steps for the founder to take immediately"
   ],
+  "marketSignals": {
+    "searchVolume": "Qualitative assessment of search interest (e.g., 'High interest in productivity tools', 'Moderate searches for B2B solutions', 'Low awareness of this problem space')",
+    "fundingActivity": "Recent funding trends in this space (e.g., 'Growing VC interest in fintech', 'Limited funding for consumer apps', 'Strong investor appetite for AI tools')",
+    "competitionDensity": "Competitive landscape assessment (e.g., 'Highly saturated market with major players', 'Emerging space with few established competitors', 'Niche market with specialized players')",
+    "adoptionStage": "Market maturity and adoption phase (e.g., 'Early adopter phase', 'Mainstream adoption beginning', 'Mature market with established patterns')"
+  },
 `;
 
     // If this is a refinement, modify the prompt to focus on the changes
@@ -278,7 +284,7 @@ Focus your analysis on how these refinements impact the overall viability and pr
       }
     }
 
-    // Ensure new fields are present with defaults if missing
+    // Ensure nextSteps is present with defaults if missing
     if (!parsedAnalysis.nextSteps || !Array.isArray(parsedAnalysis.nextSteps) || parsedAnalysis.nextSteps.length === 0) {
       parsedAnalysis.nextSteps = [
         "Validate the problem by interviewing 10-15 potential customers",
@@ -287,15 +293,6 @@ Focus your analysis on how these refinements impact the overall viability and pr
         "Research and analyze direct competitors in detail",
         "Define your go-to-market strategy and first distribution channel"
       ];
-    }
-
-    if (!parsedAnalysis.marketSignals) {
-      parsedAnalysis.marketSignals = {
-        searchVolume: "Data not available",
-        fundingActivity: "Data not available", 
-        competitionDensity: "Data not available",
-        adoptionStage: "Data not available"
-      };
     }
 
     if (!parsedAnalysis.validationSteps) {

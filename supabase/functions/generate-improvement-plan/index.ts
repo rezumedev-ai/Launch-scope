@@ -1,4 +1,10 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
+import { createClient } from 'npm:@supabase/supabase-js@2.49.1'
+
+const supabase = createClient(
+  Deno.env.get('SUPABASE_URL') ?? '',
+  Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+)
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -14,18 +20,19 @@ serve(async (req) => {
   console.log('generate-improvement-plan function called')
 
   try {
-    const { idea, analysis } = await req.json()
+    const { idea, analysis, analysisId } = await req.json()
 
     console.log('Received input:', { 
       ideaLength: idea?.length || 0, 
       hasAnalysis: !!analysis,
-      analysisKeys: analysis ? Object.keys(analysis) : []
+      analysisKeys: analysis ? Object.keys(analysis) : [],
+      hasAnalysisId: !!analysisId
     })
 
-    if (!idea || !analysis) {
-      console.error('Missing required input:', { hasIdea: !!idea, hasAnalysis: !!analysis })
+    if (!idea || !analysis || !analysisId) {
+      console.error('Missing required input:', { hasIdea: !!idea, hasAnalysis: !!analysis, hasAnalysisId: !!analysisId })
       return new Response(
-        JSON.stringify({ error: 'Both idea and analysis are required' }),
+        JSON.stringify({ error: 'Idea, analysis, and analysisId are all required' }),
         { 
           status: 400, 
           headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
@@ -262,11 +269,68 @@ Generate 6-10 actionable steps addressing the weakest areas.`
     
     console.log('Improvement plan validation complete, returning success response')
     
+    // Get user_id from the analysis_history table
+    console.log('Fetching user_id for analysis:', analysisId)
+    const { data: analysisData, error: analysisError } = await supabase
+      .from('analysis_history')
+      .select('user_id')
+      .eq('id', analysisId)
+      .single()
+
+    if (analysisError || !analysisData) {
+      console.error('Error fetching analysis data:', analysisError)
+      return new Response(
+        JSON.stringify({ 
+          error: 'Failed to fetch analysis data',
+          details: analysisError?.message || 'Analysis not found'
+        }),
+        { 
+          status: 404, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      )
+    }
+
+    console.log('Found user_id:', analysisData.user_id)
+
+    // Save the improvement plan to the database
+    console.log('Saving improvement plan to database...')
+    const { data: savedPlan, error: saveError } = await supabase
+      .from('improvement_plans')
+      .upsert({
+        analysis_id: analysisId,
+        user_id: analysisData.user_id,
+        plan_data: parsedPlan,
+        updated_at: new Date().toISOString()
+      }, {
+        onConflict: 'analysis_id'
+      })
+      .select('id')
+      .single()
+
+    if (saveError) {
+      console.error('Error saving improvement plan:', saveError)
+      return new Response(
+        JSON.stringify({ 
+          error: 'Failed to save improvement plan',
+          details: saveError.message
+        }),
+        { 
+          status: 500, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      )
+    }
+
+    console.log('Improvement plan saved successfully with ID:', savedPlan?.id)
+
     return new Response(
       JSON.stringify({ 
         success: true, 
         plan: parsedPlan,
-        currentScore: currentScore
+        currentScore: currentScore,
+        improvementPlanId: savedPlan?.id,
+        analysisId: analysisId
       }),
       { 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' } 

@@ -268,7 +268,7 @@ Generate 6-10 actionable steps that directly address the weaknesses identified i
     )
   }
 
-  } catch (error) {
+  catch (error) {
     console.error('Error in generate-improvement-plan function:', error)
     console.error('Error stack:', error.stack)
     return new Response(
@@ -283,6 +283,3 @@ Generate 6-10 actionable steps that directly address the weaknesses identified i
       }
     )
   }
-})
-}
-)

@@ -268,6 +268,7 @@ Generate 6-10 actionable steps that directly address the weaknesses identified i
     )
   }
   }
+  }
 
   catch (error) {
     console.error('Error in generate-improvement-plan function:', error)
@@ -285,5 +286,7 @@ Generate 6-10 actionable steps that directly address the weaknesses identified i
     )
   }
 });
+}
+)
 }
 )

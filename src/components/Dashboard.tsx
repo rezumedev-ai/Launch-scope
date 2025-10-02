@@ -53,6 +53,8 @@ export function Dashboard() {
   const [showSubscription, setShowSubscription] = useState(false);
   const [showStripeTest, setShowStripeTest] = useState(false);
   const [currentAnalysisId, setCurrentAnalysisId] = useState<string | null>(null);
+  const [showImprovementPlans, setShowImprovementPlans] = useState(false);
+  const [selectedImprovementPlan, setSelectedImprovementPlan] = useState<any>(null);
 
   // Load analysis history and stats on component mount
   useEffect(() => {
@@ -241,6 +243,26 @@ export function Dashboard() {
     setShowSubscription(false);
   };
 
+  const handleShowImprovementPlans = () => {
+    setShowImprovementPlans(true);
+    setShowHistory(false);
+    setShowSubscription(false);
+    setShowStripeTest(false);
+  };
+
+  const handleBackFromImprovementPlans = () => {
+    setShowImprovementPlans(false);
+    setSelectedImprovementPlan(null);
+  };
+
+  const handleViewImprovementPlan = (plan: any) => {
+    setSelectedImprovementPlan(plan);
+  };
+
+  const handleBackToImprovementPlansList = () => {
+    setSelectedImprovementPlan(null);
+  };
+
   // Show analysis report if we have results
   if (showReport && analysisResult) {
     return (
@@ -250,6 +272,26 @@ export function Dashboard() {
         onBack={showHistory ? handleBackToHistory : handleBackToDashboard}
         onRefineIdea={handleRefineIdea}
         analysisId={currentAnalysisId || undefined}
+      />
+    );
+  }
+
+  // Show improvement plan detail if selected
+  if (selectedImprovementPlan) {
+    return (
+      <ImprovementPlanDetail 
+        plan={selectedImprovementPlan}
+        onBack={handleBackToImprovementPlansList}
+      />
+    );
+  }
+
+  // Show improvement plans list
+  if (showImprovementPlans) {
+    return (
+      <ImprovementPlanList 
+        onBack={handleBackFromImprovementPlans}
+        onViewPlan={handleViewImprovementPlan}
       />
     );
   }
@@ -621,6 +663,19 @@ export function Dashboard() {
                 <div className="text-left">
                   <h3 className="font-semibold text-gray-800">Manage Subscription</h3>
                   <p className="text-gray-600 text-sm">Upgrade or manage your billing</p>
+                </div>
+              </button>
+
+              <button 
+                onClick={handleShowImprovementPlans}
+                className="w-full flex items-center p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl hover:from-purple-100 hover:to-pink-100 transition-all duration-300 transform hover:-translate-y-1 group"
+              >
+                <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
+                  <TrendingUp className="w-5 h-5 text-white" />
+                </div>
+                <div className="text-left">
+                  <h3 className="font-semibold text-gray-800">Improvement Plans</h3>
+                  <p className="text-gray-600 text-sm">View your actionable improvement roadmaps</p>
                 </div>
               </button>
             </div>

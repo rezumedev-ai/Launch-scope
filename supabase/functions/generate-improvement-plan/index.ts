@@ -76,19 +76,9 @@ DETAILED VIABILITY BREAKDOWN:
 ${analysis.detailedViabilityBreakdown ? `
 - Market Demand: ${analysis.detailedViabilityBreakdown.marketDemand?.score}/10 - ${analysis.detailedViabilityBreakdown.marketDemand?.justification}
 - Technical Feasibility: ${analysis.detailedViabilityBreakdown.technicalFeasibility?.score}/10 - ${analysis.detailedViabilityBreakdown.technicalFeasibility?.justification}
-- Differentiation: ${analysis.detailedViabilityBreakdown.differentiation?.score}/10 - ${analysis.detailedViabilityBreakdown.differentiation?.justification}
-- Monetization Potential: ${analysis.detailedViabilityBreakdown.monetizationPotential?.score}/10 - ${analysis.detailedViabilityBreakdown.monetizationPotential?.justification}
-- Timing: ${analysis.detailedViabilityBreakdown.timing?.score}/10 - ${analysis.detailedViabilityBreakdown.timing?.justification}
-` : 'Detailed breakdown not available'}
-
 STRENGTHS: ${analysis.strengths?.join(', ') || 'None identified'}
 CHALLENGES: ${analysis.challenges?.join(', ') || 'None identified'}
 CURRENT MVP FEATURES: ${analysis.leanMVP?.join(', ') || 'None specified'}
-DISTRIBUTION CHANNELS: ${analysis.distribution?.join(', ') || 'None specified'}
-MONETIZATION MODELS: ${analysis.monetization?.join(', ') || 'None specified'}
-
-INSTRUCTIONS:
-1. Focus on the lowest-scoring areas from the detailed viability breakdown
 2. Provide concrete, specific actions tailored for a solo developer with minimal budget
 3. Prioritize validation steps over immediate building
 4. Be brutally honest about fundamental flaws that require pivots

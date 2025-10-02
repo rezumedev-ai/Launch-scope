@@ -1,8 +1,10 @@
 import React from 'react';
-import { ArrowLeft, AlertTriangle, Target, Users, DollarSign, Clock, CheckCircle, Star, Lightbulb, Zap, TrendingUp, Code, Rocket, Search, TrendingDown, BarChart3, Shield, Calendar, Eye, Activity, Globe, Layers, Edit3, RefreshCw, X, Save } from 'lucide-react';
+import { ArrowLeft, AlertTriangle, Target, Users, DollarSign, Clock, CheckCircle, Star, Lightbulb, Zap, TrendingUp, Code, Rocket, Search, TrendingDown, BarChart3, Shield, Calendar, Eye, Activity, Globe, Layers, Edit3, RefreshCw, X, Save, Sparkles, ArrowUp, ChevronRight } from 'lucide-react';
 import { Button } from './ui/Button';
 import { Input } from './ui/Input';
 import { useState } from 'react';
+import { supabase } from '../lib/supabase';
+import type { ImprovementPlan } from '../types/improvement';
 
 interface AnalysisData {
   summary: string;
@@ -85,6 +87,10 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
   const [refinedDistribution, setRefinedDistribution] = useState(analysis.distribution.join('\n'));
   const [refinedMonetization, setRefinedMonetization] = useState(analysis.monetization.join('\n'));
   const [isSubmittingRefinement, setIsSubmittingRefinement] = useState(false);
+  const [showImprovementPlan, setShowImprovementPlan] = useState(false);
+  const [improvementPlanData, setImprovementPlanData] = useState<ImprovementPlan | null>(null);
+  const [isGeneratingImprovementPlan, setIsGeneratingImprovementPlan] = useState(false);
+  const [improvementPlanError, setImprovementPlanError] = useState<string | null>(null);
 
   // Helper function to get the numeric viability score
   const getViabilityScoreValue = (analysis: AnalysisData): number => {
@@ -162,6 +168,67 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
     }
   };
 
+  const handleGenerateImprovementPlan = async () => {
+    setIsGeneratingImprovementPlan(true);
+    setImprovementPlanError(null);
+    try {
+      const { data, error: functionError } = await supabase.functions.invoke('generate-improvement-plan', {
+        body: { idea: idea, analysis: analysis }
+      });
+
+      if (functionError) {
+        throw new Error(functionError.message || 'Failed to generate improvement plan');
+      }
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
+      setImprovementPlanData(data.plan);
+      setShowImprovementPlan(true);
+    } catch (err) {
+      console.error('Error generating improvement plan:', err);
+      setImprovementPlanError(err instanceof Error ? err.message : 'An unexpected error occurred');
+    } finally {
+      setIsGeneratingImprovementPlan(false);
+    }
+  };
+
+  const handleBackToAnalysis = () => {
+    setShowImprovementPlan(false);
+    setImprovementPlanError(null);
+  };
+
+  const getImpactColor = (impact: string) => {
+    switch (impact) {
+      case 'High': return 'text-emerald-400 bg-emerald-500/20 border-emerald-400/30';
+      case 'Medium': return 'text-yellow-400 bg-yellow-500/20 border-yellow-400/30';
+      case 'Low': return 'text-blue-400 bg-blue-500/20 border-blue-400/30';
+      default: return 'text-slate-400 bg-slate-500/20 border-slate-400/30';
+    }
+  };
+
+  const getEffortColor = (effort: string) => {
+    switch (effort) {
+      case 'Low': return 'text-green-400 bg-green-500/20 border-green-400/30';
+      case 'Medium': return 'text-orange-400 bg-orange-500/20 border-orange-400/30';
+      case 'High': return 'text-red-400 bg-red-500/20 border-red-400/30';
+      default: return 'text-slate-400 bg-slate-500/20 border-slate-400/30';
+    }
+  };
+
+  const getCategoryIcon = (category: string) => {
+    switch (category) {
+      case 'Problem/Solution Fit': return Target;
+      case 'Audience': return Users;
+      case 'MVP Features': return Code;
+      case 'Monetization': return DollarSign;
+      case 'Distribution': return Globe;
+      case 'Validation': return CheckCircle;
+      case 'Pivot Consideration': return RefreshCw;
+      default: return Lightbulb;
+    }
+  };
+
   const getBuildCostStyle = (estimate: string) => {
     switch (estimate.toLowerCase()) {
       case 'low': return 'bg-emerald-500/20 text-emerald-200 border-emerald-400/30';
@@ -172,6 +239,204 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
   };
 
   const overallScore = getViabilityScoreValue(analysis);
+
+  // Show improvement plan if requested
+  if (showImprovementPlan && improvementPlanData) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-900">
+        {/* Header */}
+        <header className="relative bg-black/30 backdrop-blur-xl border-b border-white/10">
+          <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-indigo-500/10"></div>
+          <div className="relative max-w-7xl mx-auto px-6 py-6">
+            <div className="flex items-center justify-between">
+              <Button 
+                variant="secondary" 
+                onClick={handleBackToAnalysis}
+                className="bg-white/10 border-white/20 text-white hover:bg-white/20 backdrop-blur-sm"
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back to Analysis
+              </Button>
+              
+              <div className="text-center">
+                <div className="flex items-center justify-center space-x-3 mb-2">
+                  <div className="w-8 h-8 bg-gradient-to-r from-purple-400 to-pink-400 rounded-xl flex items-center justify-center">
+                    <Sparkles className="w-5 h-5 text-white" />
+                  </div>
+                  <h1 className="text-2xl font-bold text-white">Improvement Plan</h1>
+                </div>
+                <p className="text-slate-300 text-sm">AI-powered recommendations to boost your idea's viability</p>
+              </div>
+              
+              <div className="w-32"></div>
+            </div>
+          </div>
+        </header>
+
+        <main className="max-w-7xl mx-auto px-6 py-8 space-y-8">
+          {/* Summary Section */}
+          <section className="relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 via-pink-500/5 to-indigo-500/5 rounded-3xl"></div>
+            <div className="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-8 shadow-2xl">
+              <div className="flex items-start space-x-6 mb-6">
+                <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-2xl">
+                  <ArrowUp className="w-8 h-8 text-white" />
+                </div>
+                <div className="flex-1">
+                  <h2 className="text-3xl font-bold text-white mb-4">Improvement Overview</h2>
+                  <p className="text-xl text-slate-200 leading-relaxed">{improvementPlanData.summary}</p>
+                </div>
+              </div>
+              
+              <div className="bg-slate-800/50 rounded-2xl p-6 border border-slate-700/50">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-lg font-semibold text-white mb-2">Potential Score Increase</h3>
+                    <p className="text-slate-300">{improvementPlanData.estimatedScoreIncrease}</p>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-3xl font-bold text-emerald-400">+{improvementPlanData.estimatedScoreIncrease.split(' ')[0]}</div>
+                    <div className="text-slate-400 text-sm">points potential</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Key Areas for Improvement */}
+          <section className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 shadow-xl">
+            <div className="flex items-center mb-6">
+              <div className="w-10 h-10 bg-amber-500/20 rounded-xl flex items-center justify-center mr-4">
+                <Target className="w-6 h-6 text-amber-400" />
+              </div>
+              <h3 className="text-2xl font-bold text-white">Key Areas for Improvement</h3>
+            </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {improvementPlanData.keyAreasForImprovement.map((area, index) => (
+                <div key={index} className="bg-amber-500/5 rounded-xl p-4 border border-amber-500/20">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-8 h-8 bg-amber-500 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <span className="text-white text-sm font-bold">{index + 1}</span>
+                    </div>
+                    <span className="text-slate-200 font-medium">{area}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Actionable Steps */}
+          <section className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 shadow-xl">
+            <div className="flex items-center mb-8">
+              <div className="w-10 h-10 bg-indigo-500/20 rounded-xl flex items-center justify-center mr-4">
+                <CheckCircle className="w-6 h-6 text-indigo-400" />
+              </div>
+              <h3 className="text-2xl font-bold text-white">Actionable Steps</h3>
+            </div>
+            <div className="space-y-6">
+              {improvementPlanData.actionableSteps.map((step, index) => {
+                const CategoryIcon = getCategoryIcon(step.category);
+                return (
+                  <div key={index} className="bg-slate-800/40 rounded-2xl p-6 border border-slate-700/50 hover:bg-slate-800/60 transition-all duration-300">
+                    <div className="flex items-start space-x-4">
+                      <div className="w-12 h-12 bg-indigo-500 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <span className="text-white font-bold">{index + 1}</span>
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center space-x-3 mb-3">
+                          <CategoryIcon className="w-5 h-5 text-indigo-400" />
+                          <span className="text-indigo-300 font-medium text-sm">{step.category}</span>
+                        </div>
+                        <p className="text-slate-200 text-lg leading-relaxed mb-4">{step.description}</p>
+                        <div className="flex items-center space-x-4">
+                          <div className={`px-3 py-1 rounded-full text-xs font-medium border ${getImpactColor(step.impact)}`}>
+                            Impact: {step.impact}
+                          </div>
+                          <div className={`px-3 py-1 rounded-full text-xs font-medium border ${getEffortColor(step.effort)}`}>
+                            Effort: {step.effort}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+
+          {/* Potential Pivots */}
+          {improvementPlanData.potentialPivots.length > 0 && (
+            <section className="bg-gradient-to-br from-orange-500/10 to-red-500/10 backdrop-blur-sm border border-orange-400/30 rounded-2xl p-8 shadow-xl">
+              <div className="flex items-center mb-6">
+                <div className="w-10 h-10 bg-orange-500/20 rounded-xl flex items-center justify-center mr-4">
+                  <RefreshCw className="w-6 h-6 text-orange-400" />
+                </div>
+                <h3 className="text-2xl font-bold text-white">Potential Pivots</h3>
+              </div>
+              <div className="space-y-4">
+                {improvementPlanData.potentialPivots.map((pivot, index) => (
+                  <div key={index} className="bg-orange-500/5 rounded-xl p-6 border border-orange-500/20">
+                    <div className="flex items-start space-x-4">
+                      <div className="w-8 h-8 bg-orange-500 rounded-xl flex items-center justify-center flex-shrink-0 mt-1">
+                        <ChevronRight className="w-5 h-5 text-white" />
+                      </div>
+                      <p className="text-slate-200 leading-relaxed">{pivot}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* Warning Section */}
+          {improvementPlanData.warning && (
+            <section className="bg-red-500/10 backdrop-blur-sm border border-red-400/30 rounded-2xl p-6 shadow-xl">
+              <div className="flex items-start space-x-4">
+                <AlertTriangle className="w-6 h-6 text-red-400 flex-shrink-0 mt-1" />
+                <div>
+                  <h4 className="text-red-100 font-semibold mb-2">Important Considerations</h4>
+                  <p className="text-red-200 leading-relaxed">{improvementPlanData.warning}</p>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* Call to Action */}
+          <section className="bg-gradient-to-r from-slate-800/50 to-indigo-800/30 border border-indigo-500/20 rounded-3xl p-8 text-white shadow-2xl text-center">
+            <div className="mb-6">
+              <div className="w-16 h-16 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-2xl flex items-center justify-center mb-4 mx-auto">
+                <Rocket className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-3xl font-bold mb-4">Ready to Implement?</h3>
+              <p className="text-slate-300 text-lg mb-8 max-w-2xl mx-auto">
+                Start with the highest impact, lowest effort steps first. Focus on validation before building.
+              </p>
+            </div>
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button 
+                size="lg" 
+                onClick={handleBackToAnalysis}
+                className="bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white text-lg px-12 py-4 shadow-2xl hover:shadow-indigo-500/25 transform hover:scale-105 transition-all duration-300"
+              >
+                <ArrowLeft className="w-5 h-5 mr-2" />
+                Back to Analysis
+              </Button>
+              <Button 
+                size="lg" 
+                onClick={onBack}
+                variant="secondary"
+                className="bg-white/10 border-white/20 text-white hover:bg-white/20 text-lg px-12 py-4"
+              >
+                <Lightbulb className="w-5 h-5 mr-2" />
+                Analyze New Idea
+              </Button>
+            </div>
+          </section>
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-900">
@@ -193,15 +458,37 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
             {/* Refinement Controls */}
             <div className="flex items-center space-x-3">
               {!isRefining ? (
-                onRefineIdea && (
-                  <Button
-                    onClick={handleStartRefinement}
-                    className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
-                  >
-                    <Edit3 className="w-4 h-4 mr-2" />
-                    Refine Idea
-                  </Button>
-                )
+                <>
+                  {/* Show Improvement Plan button for low scores */}
+                  {overallScore < 7 && (
+                    <Button
+                      onClick={handleGenerateImprovementPlan}
+                      disabled={isGeneratingImprovementPlan}
+                      className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white"
+                    >
+                      {isGeneratingImprovementPlan ? (
+                        <>
+                          <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                          Generating...
+                        </>
+                      ) : (
+                        <>
+                          <Sparkles className="w-4 h-4 mr-2" />
+                          Get Improvement Plan
+                        </>
+                      )}
+                    </Button>
+                  )}
+                  {onRefineIdea && (
+                    <Button
+                      onClick={handleStartRefinement}
+                      className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
+                    >
+                      <Edit3 className="w-4 h-4 mr-2" />
+                      Refine Idea
+                    </Button>
+                  )}
+                </>
               ) : (
                 <div className="flex items-center space-x-2">
                   <Button
@@ -316,6 +603,26 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
             </div>
           </div>
         </section>
+
+        {/* Improvement Plan Error */}
+        {improvementPlanError && (
+          <section className="bg-red-500/10 backdrop-blur-sm border border-red-500/20 rounded-2xl p-6 shadow-xl">
+            <div className="flex items-start space-x-4">
+              <AlertTriangle className="w-6 h-6 text-red-400 flex-shrink-0 mt-1" />
+              <div>
+                <h4 className="text-red-100 font-semibold mb-2">Failed to Generate Improvement Plan</h4>
+                <p className="text-red-200 mb-4">{improvementPlanError}</p>
+                <Button 
+                  onClick={() => setImprovementPlanError(null)}
+                  size="sm"
+                  className="bg-red-500/20 border border-red-400/30 text-red-200 hover:bg-red-500/30"
+                >
+                  Dismiss
+                </Button>
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* Key Metrics Dashboard */}
         <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">

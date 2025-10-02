@@ -59,56 +59,63 @@ serve(async (req) => {
 
     console.log('Current viability score extracted:', currentScore)
 
-    // Create the improvement plan prompt
-    const prompt = `
-You are LaunchScope AI, a highly experienced startup mentor specializing in helping solo developers and indie hackers refine their ideas. Your goal is to provide a clear, actionable, and brutally honest improvement plan to elevate a startup idea's viability score from its current state to a high-potential state (8-10).
+    // Create the improvement plan prompt optimized for GPT-5-Mini
+    const prompt = `You are a startup validation expert specializing in helping solo developers improve their ideas.
 
-CURRENT STARTUP IDEA: "${idea}"
+STARTUP IDEA: "${idea}"
 
-CURRENT ANALYSIS CONTEXT:
-- Current Viability Score: ${currentScore}/10
-- Verdict: ${analysis.verdict}
-- Problem Fit: ${analysis.problemFit}
-- Primary Audience: ${analysis.audience?.primary}
-- Secondary Audience: ${analysis.audience?.secondary || 'None specified'}
+CURRENT ANALYSIS DATA:
+• Viability Score: ${currentScore}/10
+• Verdict: ${analysis.verdict || 'Not specified'}
+• Problem Fit: ${analysis.problemFit || 'Not analyzed'}
+• Primary Audience: ${analysis.audience?.primary || 'Not defined'}
+• Secondary Audience: ${analysis.audience?.secondary || 'None'}
 
-DETAILED VIABILITY BREAKDOWN:
-${analysis.detailedViabilityBreakdown ? `
-- Market Demand: ${analysis.detailedViabilityBreakdown.marketDemand?.score}/10 - ${analysis.detailedViabilityBreakdown.marketDemand?.justification}
-- Technical Feasibility: ${analysis.detailedViabilityBreakdown.technicalFeasibility?.score}/10 - ${analysis.detailedViabilityBreakdown.technicalFeasibility?.justification}
-STRENGTHS: ${analysis.strengths?.join(', ') || 'None identified'}
-CHALLENGES: ${analysis.challenges?.join(', ') || 'None identified'}
-CURRENT MVP FEATURES: ${analysis.leanMVP?.join(', ') || 'None specified'}
-2. Provide concrete, specific actions tailored for a solo developer with minimal budget
-3. Prioritize validation steps over immediate building
-4. Be brutally honest about fundamental flaws that require pivots
-5. All suggestions must be lean, low-cost, and validation-first approaches
-6. Avoid generic advice - be specific and actionable
+DETAILED SCORES:
+• Market Demand: ${analysis.detailedViabilityBreakdown?.marketDemand?.score || 'N/A'}/10
+• Technical Feasibility: ${analysis.detailedViabilityBreakdown?.technicalFeasibility?.score || 'N/A'}/10
+• Differentiation: ${analysis.detailedViabilityBreakdown?.differentiation?.score || 'N/A'}/10
+• Monetization: ${analysis.detailedViabilityBreakdown?.monetizationPotential?.score || 'N/A'}/10
+• Timing: ${analysis.detailedViabilityBreakdown?.timing?.score || 'N/A'}/10
 
-Respond strictly in the following JSON format:
+CURRENT STRENGTHS: ${analysis.strengths?.join(' | ') || 'None identified'}
+CURRENT CHALLENGES: ${analysis.challenges?.join(' | ') || 'None identified'}
+CURRENT MVP FEATURES: ${analysis.leanMVP?.join(' | ') || 'None specified'}
+
+REQUIREMENTS:
+1. Focus on the lowest-scoring areas first
+2. Provide concrete actions for solo developers
+3. Prioritize validation over building
+4. Be specific to this idea and analysis
+5. Include realistic effort and impact assessments
+
+Respond with valid JSON in this exact format:
 
 {
-  "summary": "A concise overview of the main areas for improvement based on the analysis",
+  "summary": "Brief overview of main improvement areas",
   "keyAreasForImprovement": [
-    "List 3-5 specific areas from the viability breakdown that need the most attention"
+    "List 3-5 specific areas needing attention"
   ],
   "actionableSteps": [
     {
-      "category": "Problem/Solution Fit" | "Audience" | "MVP Features" | "Monetization" | "Distribution" | "Validation" | "Pivot Consideration",
-      "description": "A concrete, specific action the founder should take. Be specific to this idea and analysis.",
-      "impact": "High" | "Medium" | "Low",
-      "effort": "Low" | "Medium" | "High"
+      "category": "Problem/Solution Fit",
+      "description": "Specific action to take",
+      "impact": "High",
+      "effort": "Low"
     }
   ],
   "potentialPivots": [
-    "If the core idea has fundamental flaws, suggest 1-3 alternative directions based on the strengths identified"
+    "Alternative directions if needed"
   ],
-  "estimatedScoreIncrease": "A realistic estimate of potential score increase if the plan is executed (e.g., '2-3 points', '1-2 points')",
-  "warning": "Any critical caveats or risks associated with the improvement plan"
+  "estimatedScoreIncrease": "Realistic estimate like '2-3 points'",
+  "warning": "Critical risks or caveats"
 }
 
-Generate 6-10 actionable steps that directly address the weaknesses identified in the analysis. Focus on the areas with the lowest scores first.
-`;
+Valid categories: Problem/Solution Fit, Audience, MVP Features, Monetization, Distribution, Validation, Pivot Consideration
+Valid impact levels: High, Medium, Low
+Valid effort levels: Low, Medium, High
+
+Generate 6-10 actionable steps addressing the weakest areas.`
 
     console.log('Prompt created, length:', prompt.length)
     console.log('Making request to OpenAI API...')
@@ -125,15 +132,14 @@ Generate 6-10 actionable steps that directly address the weaknesses identified i
         messages: [
           {
             role: 'system',
-            content: 'You are an expert startup advisor focused on helping solo developers improve their ideas. Always respond with valid JSON format as requested.'
+            content: 'You are a startup improvement expert. Always respond with valid JSON format for improvement plans focused on solo developers.'
           },
           {
             role: 'user',
             content: prompt
           }
         ],
-        max_completion_tokens: 4000,
-        temperature: 0.7,
+        max_completion_tokens: 4000
       }),
     })
 
@@ -224,12 +230,12 @@ Generate 6-10 actionable steps that directly address the weaknesses identified i
     // Validate required fields and provide defaults if missing
     if (!parsedPlan.summary) {
       console.warn('Missing summary in parsed plan, adding default')
-      parsedPlan.summary = "Improvement plan generated based on analysis";
+      parsedPlan.summary = "Improvement plan generated based on analysis"
     }
     
     if (!Array.isArray(parsedPlan.keyAreasForImprovement)) {
       console.warn('Missing or invalid keyAreasForImprovement, adding defaults')
-      parsedPlan.keyAreasForImprovement = ["Market validation", "Product differentiation", "Revenue model"];
+      parsedPlan.keyAreasForImprovement = ["Market validation", "Product differentiation", "Revenue model"]
     }
     
     if (!Array.isArray(parsedPlan.actionableSteps)) {
@@ -241,17 +247,17 @@ Generate 6-10 actionable steps that directly address the weaknesses identified i
           impact: "High",
           effort: "Medium"
         }
-      ];
+      ]
     }
     
     if (!Array.isArray(parsedPlan.potentialPivots)) {
       console.warn('Missing potentialPivots, adding empty array')
-      parsedPlan.potentialPivots = [];
+      parsedPlan.potentialPivots = []
     }
     
     if (!parsedPlan.estimatedScoreIncrease) {
       console.warn('Missing estimatedScoreIncrease, adding default')
-      parsedPlan.estimatedScoreIncrease = "1-2 points with proper execution";
+      parsedPlan.estimatedScoreIncrease = "1-2 points with proper execution"
     }
     
     console.log('Improvement plan validation complete, returning success response')
@@ -266,11 +272,8 @@ Generate 6-10 actionable steps that directly address the weaknesses identified i
         headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
       }
     )
-  }
-  }
-  }
 
-  catch (error) {
+  } catch (error) {
     console.error('Error in generate-improvement-plan function:', error)
     console.error('Error stack:', error.stack)
     return new Response(
@@ -286,7 +289,3 @@ Generate 6-10 actionable steps that directly address the weaknesses identified i
     )
   }
 });
-}
-)
-}
-)

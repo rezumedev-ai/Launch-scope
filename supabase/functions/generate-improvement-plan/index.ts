@@ -29,10 +29,10 @@ serve(async (req) => {
       hasAnalysisId: !!analysisId
     })
 
-    if (!idea || !analysis || !analysisId) {
+    if (!idea || !analysis) {
       console.error('Missing required input:', { hasIdea: !!idea, hasAnalysis: !!analysis, hasAnalysisId: !!analysisId })
       return new Response(
-        JSON.stringify({ error: 'Idea, analysis, and analysisId are all required' }),
+        JSON.stringify({ error: 'Idea and analysis are required' }),
         { 
           status: 400, 
           headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
@@ -269,68 +269,59 @@ Generate 6-10 actionable steps addressing the weakest areas.`
     
     console.log('Improvement plan validation complete, returning success response')
     
-    // Get user_id from the analysis_history table
-    console.log('Fetching user_id for analysis:', analysisId)
-    const { data: analysisData, error: analysisError } = await supabase
-      .from('analysis_history')
-      .select('user_id')
-      .eq('id', analysisId)
-      .single()
+    let improvementPlanId = null;
+    
+    // Only save to database if analysisId is provided
+    if (analysisId) {
+      // Get user_id from the analysis_history table
+      console.log('Fetching user_id for analysis:', analysisId)
+      const { data: analysisData, error: analysisError } = await supabase
+        .from('analysis_history')
+        .select('user_id')
+        .eq('id', analysisId)
+        .single()
 
-    if (analysisError || !analysisData) {
-      console.error('Error fetching analysis data:', analysisError)
-      return new Response(
-        JSON.stringify({ 
-          error: 'Failed to fetch analysis data',
-          details: analysisError?.message || 'Analysis not found'
-        }),
-        { 
-          status: 404, 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+      if (analysisError || !analysisData) {
+        console.warn('Could not fetch analysis data, skipping database save:', analysisError?.message)
+        // Don't return error, just skip saving and continue
+      } else {
+        console.log('Found user_id:', analysisData.user_id)
+
+        // Save the improvement plan to the database
+        console.log('Saving improvement plan to database...')
+        const { data: savedPlan, error: saveError } = await supabase
+          .from('improvement_plans')
+          .upsert({
+            analysis_id: analysisId,
+            user_id: analysisData.user_id,
+            plan_data: parsedPlan,
+            updated_at: new Date().toISOString()
+          }, {
+            onConflict: 'analysis_id'
+          })
+          .select('id')
+          .single()
+
+        if (saveError) {
+          console.warn('Could not save improvement plan to database, continuing without save:', saveError.message)
+          // Don't return error, just skip saving and continue
+        } else {
+          console.log('Improvement plan saved successfully with ID:', savedPlan?.id)
+          improvementPlanId = savedPlan?.id
         }
-      )
+      }
+    } else {
+      console.log('No analysisId provided, skipping database save')
     }
-
-    console.log('Found user_id:', analysisData.user_id)
-
-    // Save the improvement plan to the database
-    console.log('Saving improvement plan to database...')
-    const { data: savedPlan, error: saveError } = await supabase
-      .from('improvement_plans')
-      .upsert({
-        analysis_id: analysisId,
-        user_id: analysisData.user_id,
-        plan_data: parsedPlan,
-        updated_at: new Date().toISOString()
-      }, {
-        onConflict: 'analysis_id'
-      })
-      .select('id')
-      .single()
-
-    if (saveError) {
-      console.error('Error saving improvement plan:', saveError)
-      return new Response(
-        JSON.stringify({ 
-          error: 'Failed to save improvement plan',
-          details: saveError.message
-        }),
-        { 
-          status: 500, 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-        }
-      )
-    }
-
-    console.log('Improvement plan saved successfully with ID:', savedPlan?.id)
 
     return new Response(
       JSON.stringify({ 
         success: true, 
         plan: parsedPlan,
         currentScore: currentScore,
-        improvementPlanId: savedPlan?.id,
-        analysisId: analysisId
+        improvementPlanId: improvementPlanId,
+        analysisId: analysisId || null,
+        saved: !!improvementPlanId
       }),
       { 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' } 

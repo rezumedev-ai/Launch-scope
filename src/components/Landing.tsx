@@ -4,6 +4,7 @@ import { Button } from './ui/Button';
 import SearchComponent from './ui/animated-glowing-search-bar';
 import { PricingCard } from './PricingCard';
 import { STRIPE_PRODUCTS } from '../stripe-config';
+import { CursorLogo, ClaudeLogo, OpenAILogo } from './ui/AIToolLogos';
 
 interface LandingProps {
   onGetStarted: () => void;
@@ -222,121 +223,190 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
         </div>
       </section>
 
-      {/* The New Reality Section */}
-      <section className="px-6 py-20 bg-gradient-to-br from-indigo-500 to-blue-500">
-        <div className="max-w-7xl mx-auto text-center text-white">
-          <div className="max-w-4xl mx-auto mb-16">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-              Building is Easy. <span className="text-pink-300">Building the Right Thing is Hard.</span>
+      {/* The New Reality Section - Visually Stunning Redesign */}
+      <section className="px-6 py-20 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 relative overflow-hidden">
+        {/* Animated background elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        </div>
+
+        <div className="max-w-7xl mx-auto text-center text-white relative z-10">
+          {/* Minimal headline - let visuals do the talking */}
+          <div className="max-w-5xl mx-auto mb-20">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight">
+              Building is Easy.
+              <br />
+              <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-rose-400 bg-clip-text text-transparent">
+                Building the Right Thing is Hard.
+              </span>
             </h2>
-            <div className="space-y-4 text-base sm:text-lg md:text-xl text-blue-100 leading-relaxed">
-              <p>
-                AI has leveled the playing field. Cursor, Claude, GPT-5 — they've made coding frictionless. Shipping an MVP is no longer the challenge.
-              </p>
-              <p>
-                But AI won't tell you what to build, who needs it, or how to reach them. That's the real moat.
-              </p>
-              <p className="font-medium text-white">
-                In today's world, the bottleneck isn't technology — it's clarity. Choosing the right problem to solve.
-              </p>
-            </div>
+            <p className="text-xl sm:text-2xl text-blue-200 font-light max-w-3xl mx-auto">
+              The bottleneck isn't technology — it's clarity.
+            </p>
           </div>
 
-          {/* Split Visual Illustration */}
-          <div className="mb-20 relative">
-            <div className="max-w-6xl mx-auto">
-              <div className="relative bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-12 overflow-hidden">
-                {/* Background pattern */}
-                <div className="absolute inset-0 opacity-5">
-                  <div className="absolute top-8 left-8 w-24 h-24 border border-white/20 rounded-full"></div>
-                  <div className="absolute bottom-8 right-8 w-32 h-32 border border-white/20 rounded-full"></div>
-                </div>
-                
-                <div className="relative z-10 grid md:grid-cols-2 gap-12 items-center">
-                  {/* Left Side - AI-Powered Building */}
-                  <div className="text-center">
-                    <div className="mb-6">
-                      <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-green-400/20 to-emerald-400/20 border-2 border-green-400/30 rounded-2xl mb-4">
-                        <svg className="w-10 h-10 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                        </svg>
-                      </div>
-                      <h3 className="text-xl font-semibold text-white mb-4">AI-Powered Execution</h3>
-                      <p className="text-blue-100 text-sm mb-6">Code transforms into polished apps instantly</p>
-                    </div>
-                    
-                    {/* AI Tools */}
-                    <div className="flex justify-center space-x-4 mb-6">
-                      <div className="bg-white/10 border border-white/20 rounded-lg p-3 hover:bg-white/15 transition-all duration-300 group">
-                        <div className="w-8 h-8 bg-gradient-to-r from-purple-400 to-pink-400 rounded-lg flex items-center justify-center mb-2 group-hover:scale-110 transition-transform duration-300">
-                          <span className="text-white text-xs font-bold">AI</span>
+          {/* Main Visual Split Screen */}
+          <div className="mb-16 relative">
+            <div className="max-w-7xl mx-auto">
+              <div className="relative bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-xl rounded-3xl border border-white/20 p-8 md:p-16 overflow-hidden shadow-2xl">
+                {/* Glowing orbs for depth */}
+                <div className="absolute top-0 left-1/4 w-64 h-64 bg-emerald-500/20 rounded-full blur-3xl"></div>
+                <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-amber-500/20 rounded-full blur-3xl"></div>
+
+                <div className="relative z-10 grid md:grid-cols-2 gap-12 md:gap-16 items-stretch">
+                  {/* LEFT: AI-Powered Execution - EASY */}
+                  <div className="relative">
+                    <div className="bg-gradient-to-br from-emerald-500/10 to-green-500/10 backdrop-blur-sm rounded-2xl border border-emerald-400/30 p-8 h-full flex flex-col">
+                      {/* Icon with glow effect */}
+                      <div className="mb-6 relative">
+                        <div className="absolute inset-0 bg-emerald-400/20 blur-2xl rounded-full"></div>
+                        <div className="relative inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-emerald-400 to-green-500 rounded-2xl shadow-lg shadow-emerald-500/50 mx-auto">
+                          <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                          </svg>
                         </div>
-                        <div className="text-white/80 text-xs">Cursor</div>
                       </div>
-                      <div className="bg-white/10 border border-white/20 rounded-lg p-3 hover:bg-white/15 transition-all duration-300 group">
-                        <div className="w-8 h-8 bg-gradient-to-r from-orange-400 to-red-400 rounded-lg flex items-center justify-center mb-2 group-hover:scale-110 transition-transform duration-300">
-                          <span className="text-white text-xs font-bold">C</span>
+
+                      <h3 className="text-2xl md:text-3xl font-bold text-emerald-300 mb-3">EASY</h3>
+                      <p className="text-white/90 text-lg mb-8">AI-Powered Execution</p>
+
+                      {/* AI Tools Grid - With Original Logos */}
+                      <div className="grid grid-cols-3 gap-4 mb-8 flex-grow items-center">
+                        <div className="group relative">
+                          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/30 to-cyan-500/30 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                          <div className="relative bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4 hover:bg-white/15 transition-all duration-300 transform hover:scale-110 hover:-translate-y-2">
+                            <div className="flex items-center justify-center mb-3 h-12">
+                              <CursorLogo className="w-10 h-10 text-blue-400" />
+                            </div>
+                            <div className="text-white/90 text-sm font-medium">Cursor</div>
+                          </div>
                         </div>
-                        <div className="text-white/80 text-xs">Claude</div>
-                      </div>
-                      <div className="bg-white/10 border border-white/20 rounded-lg p-3 hover:bg-white/15 transition-all duration-300 group">
-                        <div className="w-8 h-8 bg-gradient-to-r from-teal-400 to-blue-400 rounded-lg flex items-center justify-center mb-2 group-hover:scale-110 transition-transform duration-300">
-                          <span className="text-white text-xs font-bold">GPT</span>
+
+                        <div className="group relative">
+                          <div className="absolute inset-0 bg-gradient-to-br from-orange-500/30 to-amber-500/30 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                          <div className="relative bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4 hover:bg-white/15 transition-all duration-300 transform hover:scale-110 hover:-translate-y-2">
+                            <div className="flex items-center justify-center mb-3 h-12">
+                              <ClaudeLogo className="w-10 h-10 text-amber-400" />
+                            </div>
+                            <div className="text-white/90 text-sm font-medium">Claude</div>
+                          </div>
                         </div>
-                        <div className="text-white/80 text-xs">OpenAI</div>
+
+                        <div className="group relative">
+                          <div className="absolute inset-0 bg-gradient-to-br from-teal-500/30 to-cyan-500/30 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                          <div className="relative bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4 hover:bg-white/15 transition-all duration-300 transform hover:scale-110 hover:-translate-y-2">
+                            <div className="flex items-center justify-center mb-3 h-12">
+                              <OpenAILogo className="w-10 h-10 text-teal-400" />
+                            </div>
+                            <div className="text-white/90 text-sm font-medium">OpenAI</div>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                    
-                    {/* Code to App Animation */}
-                    <div className="flex items-center justify-center space-x-4">
-                      <div className="bg-white/5 border border-white/10 rounded-lg p-3 animate-pulse">
-                        <div className="text-xs text-green-300 font-mono">&lt;code/&gt;</div>
-                      </div>
-                      <svg className="w-6 h-6 text-white/60 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                      <div className="bg-white/5 border border-white/10 rounded-lg p-3 animate-pulse">
-                        <div className="text-xs text-blue-300">📱 App</div>
+
+                      {/* Animated flow visualization */}
+                      <div className="flex items-center justify-center gap-4 mt-auto">
+                        <div className="bg-emerald-500/20 border border-emerald-400/40 rounded-lg px-4 py-3 backdrop-blur-sm">
+                          <div className="text-emerald-300 font-mono text-sm">&lt;code/&gt;</div>
+                        </div>
+                        <div className="flex flex-col gap-1">
+                          <div className="w-8 h-0.5 bg-gradient-to-r from-emerald-400 to-transparent animate-pulse"></div>
+                          <div className="w-8 h-0.5 bg-gradient-to-r from-emerald-400 to-transparent animate-pulse delay-100"></div>
+                          <div className="w-8 h-0.5 bg-gradient-to-r from-emerald-400 to-transparent animate-pulse delay-200"></div>
+                        </div>
+                        <div className="bg-emerald-500/20 border border-emerald-400/40 rounded-lg px-4 py-3 backdrop-blur-sm">
+                          <div className="text-emerald-300 text-sm">✨ App</div>
+                        </div>
                       </div>
                     </div>
                   </div>
 
-                  {/* Divider */}
-                  <div className="hidden md:block absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-0.5 h-32 bg-white/20"></div>
-                  <div className="md:hidden w-full h-0.5 bg-white/20 my-8"></div>
-
-                  {/* Right Side - Strategic Confusion */}
-                  <div className="text-center">
-                    <div className="mb-6">
-                      <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-amber-400/20 to-orange-400/20 border-2 border-amber-400/30 rounded-2xl mb-4">
-                        <svg className="w-10 h-10 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
+                  {/* Vertical divider with VS badge */}
+                  <div className="hidden md:block absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
+                    <div className="relative">
+                      <div className="w-0.5 h-64 bg-gradient-to-b from-transparent via-white/40 to-transparent"></div>
+                      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full p-4 shadow-lg shadow-purple-500/50 border-4 border-slate-900">
+                        <span className="text-white font-bold text-sm">VS</span>
                       </div>
-                      <h3 className="text-xl font-semibold text-white mb-4">Strategic Direction</h3>
-                      <p className="text-blue-100 text-sm mb-6">Human judgment guides the power</p>
                     </div>
-                    
-                    {/* Decision Paths */}
-                    <div className="space-y-3">
-                      <div className="bg-white/5 border border-white/10 rounded-lg p-3 hover:bg-white/10 transition-all duration-300">
-                        <div className="text-white/80 text-sm">🤔 Which problem?</div>
+                  </div>
+
+                  {/* RIGHT: Strategic Direction - HARD */}
+                  <div className="relative">
+                    <div className="bg-gradient-to-br from-amber-500/10 to-orange-500/10 backdrop-blur-sm rounded-2xl border border-amber-400/30 p-8 h-full flex flex-col">
+                      {/* Icon with glow effect */}
+                      <div className="mb-6 relative">
+                        <div className="absolute inset-0 bg-amber-400/20 blur-2xl rounded-full"></div>
+                        <div className="relative inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl shadow-lg shadow-amber-500/50 mx-auto">
+                          <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                          </svg>
+                        </div>
                       </div>
-                      <div className="bg-white/5 border border-white/10 rounded-lg p-3 hover:bg-white/10 transition-all duration-300">
-                        <div className="text-white/80 text-sm">🎯 Which market?</div>
+
+                      <h3 className="text-2xl md:text-3xl font-bold text-amber-300 mb-3">HARD</h3>
+                      <p className="text-white/90 text-lg mb-8">Strategic Direction</p>
+
+                      {/* Critical questions visualization */}
+                      <div className="space-y-4 flex-grow">
+                        <div className="group relative">
+                          <div className="absolute inset-0 bg-amber-500/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                          <div className="relative bg-white/5 border border-amber-400/30 rounded-xl p-5 hover:bg-white/10 transition-all duration-300 transform hover:scale-105">
+                            <div className="flex items-center justify-between">
+                              <span className="text-white/90 font-medium">What problem?</span>
+                              <svg className="w-6 h-6 text-amber-400 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                              </svg>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="group relative">
+                          <div className="absolute inset-0 bg-amber-500/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                          <div className="relative bg-white/5 border border-amber-400/30 rounded-xl p-5 hover:bg-white/10 transition-all duration-300 transform hover:scale-105">
+                            <div className="flex items-center justify-between">
+                              <span className="text-white/90 font-medium">Which market?</span>
+                              <svg className="w-6 h-6 text-amber-400 animate-pulse delay-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                              </svg>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="group relative">
+                          <div className="absolute inset-0 bg-amber-500/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                          <div className="relative bg-white/5 border border-amber-400/30 rounded-xl p-5 hover:bg-white/10 transition-all duration-300 transform hover:scale-105">
+                            <div className="flex items-center justify-between">
+                              <span className="text-white/90 font-medium">Which features?</span>
+                              <svg className="w-6 h-6 text-amber-400 animate-pulse delay-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                              </svg>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                      <div className="bg-white/5 border border-white/10 rounded-lg p-3 hover:bg-white/10 transition-all duration-300">
-                        <div className="text-white/80 text-sm">⚡ Which feature?</div>
+
+                      {/* Human judgment icon */}
+                      <div className="flex items-center justify-center gap-3 mt-8 pt-6 border-t border-amber-400/20">
+                        <div className="w-8 h-8 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center">
+                          <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                          </svg>
+                        </div>
+                        <span className="text-amber-200 text-sm font-medium">Requires Human Judgment</span>
                       </div>
                     </div>
                   </div>
                 </div>
-                
-                {/* Bottom insight */}
+
+                {/* Bottom insight banner */}
                 <div className="mt-12 text-center">
-                  <div className="inline-block bg-white/5 border border-white/10 rounded-full px-6 py-3">
-                    <p className="text-white/90 text-sm font-medium">
-                      AI accelerates execution. Human judgment directs it.
+                  <div className="inline-flex items-center gap-3 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 backdrop-blur-sm rounded-full px-8 py-4 border border-white/20">
+                    <svg className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                    <p className="text-white font-semibold text-lg">
+                      AI accelerates execution. <span className="text-amber-300">Strategy is your moat.</span>
                     </p>
                   </div>
                 </div>
@@ -344,68 +414,33 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
             </div>
           </div>
 
-          {/* Supporting Points */}
-          <div className="mb-16">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 max-w-5xl mx-auto">
-              <div className="bg-white/10 backdrop-blur-sm p-6 rounded-lg border border-white/20 hover:bg-white/15 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
-                <div className="flex items-start space-x-4 text-left">
-                  <div className="flex-shrink-0 mt-1">
-                    <div className="w-8 h-8 bg-gradient-to-r from-green-400 to-emerald-400 rounded-lg flex items-center justify-center">
-                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                      </svg>
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-white mb-2">Code is cheap now</h3>
-                    <p className="text-blue-100 text-sm">Anyone can spin up features in days</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white/10 backdrop-blur-sm p-6 rounded-lg border border-white/20 hover:bg-white/15 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
-                <div className="flex items-start space-x-4 text-left">
-                  <div className="flex-shrink-0 mt-1">
-                    <div className="w-8 h-8 bg-gradient-to-r from-orange-400 to-red-400 rounded-lg flex items-center justify-center">
-                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
-                      </svg>
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-white mb-2">Distribution is harder</h3>
-                    <p className="text-blue-100 text-sm">Cutting through noise takes insight, not code</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white/10 backdrop-blur-sm p-6 rounded-lg border border-white/20 hover:bg-white/15 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
-                <div className="flex items-start space-x-4 text-left">
-                  <div className="flex-shrink-0 mt-1">
-                    <div className="w-8 h-8 bg-gradient-to-r from-purple-400 to-pink-400 rounded-lg flex items-center justify-center">
-                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                      </svg>
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-white mb-2">Strategy is the moat</h3>
-                    <p className="text-blue-100 text-sm">Winners know what to build and why</p>
-                  </div>
-                </div>
+          {/* Simplified key insight cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            <div className="group relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 to-green-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all duration-300 transform hover:-translate-y-2">
+                <div className="text-4xl mb-4">💻</div>
+                <h4 className="text-xl font-bold text-white mb-2">Code is Cheap</h4>
+                <p className="text-blue-200">AI tools ship features in days</p>
               </div>
             </div>
-          </div>
 
-          {/* CTA Transition */}
-          <div className="text-center">
-            <div className="inline-block bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-8 hover:bg-white/10 transition-all duration-300">
-              <p className="text-xl text-white font-medium">
-                If AI made building easy, then the real advantage is knowing where to point that power.
-              </p>
-              <p className="text-blue-100 mt-2">
-                That's where we come in.
-              </p>
+            <div className="group relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all duration-300 transform hover:-translate-y-2">
+                <div className="text-4xl mb-4">🎯</div>
+                <h4 className="text-xl font-bold text-white mb-2">Clarity is Scarce</h4>
+                <p className="text-blue-200">Knowing what to build is rare</p>
+              </div>
+            </div>
+
+            <div className="group relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 to-orange-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all duration-300 transform hover:-translate-y-2">
+                <div className="text-4xl mb-4">🚀</div>
+                <h4 className="text-xl font-bold text-white mb-2">Strategy Wins</h4>
+                <p className="text-blue-200">Direction beats execution speed</p>
+              </div>
             </div>
           </div>
         </div>

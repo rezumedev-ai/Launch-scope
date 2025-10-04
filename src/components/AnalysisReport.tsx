@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, AlertTriangle, Target, Users, DollarSign, Clock, CheckCircle, Star, Lightbulb, Zap, TrendingUp, Code, Rocket, Search, TrendingDown, BarChart3, Shield, Calendar, Eye, Activity, Globe, Layers, Edit3, RefreshCw, X, Save, Sparkles, ArrowUp, ChevronRight } from 'lucide-react';
+import { ArrowLeft, AlertTriangle, Target, Users, DollarSign, Clock, CheckCircle, Star, Lightbulb, Zap, TrendingUp, Code, Rocket, Search, TrendingDown, BarChart3, Shield, Calendar, Eye, Activity, Globe, Layers, CreditCard as Edit3, RefreshCw, X, Save, Sparkles, ArrowUp, ChevronRight } from 'lucide-react';
 import { Button } from './ui/Button';
 import { Input } from './ui/Input';
 import { useState } from 'react';

@@ -4,7 +4,7 @@ import { Rocket, LogOut, BarChart3, Users, Lightbulb, TrendingUp, Clock, CheckCi
 import { Button } from './ui/Button';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
-import SearchComponent from './ui/animated-glowing-search-bar';
+import { IdeaInputBox } from './ui/IdeaInputBox';
 import { AnalysisReport } from './AnalysisReport';
 import { StripeTestPanel } from './StripeTestPanel';
 import { SubscriptionManager } from './SubscriptionManager';
@@ -423,65 +423,58 @@ export function Dashboard() {
               Ready to Validate Your 
               <span className="text-pink-300"> Next Big Idea?</span>
             </h1>
-            <p className="text-base sm:text-lg md:text-xl text-blue-100 mb-8 leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-blue-100 mb-12 leading-relaxed">
               Submit your startup concept and get instant insights into market demand, risks, and opportunities.
             </p>
-            
-            {/* Animated Search Bar */}
+
+            {/* Beautiful Idea Input Box */}
             <div className="mb-8">
-              <SearchComponent 
+              <IdeaInputBox
                 value={searchValue}
                 onChange={setSearchValue}
-                onSubmit={handleSearchSubmit}
-                placeholder="Describe your startup idea..."
+                onSubmit={() => handleSearchSubmit(searchValue)}
                 disabled={isAnalyzing}
               />
             </div>
-            
+
             {/* Loading State */}
             {isAnalyzing && (
-              <div className="mb-8 text-center">
-                <div className="inline-flex items-center bg-white/10 backdrop-blur-sm rounded-full px-6 py-3 border border-white/20">
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
-                  <span className="text-white">Analyzing your idea with AI...</span>
+              <div className="mt-8 text-center animate-fade-in">
+                <div className="inline-flex items-center bg-gradient-to-r from-indigo-500/20 via-purple-500/20 to-pink-500/20 backdrop-blur-xl rounded-2xl px-8 py-4 border border-white/30 shadow-xl">
+                  <div className="relative mr-4">
+                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-t-2 border-white"></div>
+                    <div className="absolute inset-0 animate-ping rounded-full h-6 w-6 border border-white opacity-30"></div>
+                  </div>
+                  <div className="text-left">
+                    <p className="text-white font-semibold">Analyzing your idea with AI...</p>
+                    <p className="text-blue-100 text-sm">This may take a few moments</p>
+                  </div>
                 </div>
               </div>
             )}
-            
+
             {/* Error State */}
             {error && (
-              <div className="mb-8 max-w-2xl mx-auto">
-                <div className="bg-red-500/10 backdrop-blur-sm border border-red-500/20 rounded-2xl p-6">
-                  <div className="flex items-center mb-2">
-                    <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center mr-3">
-                      <span className="text-white text-sm">!</span>
+              <div className="mt-8 max-w-2xl mx-auto animate-fade-in">
+                <div className="bg-gradient-to-br from-red-500/20 to-red-600/10 backdrop-blur-xl border border-red-500/30 rounded-2xl p-6 shadow-2xl">
+                  <div className="flex items-start mb-3">
+                    <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center mr-3 flex-shrink-0 mt-0.5">
+                      <span className="text-white font-bold">!</span>
                     </div>
-                    <h3 className="text-red-100 font-semibold">Analysis Failed</h3>
+                    <div className="flex-1">
+                      <h3 className="text-red-100 font-bold text-lg mb-1">Analysis Failed</h3>
+                      <p className="text-red-200 leading-relaxed">{error}</p>
+                    </div>
                   </div>
-                  <p className="text-red-200">{error}</p>
-                  <button 
+                  <button
                     onClick={() => setError(null)}
-                    className="mt-3 text-red-300 hover:text-red-100 text-sm underline"
+                    className="mt-2 ml-11 text-red-300 hover:text-red-100 text-sm font-medium underline transition-colors"
                   >
                     Dismiss
                   </button>
                 </div>
               </div>
             )}
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
-                size="lg" 
-                className="text-lg px-10 py-4"
-                onClick={() => handleSearchSubmit(searchValue)}
-                disabled={isAnalyzing || !searchValue.trim()}
-              >
-                Analyze My Idea
-              </Button>
-              <Button variant="secondary" size="lg" className="text-lg px-10 py-4">
-                View Examples
-              </Button>
-            </div>
           </div>
         </div>
 

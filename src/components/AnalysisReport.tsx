@@ -1166,24 +1166,28 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
           </div>
           <div className="grid md:grid-cols-2 gap-4 mb-8">
             {(analysis.nextSteps || []).map((step, index) => (
-              <div key={index} className="flex items-start space-x-4 bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:bg-white/10 transition-all duration-300">
+      <header className="bg-white/10 backdrop-blur-sm border-b border-white/20 px-3 sm:px-6 py-3 sm:py-4">
                 <div className="w-10 h-10 bg-indigo-500 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <span className="text-white font-bold">{index + 1}</span>
-                </div>
-                <span className="text-slate-200 text-lg leading-relaxed">{step}</span>
+          <div className="flex items-center space-x-2 sm:space-x-3 min-w-0 flex-shrink">
+            <Button variant="secondary" onClick={handleGenerateImprovementPlan} disabled={generatingPlan} className="px-2 py-1 sm:px-3 sm:py-2 text-xs sm:text-sm whitespace-nowrap">
+              <Rocket className="w-4 h-4 sm:w-6 sm:h-6 text-indigo-500" />
               </div>
-            ))}
-          </div>
+                  <Loader className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2 animate-spin" />
+                  <span className="hidden sm:inline">Generating...</span>
+                  <span className="sm:hidden">Gen...</span>
           
           <div className="text-center">
             <Button 
-              size="lg" 
-              onClick={onBack}
+                  <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                  <span className="hidden sm:inline">Get Improvement Plan</span>
+                  <span className="sm:hidden">Improve</span>
               className="bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white text-lg px-12 py-4 shadow-2xl hover:shadow-indigo-500/25 transform hover:scale-105 transition-all duration-300"
               disabled={isRefining}
-            >
-              <Lightbulb className="w-5 h-5 mr-2" />
-              Analyze Another Idea
+          <div className="flex items-center space-x-1 sm:space-x-2 md:space-x-4 flex-shrink-0">
+            <Button variant="secondary" onClick={() => setShowRefinementForm(true)} className="px-2 py-1 sm:px-3 sm:py-2 text-xs sm:text-sm whitespace-nowrap">
+              <Edit className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">Refine Idea</span>
+              <span className="sm:hidden">Refine</span>
             </Button>
           </div>
         </section>

@@ -5,6 +5,8 @@ import { Input } from './ui/Input';
 import { useState } from 'react';
 import { supabase } from '../lib/supabase';
 import type { ImprovementPlan } from '../types/improvement';
+import { AnimatedCard, ScoreCircle, MetricCard } from './ui/AnimatedCard';
+import { ReportSection, InfoCard } from './ui/ReportSection';
 
 interface AnalysisData {
   summary: string;
@@ -646,71 +648,66 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
 
       <main className="max-w-7xl mx-auto px-3 sm:px-6 py-4 sm:py-8 space-y-4 sm:space-y-8">
         {/* Hero Section - Idea & Executive Summary */}
-        <section className="relative">
-          {/* Refinement Mode Indicator */}
-          {isRefining && (
-            <div className="mb-6 bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-400/30 rounded-2xl p-4">
+        {isRefining && (
+          <AnimatedCard delay={0} hover={false}>
+            <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-400/30 rounded-2xl p-4 backdrop-blur-sm">
               <div className="flex items-center justify-center space-x-3 text-white">
-                <Edit3 className="w-5 h-5 text-purple-300" />
+                <Edit3 className="w-5 h-5 text-purple-300 animate-pulse" />
                 <span className="font-medium">Refinement Mode Active</span>
-                <span className="text-purple-200 text-sm">Make changes below and click "Re-analyze" to see updated results</span>
+                <span className="text-purple-200 text-sm hidden sm:inline">Make changes below and click "Re-analyze" to see updated results</span>
               </div>
             </div>
-          )}
-          
-          <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/5 via-purple-500/5 to-pink-500/5 rounded-3xl"></div>
-          <div className="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-8 shadow-2xl">
-            {/* Floating decoration */}
-            <div className="absolute top-4 right-4 w-32 h-32 bg-gradient-to-br from-purple-400/10 to-pink-400/10 rounded-full blur-2xl"></div>
-            <div className="absolute bottom-4 left-4 w-24 h-24 bg-gradient-to-br from-indigo-400/10 to-blue-400/10 rounded-full blur-xl"></div>
-            
-            <div className="relative">
-              <div className="flex items-start space-x-6 mb-8">
-                <div className="w-16 h-16 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-2xl flex items-center justify-center shadow-2xl">
-                  <Lightbulb className="w-8 h-8 text-white" />
-                </div>
-                <div className="flex-1">
-                  <h2 className="text-3xl font-bold text-white mb-4">Your Startup Idea</h2>
-                  {isRefining ? (
-                    <div className="space-y-2">
-                      <label className="block text-sm font-medium text-slate-300">Startup Idea</label>
-                      <textarea
-                        value={refinedIdea}
-                        onChange={(e) => setRefinedIdea(e.target.value)}
-                        className="w-full p-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-slate-400 focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
-                        rows={3}
-                        placeholder="Describe your refined startup idea..."
-                      />
-                    </div>
-                  ) : (
-                    <p className="text-xl text-slate-200 leading-relaxed font-medium">{idea}</p>
-                  )}
-                </div>
+          </AnimatedCard>
+        )}
+
+        <ReportSection delay={100}>
+          <div className="flex flex-col lg:flex-row items-start gap-6 mb-8">
+            <div className="flex-shrink-0">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-2xl transform hover:rotate-12 transition-transform duration-500">
+                <Lightbulb className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
               </div>
-              
-              <div className="bg-slate-800/50 rounded-2xl p-6 border border-slate-700/50">
-                <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
-                  <Eye className="w-5 h-5 mr-2 text-indigo-400" />
-                  {isRefining ? 'Problem-Solution Fit' : 'Executive Summary'}
-                </h3>
-                {isRefining ? (
-                  <div className="space-y-2">
-                    <label className="block text-sm font-medium text-slate-300">Problem-Solution Fit</label>
-                    <textarea
-                      value={refinedProblemFit}
-                      onChange={(e) => setRefinedProblemFit(e.target.value)}
-                      className="w-full p-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-slate-400 focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
-                      rows={3}
-                      placeholder="Describe the problem your idea solves..."
-                    />
-                  </div>
-                ) : (
-                  <p className="text-slate-300 text-lg leading-relaxed">{analysis.summary}</p>
-                )}
-              </div>
+            </div>
+            <div className="flex-1 min-w-0">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4 bg-gradient-to-r from-white via-blue-100 to-purple-100 bg-clip-text text-transparent">
+                Your Startup Idea
+              </h2>
+              {isRefining ? (
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-slate-300">Startup Idea</label>
+                  <textarea
+                    value={refinedIdea}
+                    onChange={(e) => setRefinedIdea(e.target.value)}
+                    className="w-full p-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-slate-400 focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none transition-all duration-300 hover:bg-white/15"
+                    rows={3}
+                    placeholder="Describe your refined startup idea..."
+                  />
+                </div>
+              ) : (
+                <p className="text-lg sm:text-xl text-slate-200 leading-relaxed font-medium">{idea}</p>
+              )}
             </div>
           </div>
-        </section>
+
+          <InfoCard
+            title={isRefining ? 'Problem-Solution Fit' : 'Executive Summary'}
+            content={isRefining ? '' : analysis.summary}
+            icon={<Eye className="w-5 h-5" />}
+            variant="info"
+          >
+            {isRefining && (
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-slate-300">Problem-Solution Fit</label>
+                <textarea
+                  value={refinedProblemFit}
+                  onChange={(e) => setRefinedProblemFit(e.target.value)}
+                  className="w-full p-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-slate-400 focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none transition-all duration-300"
+                  rows={3}
+                  placeholder="Describe the problem your idea solves..."
+                />
+              </div>
+            )}
+          </InfoCard>
+        </ReportSection>
 
         {/* Improvement Plan Error */}
         {improvementPlanError && (
@@ -733,105 +730,109 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
         )}
 
         {/* Key Metrics Dashboard */}
-        <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Overall Verdict */}
           <div className="lg:col-span-2">
-            <div className={`bg-black/20 backdrop-blur-sm border rounded-2xl p-6 shadow-xl ${getVerdictStyle(analysis.verdict)}`}>
-              <div className="flex items-center mb-4">
-                <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mr-4">
-                  <Zap className="w-6 h-6 text-white" />
+            <AnimatedCard delay={200}>
+              <div className={`relative bg-black/20 backdrop-blur-sm border rounded-3xl p-6 sm:p-8 shadow-2xl overflow-hidden ${getVerdictStyle(analysis.verdict)}`}>
+                {/* Animated background */}
+                <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-50" />
+
+                <div className="relative">
+                  <div className="flex items-center mb-6">
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white/20 rounded-xl flex items-center justify-center mr-4 backdrop-blur-sm shadow-lg transform hover:scale-110 transition-transform duration-300">
+                      <Zap className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
+                    </div>
+                    <h3 className="text-2xl sm:text-3xl font-bold text-white">Final Verdict</h3>
+                  </div>
+                  <p className="text-lg sm:text-xl font-medium leading-relaxed">{analysis.verdict}</p>
                 </div>
-                <h3 className="text-2xl font-bold text-white">Final Verdict</h3>
               </div>
-              <p className="text-xl font-medium leading-relaxed">{analysis.verdict}</p>
-            </div>
+            </AnimatedCard>
           </div>
 
           {/* Viability Score */}
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 text-center shadow-xl">
-            <div className={`w-20 h-20 bg-gradient-to-r ${getScoreBgGradient(overallScore)} rounded-2xl flex items-center justify-center mb-4 mx-auto shadow-2xl border`}>
-              <Star className="w-10 h-10 text-white" />
+          <AnimatedCard delay={300}>
+            <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-6 sm:p-8 text-center shadow-2xl">
+              <ScoreCircle
+                score={parseFloat(analysis.detailedViabilityBreakdown?.weightedOverallScore) || overallScore}
+                maxScore={10}
+                size="lg"
+                label="Overall Viability"
+                animated={true}
+              />
+              <p className="text-slate-300 text-sm sm:text-base leading-tight mt-4">
+                {analysis.detailedViabilityBreakdown?.overallJustification?.substring(0, 80) + '...' ||
+                 analysis.viabilityScore.split(' ').slice(1).join(' ')}
+              </p>
             </div>
-            <h3 className="text-sm font-medium text-slate-400 mb-2">Overall Viability</h3>
-            <p className={`text-5xl font-bold ${getScoreColor(overallScore)} mb-2`}>
-              {analysis.detailedViabilityBreakdown?.weightedOverallScore || Math.round(overallScore)}/10
-            </p>
-            <p className="text-slate-400 text-sm leading-tight">
-              {analysis.detailedViabilityBreakdown?.overallJustification?.substring(0, 60) + '...' || 
-               analysis.viabilityScore.split(' ').slice(1).join(' ')}
-            </p>
-          </div>
-        </section>
+          </AnimatedCard>
+        </div>
 
         {/* Market Intelligence Dashboard */}
         {analysis.marketSignals && (
-          <section className="bg-gradient-to-br from-slate-800/60 to-indigo-900/40 backdrop-blur-sm border border-indigo-400/30 rounded-3xl p-8 shadow-2xl">
-            <div className="text-center mb-8">
-              <div className="w-16 h-16 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-2xl flex items-center justify-center mb-4 mx-auto shadow-2xl">
-                <BarChart3 className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-3xl font-bold text-white mb-2">Market Intelligence</h3>
-              <p className="text-slate-300">Real-time market signals and competitive landscape</p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:bg-white/10 transition-all duration-300 group">
-                <div className="flex items-center justify-between mb-4">
-                  <Search className="w-8 h-8 text-blue-400 group-hover:scale-110 transition-transform duration-300" />
-                  <div className="text-right">
-                    <div className="text-2xl font-bold text-white">Search</div>
-                    <div className="text-blue-300 text-sm">Volume</div>
-                  </div>
+          <AnimatedCard delay={400} hover={false}>
+            <ReportSection
+              title="Market Intelligence"
+              subtitle="Real-time market signals and competitive landscape"
+              icon={
+                <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-2xl flex items-center justify-center shadow-2xl">
+                  <BarChart3 className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
                 </div>
-                <p className="text-slate-300 text-sm leading-relaxed">{analysis.marketSignals.searchVolume}</p>
+              }
+              gradient="from-slate-800/60 via-indigo-900/40 to-slate-800/60"
+            >
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mt-6">
+                <MetricCard
+                  icon={<Search className="w-6 h-6 text-white" />}
+                  title="Search Volume"
+                  value="Market Demand"
+                  subtitle={analysis.marketSignals.searchVolume}
+                  gradient="from-blue-500 to-cyan-500"
+                  delay={500}
+                />
+                <MetricCard
+                  icon={<DollarSign className="w-6 h-6 text-white" />}
+                  title="Funding Activity"
+                  value="Investor Interest"
+                  subtitle={analysis.marketSignals.fundingActivity}
+                  gradient="from-green-500 to-emerald-500"
+                  delay={550}
+                />
+                <MetricCard
+                  icon={<Shield className="w-6 h-6 text-white" />}
+                  title="Competition"
+                  value="Market Density"
+                  subtitle={analysis.marketSignals.competitionDensity}
+                  gradient="from-orange-500 to-amber-500"
+                  delay={600}
+                />
+                <MetricCard
+                  icon={<TrendingUp className="w-6 h-6 text-white" />}
+                  title="Adoption Stage"
+                  value="Market Maturity"
+                  subtitle={analysis.marketSignals.adoptionStage}
+                  gradient="from-purple-500 to-pink-500"
+                  delay={650}
+                />
               </div>
-
-              <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:bg-white/10 transition-all duration-300 group">
-                <div className="flex items-center justify-between mb-4">
-                  <DollarSign className="w-8 h-8 text-green-400 group-hover:scale-110 transition-transform duration-300" />
-                  <div className="text-right">
-                    <div className="text-2xl font-bold text-white">Funding</div>
-                    <div className="text-green-300 text-sm">Activity</div>
-                  </div>
-                </div>
-                <p className="text-slate-300 text-sm leading-relaxed">{analysis.marketSignals.fundingActivity}</p>
-              </div>
-
-              <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:bg-white/10 transition-all duration-300 group">
-                <div className="flex items-center justify-between mb-4">
-                  <Shield className="w-8 h-8 text-orange-400 group-hover:scale-110 transition-transform duration-300" />
-                  <div className="text-right">
-                    <div className="text-2xl font-bold text-white">Competition</div>
-                    <div className="text-orange-300 text-sm">Density</div>
-                  </div>
-                </div>
-                <p className="text-slate-300 text-sm leading-relaxed">{analysis.marketSignals.competitionDensity}</p>
-              </div>
-
-              <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:bg-white/10 transition-all duration-300 group">
-                <div className="flex items-center justify-between mb-4">
-                  <TrendingUp className="w-8 h-8 text-purple-400 group-hover:scale-110 transition-transform duration-300" />
-                  <div className="text-right">
-                    <div className="text-2xl font-bold text-white">Adoption</div>
-                    <div className="text-purple-300 text-sm">Stage</div>
-                  </div>
-                </div>
-                <p className="text-slate-300 text-sm leading-relaxed">{analysis.marketSignals.adoptionStage}</p>
-              </div>
-            </div>
-          </section>
+            </ReportSection>
+          </AnimatedCard>
         )}
 
         {/* Detailed Viability Breakdown */}
         {analysis.detailedViabilityBreakdown && (
-          <section className="bg-gradient-to-br from-slate-800/60 to-purple-900/40 backdrop-blur-sm border border-purple-400/30 rounded-3xl p-8 shadow-2xl">
-            <div className="text-center mb-12">
-              <div className="w-20 h-20 bg-gradient-to-r from-purple-400 to-pink-400 rounded-3xl flex items-center justify-center mb-6 mx-auto shadow-2xl">
-                <Star className="w-10 h-10 text-white" />
-              </div>
-              <h3 className="text-4xl font-bold text-white mb-3">Viability Analysis</h3>
-              <p className="text-slate-300 text-lg">Comprehensive scoring across 5 critical dimensions</p>
-            </div>
+          <AnimatedCard delay={700} hover={false}>
+            <ReportSection
+              title="Viability Analysis"
+              subtitle="Comprehensive scoring across 5 critical dimensions"
+              icon={
+                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-purple-400 to-pink-400 rounded-3xl flex items-center justify-center shadow-2xl animate-pulse">
+                  <Star className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
+                </div>
+              }
+              gradient="from-slate-800/60 via-purple-900/40 to-slate-800/60"
+            >
 
             {/* Score Categories Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
@@ -1004,85 +1005,89 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
                 <strong>Market Demand (25%)</strong> + <strong>Monetization (25%)</strong> + Technical Feasibility (20%) + Differentiation (20%) + Timing (10%) = <strong>Overall Score</strong>
               </p>
             </div>
-          </section>
+            </ReportSection>
+          </AnimatedCard>
         )}
 
         {/* Build Metrics */}
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 text-center shadow-xl">
-            <div className="w-12 h-12 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-xl flex items-center justify-center mb-4 mx-auto">
-              <DollarSign className="w-6 h-6 text-white" />
-            </div>
-            <h3 className="text-sm font-medium text-slate-400 mb-2">Build Cost</h3>
-            <span className={`inline-block px-4 py-2 rounded-full text-sm font-medium border ${getBuildCostStyle(analysis.buildCost.estimate)}`}>
-              {analysis.buildCost.estimate}
-            </span>
-            <p className="text-slate-400 text-xs mt-3 leading-tight">{analysis.buildCost.notes}</p>
-          </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <MetricCard
+            icon={<DollarSign className="w-6 h-6 text-white" />}
+            title="Build Cost"
+            value={analysis.buildCost.estimate}
+            subtitle={analysis.buildCost.notes}
+            gradient="from-blue-500 to-indigo-500"
+            delay={800}
+          />
+          <MetricCard
+            icon={<Clock className="w-6 h-6 text-white" />}
+            title="Time to MVP"
+            value={analysis.timeToMVP}
+            subtitle="Estimated development time"
+            gradient="from-purple-500 to-pink-500"
+            delay={850}
+          />
+          <MetricCard
+            icon={<Rocket className="w-6 h-6 text-white" />}
+            title="Launch Readiness"
+            value={overallScore >= 7 ? 'High' : overallScore >= 5 ? 'Medium' : 'Low'}
+            subtitle="Based on overall analysis"
+            gradient="from-emerald-500 to-teal-500"
+            delay={900}
+          />
+        </div>
 
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 text-center shadow-xl">
-            <div className="w-12 h-12 bg-gradient-to-r from-amber-400 to-orange-400 rounded-xl flex items-center justify-center mb-4 mx-auto">
-              <Clock className="w-6 h-6 text-white" />
-            </div>
-            <h3 className="text-sm font-medium text-slate-400 mb-2">Time to MVP</h3>
-            <p className="text-2xl font-bold text-white">{analysis.timeToMVP}</p>
-          </div>
-
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 text-center shadow-xl">
-            <div className="w-12 h-12 bg-gradient-to-r from-purple-400 to-pink-400 rounded-xl flex items-center justify-center mb-4 mx-auto">
-              <Target className="w-6 h-6 text-white" />
-            </div>
-            <h3 className="text-sm font-medium text-slate-400 mb-2">Problem Fit</h3>
-            <p className="text-sm text-slate-300 leading-tight">{analysis.problemFit}</p>
-          </div>
-        </section>
 
         {/* Strengths & Challenges */}
-        <section className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
           {/* Strengths */}
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 shadow-xl">
-            <div className="flex items-center mb-6">
-              <div className="w-10 h-10 bg-emerald-500/20 rounded-xl flex items-center justify-center mr-4">
-                <CheckCircle className="w-6 h-6 text-emerald-400" />
+          <AnimatedCard delay={950}>
+            <div className="bg-gradient-to-br from-emerald-500/10 to-green-500/10 backdrop-blur-sm border border-emerald-500/30 rounded-3xl p-6 sm:p-8 shadow-2xl h-full">
+              <div className="flex items-center mb-6">
+                <div className="w-12 h-12 bg-gradient-to-r from-emerald-500 to-green-500 rounded-xl flex items-center justify-center mr-4 shadow-lg">
+                  <CheckCircle className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-white">Key Strengths</h3>
               </div>
-              <h3 className="text-2xl font-bold text-white">Key Strengths</h3>
-            </div>
-            {analysis.strengths.length > 0 ? (
-              <div className="space-y-4">
-                {(analysis.strengths || []).map((strength, index) => (
-                  <div key={index} className="flex items-start space-x-4 bg-emerald-500/5 rounded-xl p-4 border border-emerald-500/20">
-                    <div className="w-6 h-6 bg-emerald-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-white text-xs font-bold">✓</span>
+              {analysis.strengths.length > 0 ? (
+                <div className="space-y-3">
+                  {(analysis.strengths || []).map((strength, index) => (
+                    <div key={index} className="flex items-start space-x-3 bg-emerald-500/10 rounded-xl p-4 border border-emerald-500/20 hover:bg-emerald-500/15 transition-all duration-300 transform hover:translate-x-1">
+                      <div className="w-6 h-6 bg-gradient-to-r from-emerald-500 to-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 shadow-md">
+                        <span className="text-white text-xs font-bold">✓</span>
+                      </div>
+                      <span className="text-slate-200 leading-relaxed flex-1">{strength}</span>
                     </div>
-                    <span className="text-slate-200 leading-relaxed">{strength}</span>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-slate-400 italic text-center py-8">No significant strengths identified</p>
+              )}
+            </div>
+          </AnimatedCard>
+
+          {/* Challenges */}
+          <AnimatedCard delay={1000}>
+            <div className="bg-gradient-to-br from-red-500/10 to-orange-500/10 backdrop-blur-sm border border-red-500/30 rounded-3xl p-6 sm:p-8 shadow-2xl h-full">
+              <div className="flex items-center mb-6">
+                <div className="w-12 h-12 bg-gradient-to-r from-red-500 to-orange-500 rounded-xl flex items-center justify-center mr-4 shadow-lg">
+                  <AlertTriangle className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-white">Key Challenges</h3>
+              </div>
+              <div className="space-y-3">
+                {(analysis.challenges || []).map((challenge, index) => (
+                  <div key={index} className="flex items-start space-x-3 bg-red-500/10 rounded-xl p-4 border border-red-500/20 hover:bg-red-500/15 transition-all duration-300 transform hover:translate-x-1">
+                    <div className="w-6 h-6 bg-gradient-to-r from-red-500 to-orange-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 shadow-md">
+                      <span className="text-white text-xs font-bold">!</span>
+                    </div>
+                    <span className="text-slate-200 leading-relaxed flex-1">{challenge}</span>
                   </div>
                 ))}
               </div>
-            ) : (
-              <p className="text-slate-400 italic text-center py-8">No significant strengths identified</p>
-            )}
-          </div>
-
-          {/* Challenges */}
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 shadow-xl">
-            <div className="flex items-center mb-6">
-              <div className="w-10 h-10 bg-red-500/20 rounded-xl flex items-center justify-center mr-4">
-                <AlertTriangle className="w-6 h-6 text-red-400" />
-              </div>
-              <h3 className="text-2xl font-bold text-white">Key Challenges</h3>
             </div>
-            <div className="space-y-4">
-              {(analysis.challenges || []).map((challenge, index) => (
-                <div key={index} className="flex items-start space-x-4 bg-red-500/5 rounded-xl p-4 border border-red-500/20">
-                  <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <span className="text-white text-xs font-bold">!</span>
-                  </div>
-                  <span className="text-slate-200 leading-relaxed">{challenge}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+          </AnimatedCard>
+        </div>
 
         {/* Target Audience */}
         <section className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 shadow-xl">

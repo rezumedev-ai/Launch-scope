@@ -247,17 +247,39 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
         {/* Header */}
         <header className="relative bg-black/30 backdrop-blur-xl border-b border-white/10">
           <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-indigo-500/10"></div>
-          <div className="relative max-w-7xl mx-auto px-6 py-6">
-            <div className="flex items-center justify-between">
-              <Button 
-                variant="secondary" 
+          <div className="relative max-w-7xl mx-auto px-3 sm:px-6 py-4 sm:py-6">
+            {/* Mobile Layout */}
+            <div className="flex flex-col space-y-3 md:hidden">
+              <div className="flex items-center justify-between">
+                <Button
+                  variant="secondary"
+                  onClick={handleBackToAnalysis}
+                  className="bg-white/10 border-white/20 text-white hover:bg-white/20 backdrop-blur-sm px-3 py-2 text-sm"
+                >
+                  <ArrowLeft className="w-4 h-4 mr-1" />
+                  Back
+                </Button>
+
+                <div className="flex items-center space-x-2">
+                  <div className="w-7 h-7 bg-gradient-to-r from-purple-400 to-pink-400 rounded-lg flex items-center justify-center">
+                    <Sparkles className="w-4 h-4 text-white" />
+                  </div>
+                  <h1 className="text-lg font-bold text-white">Improvement Plan</h1>
+                </div>
+              </div>
+            </div>
+
+            {/* Desktop Layout */}
+            <div className="hidden md:flex items-center justify-between">
+              <Button
+                variant="secondary"
                 onClick={handleBackToAnalysis}
                 className="bg-white/10 border-white/20 text-white hover:bg-white/20 backdrop-blur-sm"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back to Analysis
               </Button>
-              
+
               <div className="text-center">
                 <div className="flex items-center justify-center space-x-3 mb-2">
                   <div className="w-8 h-8 bg-gradient-to-r from-purple-400 to-pink-400 rounded-xl flex items-center justify-center">
@@ -267,13 +289,13 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
                 </div>
                 <p className="text-slate-300 text-sm">AI-powered recommendations to boost your idea's viability</p>
               </div>
-              
+
               <div className="w-32"></div>
             </div>
           </div>
         </header>
 
-        <main className="max-w-7xl mx-auto px-6 py-8 space-y-8">
+        <main className="max-w-7xl mx-auto px-3 sm:px-6 py-4 sm:py-8 space-y-4 sm:space-y-8">
           {/* Summary Section */}
           <section className="relative">
             <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 via-pink-500/5 to-indigo-500/5 rounded-3xl"></div>
@@ -443,10 +465,99 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
       {/* Premium Header */}
       <header className="relative bg-black/30 backdrop-blur-xl border-b border-white/10">
         <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10"></div>
-        <div className="relative max-w-7xl mx-auto px-6 py-6">
-          <div className="flex items-center justify-between">
-            <Button 
-              variant="secondary" 
+        <div className="relative max-w-7xl mx-auto px-3 sm:px-6 py-4 sm:py-6">
+          {/* Mobile Layout */}
+          <div className="flex flex-col space-y-4 md:hidden">
+            {/* Top row: Back button and title */}
+            <div className="flex items-center justify-between">
+              <Button
+                variant="secondary"
+                onClick={onBack}
+                className="bg-white/10 border-white/20 text-white hover:bg-white/20 backdrop-blur-sm px-3 py-2 text-sm"
+                disabled={isRefining}
+              >
+                <ArrowLeft className="w-4 h-4 mr-1" />
+                <span className="hidden xs:inline">Back</span>
+              </Button>
+
+              <div className="flex items-center space-x-2">
+                <div className="w-7 h-7 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-lg flex items-center justify-center">
+                  <Rocket className="w-4 h-4 text-white" />
+                </div>
+                <h1 className="text-lg font-bold text-white">Analysis</h1>
+              </div>
+            </div>
+
+            {/* Bottom row: Action buttons */}
+            <div className="flex items-center gap-2 overflow-x-auto pb-1">
+              {!isRefining ? (
+                <>
+                  {overallScore < 7 && (
+                    <Button
+                      onClick={handleGenerateImprovementPlan}
+                      disabled={isGeneratingImprovementPlan}
+                      className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white px-3 py-2 text-xs whitespace-nowrap flex-shrink-0"
+                    >
+                      {isGeneratingImprovementPlan ? (
+                        <>
+                          <RefreshCw className="w-3 h-3 mr-1 animate-spin" />
+                          Generating...
+                        </>
+                      ) : (
+                        <>
+                          <Sparkles className="w-3 h-3 mr-1" />
+                          Improve
+                        </>
+                      )}
+                    </Button>
+                  )}
+                  {onRefineIdea && (
+                    <Button
+                      onClick={handleStartRefinement}
+                      className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-3 py-2 text-xs whitespace-nowrap flex-shrink-0"
+                    >
+                      <Edit3 className="w-3 h-3 mr-1" />
+                      Refine
+                    </Button>
+                  )}
+                </>
+              ) : (
+                <>
+                  <Button
+                    onClick={handleSubmitRefinement}
+                    disabled={isSubmittingRefinement}
+                    className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white px-3 py-2 text-xs whitespace-nowrap flex-shrink-0"
+                  >
+                    {isSubmittingRefinement ? (
+                      <>
+                        <RefreshCw className="w-3 h-3 mr-1 animate-spin" />
+                        Re-analyzing...
+                      </>
+                    ) : (
+                      <>
+                        <Save className="w-3 h-3 mr-1" />
+                        Re-analyze
+                      </>
+                    )}
+                  </Button>
+                  <Button
+                    onClick={handleCancelRefinement}
+                    variant="secondary"
+                    className="bg-white/10 border-white/20 text-white hover:bg-white/20 px-3 py-2 text-xs whitespace-nowrap flex-shrink-0"
+                    disabled={isSubmittingRefinement}
+                  >
+                    <X className="w-3 h-3 mr-1" />
+                    Cancel
+                  </Button>
+                </>
+              )}
+            </div>
+          </div>
+
+          {/* Desktop Layout */}
+          <div className="hidden md:flex items-center justify-between">
+            <Button
+              variant="secondary"
               onClick={onBack}
               className="bg-white/10 border-white/20 text-white hover:bg-white/20 backdrop-blur-sm"
               disabled={isRefining}
@@ -454,12 +565,21 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Dashboard
             </Button>
-            
+
+            <div className="text-center">
+              <div className="flex items-center justify-center space-x-3 mb-2">
+                <div className="w-8 h-8 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-xl flex items-center justify-center">
+                  <Rocket className="w-5 h-5 text-white" />
+                </div>
+                <h1 className="text-2xl font-bold text-white">LaunchScope Analysis</h1>
+              </div>
+              <p className="text-slate-300 text-sm">Professional startup validation report</p>
+            </div>
+
             {/* Refinement Controls */}
             <div className="flex items-center space-x-3">
               {!isRefining ? (
                 <>
-                  {/* Show Improvement Plan button for low scores */}
                   {overallScore < 7 && (
                     <Button
                       onClick={handleGenerateImprovementPlan}
@@ -520,23 +640,11 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
                 </div>
               )}
             </div>
-            
-            <div className="text-center">
-              <div className="flex items-center justify-center space-x-3 mb-2">
-                <div className="w-8 h-8 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-xl flex items-center justify-center">
-                  <Rocket className="w-5 h-5 text-white" />
-                </div>
-                <h1 className="text-2xl font-bold text-white">LaunchScope Analysis</h1>
-              </div>
-              <p className="text-slate-300 text-sm">Professional startup validation report</p>
-            </div>
-            
-            <div className="w-32"></div> {/* Spacer for centering */}
           </div>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-6 py-8 space-y-8">
+      <main className="max-w-7xl mx-auto px-3 sm:px-6 py-4 sm:py-8 space-y-4 sm:space-y-8">
         {/* Hero Section - Idea & Executive Summary */}
         <section className="relative">
           {/* Refinement Mode Indicator */}

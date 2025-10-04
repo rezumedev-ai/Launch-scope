@@ -224,11 +224,11 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
       </section>
 
       {/* The New Reality Section - Visually Stunning Redesign */}
-      <section className="px-6 py-20 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 relative overflow-hidden">
+      <section className="px-6 py-20 bg-gradient-to-br from-indigo-500 to-blue-500 relative overflow-hidden">
         {/* Animated background elements */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-pink-300/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
         </div>
 
         <div className="max-w-7xl mx-auto text-center text-white relative z-10">
@@ -237,11 +237,11 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
             <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight">
               Building is Easy.
               <br />
-              <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-rose-400 bg-clip-text text-transparent">
+              <span className="text-pink-300">
                 Building the Right Thing is Hard.
               </span>
             </h2>
-            <p className="text-xl sm:text-2xl text-blue-200 font-light max-w-3xl mx-auto">
+            <p className="text-xl sm:text-2xl text-blue-100 font-light max-w-3xl mx-auto">
               The bottleneck isn't technology — it's clarity.
             </p>
           </div>
@@ -249,73 +249,73 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
           {/* Main Visual Split Screen */}
           <div className="mb-16 relative">
             <div className="max-w-7xl mx-auto">
-              <div className="relative bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-xl rounded-3xl border border-white/20 p-8 md:p-16 overflow-hidden shadow-2xl">
+              <div className="relative bg-white/10 backdrop-blur-sm rounded-3xl border border-white/20 p-8 md:p-16 overflow-hidden shadow-2xl">
                 {/* Glowing orbs for depth */}
-                <div className="absolute top-0 left-1/4 w-64 h-64 bg-emerald-500/20 rounded-full blur-3xl"></div>
-                <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-amber-500/20 rounded-full blur-3xl"></div>
+                <div className="absolute top-0 left-1/4 w-64 h-64 bg-blue-400/20 rounded-full blur-3xl"></div>
+                <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-pink-300/20 rounded-full blur-3xl"></div>
 
                 <div className="relative z-10 grid md:grid-cols-2 gap-12 md:gap-16 items-stretch">
                   {/* LEFT: AI-Powered Execution - EASY */}
                   <div className="relative">
-                    <div className="bg-gradient-to-br from-emerald-500/10 to-green-500/10 backdrop-blur-sm rounded-2xl border border-emerald-400/30 p-8 h-full flex flex-col">
+                    <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/20 p-8 h-full flex flex-col hover:bg-white/10 transition-all duration-500">
                       {/* Icon with glow effect */}
                       <div className="mb-6 relative">
-                        <div className="absolute inset-0 bg-emerald-400/20 blur-2xl rounded-full"></div>
-                        <div className="relative inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-emerald-400 to-green-500 rounded-2xl shadow-lg shadow-emerald-500/50 mx-auto">
+                        <div className="absolute inset-0 bg-blue-300/20 blur-2xl rounded-full"></div>
+                        <div className="relative inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-2xl shadow-lg shadow-blue-500/50 mx-auto">
                           <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
                           </svg>
                         </div>
                       </div>
 
-                      <h3 className="text-2xl md:text-3xl font-bold text-emerald-300 mb-3">EASY</h3>
-                      <p className="text-white/90 text-lg mb-8">AI-Powered Execution</p>
+                      <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">EASY</h3>
+                      <p className="text-blue-100 text-lg mb-8">AI-Powered Execution</p>
 
                       {/* AI Tools Grid - With Original Logos */}
                       <div className="grid grid-cols-3 gap-4 mb-8 flex-grow items-center">
                         <div className="group relative">
-                          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/30 to-cyan-500/30 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                          <div className="absolute inset-0 bg-white/20 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                           <div className="relative bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4 hover:bg-white/15 transition-all duration-300 transform hover:scale-110 hover:-translate-y-2">
                             <div className="flex items-center justify-center mb-3 h-12">
-                              <CursorLogo className="w-10 h-10 text-blue-400" />
+                              <CursorLogo className="w-10 h-10 text-white" />
                             </div>
-                            <div className="text-white/90 text-sm font-medium">Cursor</div>
+                            <div className="text-white text-sm font-medium">Cursor</div>
                           </div>
                         </div>
 
                         <div className="group relative">
-                          <div className="absolute inset-0 bg-gradient-to-br from-orange-500/30 to-amber-500/30 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                          <div className="absolute inset-0 bg-pink-300/30 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                           <div className="relative bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4 hover:bg-white/15 transition-all duration-300 transform hover:scale-110 hover:-translate-y-2">
                             <div className="flex items-center justify-center mb-3 h-12">
-                              <ClaudeLogo className="w-10 h-10 text-amber-400" />
+                              <ClaudeLogo className="w-10 h-10 text-pink-300" />
                             </div>
-                            <div className="text-white/90 text-sm font-medium">Claude</div>
+                            <div className="text-white text-sm font-medium">Claude</div>
                           </div>
                         </div>
 
                         <div className="group relative">
-                          <div className="absolute inset-0 bg-gradient-to-br from-teal-500/30 to-cyan-500/30 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                          <div className="absolute inset-0 bg-blue-300/30 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                           <div className="relative bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4 hover:bg-white/15 transition-all duration-300 transform hover:scale-110 hover:-translate-y-2">
                             <div className="flex items-center justify-center mb-3 h-12">
-                              <OpenAILogo className="w-10 h-10 text-teal-400" />
+                              <OpenAILogo className="w-10 h-10 text-blue-300" />
                             </div>
-                            <div className="text-white/90 text-sm font-medium">OpenAI</div>
+                            <div className="text-white text-sm font-medium">OpenAI</div>
                           </div>
                         </div>
                       </div>
 
                       {/* Animated flow visualization */}
                       <div className="flex items-center justify-center gap-4 mt-auto">
-                        <div className="bg-emerald-500/20 border border-emerald-400/40 rounded-lg px-4 py-3 backdrop-blur-sm">
-                          <div className="text-emerald-300 font-mono text-sm">&lt;code/&gt;</div>
+                        <div className="bg-white/10 border border-white/20 rounded-lg px-4 py-3 backdrop-blur-sm">
+                          <div className="text-blue-200 font-mono text-sm">&lt;code/&gt;</div>
                         </div>
                         <div className="flex flex-col gap-1">
-                          <div className="w-8 h-0.5 bg-gradient-to-r from-emerald-400 to-transparent animate-pulse"></div>
-                          <div className="w-8 h-0.5 bg-gradient-to-r from-emerald-400 to-transparent animate-pulse delay-100"></div>
-                          <div className="w-8 h-0.5 bg-gradient-to-r from-emerald-400 to-transparent animate-pulse delay-200"></div>
+                          <div className="w-8 h-0.5 bg-gradient-to-r from-white/60 to-transparent animate-pulse"></div>
+                          <div className="w-8 h-0.5 bg-gradient-to-r from-white/60 to-transparent animate-pulse delay-100"></div>
+                          <div className="w-8 h-0.5 bg-gradient-to-r from-white/60 to-transparent animate-pulse delay-200"></div>
                         </div>
-                        <div className="bg-emerald-500/20 border border-emerald-400/40 rounded-lg px-4 py-3 backdrop-blur-sm">
-                          <div className="text-emerald-300 text-sm">✨ App</div>
+                        <div className="bg-white/10 border border-white/20 rounded-lg px-4 py-3 backdrop-blur-sm">
+                          <div className="text-blue-200 text-sm">✨ App</div>
                         </div>
                       </div>
                     </div>
@@ -325,7 +325,7 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
                   <div className="hidden md:block absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
                     <div className="relative">
                       <div className="w-0.5 h-64 bg-gradient-to-b from-transparent via-white/40 to-transparent"></div>
-                      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full p-4 shadow-lg shadow-purple-500/50 border-4 border-slate-900">
+                      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-br from-pink-400 to-pink-500 rounded-full p-4 shadow-lg shadow-pink-500/50 border-4 border-indigo-500">
                         <span className="text-white font-bold text-sm">VS</span>
                       </div>
                     </div>
@@ -333,28 +333,28 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
 
                   {/* RIGHT: Strategic Direction - HARD */}
                   <div className="relative">
-                    <div className="bg-gradient-to-br from-amber-500/10 to-orange-500/10 backdrop-blur-sm rounded-2xl border border-amber-400/30 p-8 h-full flex flex-col">
+                    <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/20 p-8 h-full flex flex-col hover:bg-white/10 transition-all duration-500">
                       {/* Icon with glow effect */}
                       <div className="mb-6 relative">
-                        <div className="absolute inset-0 bg-amber-400/20 blur-2xl rounded-full"></div>
-                        <div className="relative inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl shadow-lg shadow-amber-500/50 mx-auto">
+                        <div className="absolute inset-0 bg-pink-300/20 blur-2xl rounded-full"></div>
+                        <div className="relative inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-pink-400 to-pink-500 rounded-2xl shadow-lg shadow-pink-500/50 mx-auto">
                           <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                           </svg>
                         </div>
                       </div>
 
-                      <h3 className="text-2xl md:text-3xl font-bold text-amber-300 mb-3">HARD</h3>
-                      <p className="text-white/90 text-lg mb-8">Strategic Direction</p>
+                      <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">HARD</h3>
+                      <p className="text-blue-100 text-lg mb-8">Strategic Direction</p>
 
                       {/* Critical questions visualization */}
                       <div className="space-y-4 flex-grow">
                         <div className="group relative">
-                          <div className="absolute inset-0 bg-amber-500/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                          <div className="relative bg-white/5 border border-amber-400/30 rounded-xl p-5 hover:bg-white/10 transition-all duration-300 transform hover:scale-105">
+                          <div className="absolute inset-0 bg-pink-300/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                          <div className="relative bg-white/5 border border-white/20 rounded-xl p-5 hover:bg-white/10 transition-all duration-300 transform hover:scale-105">
                             <div className="flex items-center justify-between">
-                              <span className="text-white/90 font-medium">What problem?</span>
-                              <svg className="w-6 h-6 text-amber-400 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <span className="text-white font-medium">What problem?</span>
+                              <svg className="w-6 h-6 text-pink-300 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                               </svg>
                             </div>
@@ -362,11 +362,11 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
                         </div>
 
                         <div className="group relative">
-                          <div className="absolute inset-0 bg-amber-500/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                          <div className="relative bg-white/5 border border-amber-400/30 rounded-xl p-5 hover:bg-white/10 transition-all duration-300 transform hover:scale-105">
+                          <div className="absolute inset-0 bg-pink-300/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                          <div className="relative bg-white/5 border border-white/20 rounded-xl p-5 hover:bg-white/10 transition-all duration-300 transform hover:scale-105">
                             <div className="flex items-center justify-between">
-                              <span className="text-white/90 font-medium">Which market?</span>
-                              <svg className="w-6 h-6 text-amber-400 animate-pulse delay-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <span className="text-white font-medium">Which market?</span>
+                              <svg className="w-6 h-6 text-pink-300 animate-pulse delay-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                               </svg>
                             </div>
@@ -374,11 +374,11 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
                         </div>
 
                         <div className="group relative">
-                          <div className="absolute inset-0 bg-amber-500/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                          <div className="relative bg-white/5 border border-amber-400/30 rounded-xl p-5 hover:bg-white/10 transition-all duration-300 transform hover:scale-105">
+                          <div className="absolute inset-0 bg-pink-300/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                          <div className="relative bg-white/5 border border-white/20 rounded-xl p-5 hover:bg-white/10 transition-all duration-300 transform hover:scale-105">
                             <div className="flex items-center justify-between">
-                              <span className="text-white/90 font-medium">Which features?</span>
-                              <svg className="w-6 h-6 text-amber-400 animate-pulse delay-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <span className="text-white font-medium">Which features?</span>
+                              <svg className="w-6 h-6 text-pink-300 animate-pulse delay-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                               </svg>
                             </div>
@@ -387,13 +387,13 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
                       </div>
 
                       {/* Human judgment icon */}
-                      <div className="flex items-center justify-center gap-3 mt-8 pt-6 border-t border-amber-400/20">
-                        <div className="w-8 h-8 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center">
+                      <div className="flex items-center justify-center gap-3 mt-8 pt-6 border-t border-white/20">
+                        <div className="w-8 h-8 bg-gradient-to-br from-pink-400 to-pink-500 rounded-full flex items-center justify-center">
                           <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                           </svg>
                         </div>
-                        <span className="text-amber-200 text-sm font-medium">Requires Human Judgment</span>
+                        <span className="text-blue-100 text-sm font-medium">Requires Human Judgment</span>
                       </div>
                     </div>
                   </div>
@@ -401,12 +401,12 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
 
                 {/* Bottom insight banner */}
                 <div className="mt-12 text-center">
-                  <div className="inline-flex items-center gap-3 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 backdrop-blur-sm rounded-full px-8 py-4 border border-white/20">
-                    <svg className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                  <div className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-full px-8 py-4 border border-white/20">
+                    <svg className="w-5 h-5 text-pink-300" fill="currentColor" viewBox="0 0 20 20">
                       <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                     </svg>
                     <p className="text-white font-semibold text-lg">
-                      AI accelerates execution. <span className="text-amber-300">Strategy is your moat.</span>
+                      AI accelerates execution. <span className="text-pink-300">Strategy is your moat.</span>
                     </p>
                   </div>
                 </div>
@@ -417,29 +417,29 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
           {/* Simplified key insight cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
             <div className="group relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 to-green-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <div className="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all duration-300 transform hover:-translate-y-2">
+              <div className="absolute inset-0 bg-white/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="relative bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 hover:bg-white/15 transition-all duration-300 transform hover:-translate-y-2">
                 <div className="text-4xl mb-4">💻</div>
                 <h4 className="text-xl font-bold text-white mb-2">Code is Cheap</h4>
-                <p className="text-blue-200">AI tools ship features in days</p>
+                <p className="text-blue-100">AI tools ship features in days</p>
               </div>
             </div>
 
             <div className="group relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <div className="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all duration-300 transform hover:-translate-y-2">
+              <div className="absolute inset-0 bg-pink-300/30 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="relative bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 hover:bg-white/15 transition-all duration-300 transform hover:-translate-y-2">
                 <div className="text-4xl mb-4">🎯</div>
                 <h4 className="text-xl font-bold text-white mb-2">Clarity is Scarce</h4>
-                <p className="text-blue-200">Knowing what to build is rare</p>
+                <p className="text-blue-100">Knowing what to build is rare</p>
               </div>
             </div>
 
             <div className="group relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 to-orange-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <div className="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all duration-300 transform hover:-translate-y-2">
+              <div className="absolute inset-0 bg-blue-300/30 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="relative bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 hover:bg-white/15 transition-all duration-300 transform hover:-translate-y-2">
                 <div className="text-4xl mb-4">🚀</div>
                 <h4 className="text-xl font-bold text-white mb-2">Strategy Wins</h4>
-                <p className="text-blue-200">Direction beats execution speed</p>
+                <p className="text-blue-100">Direction beats execution speed</p>
               </div>
             </div>
           </div>

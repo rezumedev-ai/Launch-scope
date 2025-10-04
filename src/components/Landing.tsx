@@ -1,5 +1,5 @@
 import React from 'react';
-import { Rocket, Target, TrendingUp, Users } from 'lucide-react';
+import { Rocket, Target, TrendingUp, Users, Zap, CheckCircle } from 'lucide-react';
 import { Button } from './ui/Button';
 import SearchComponent from './ui/animated-glowing-search-bar';
 import { PricingCard } from './PricingCard';
@@ -13,21 +13,31 @@ interface LandingProps {
 
 export function Landing({ onGetStarted, onSignIn }: LandingProps) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-500 to-blue-500">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-600 via-indigo-500 to-blue-500">
       {/* Header */}
-      <header className="px-6 py-4">
+      <header className="px-6 py-6 backdrop-blur-sm bg-white/5">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center space-x-2 sm:space-x-3">
-            <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
-              <Rocket className="w-4 h-4 text-indigo-500" />
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-lg shadow-indigo-900/20">
+              <Rocket className="w-5 h-5 text-indigo-600" />
             </div>
-            <span className="text-lg sm:text-xl font-bold text-white">LaunchScope</span>
+            <span className="text-xl font-bold text-white tracking-tight">LaunchScope</span>
           </div>
-          <div className="flex items-center space-x-1 sm:space-x-2">
-            <Button variant="outline" size="sm" onClick={onSignIn} className="text-white border-white hover:bg-white hover:text-indigo-500 px-1.5 py-0.5 text-xs sm:px-3 sm:py-2 sm:text-sm">
+          <div className="flex items-center gap-3">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={onSignIn}
+              className="text-white border-white/30 hover:bg-white hover:text-indigo-600 transition-all duration-300"
+            >
               Sign In
             </Button>
-            <Button variant="secondary" size="sm" onClick={onGetStarted} className="px-1.5 py-0.5 text-xs sm:px-3 sm:py-2 sm:text-sm">
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={onGetStarted}
+              className="bg-white text-indigo-600 hover:bg-pink-50 hover:scale-105 transition-all duration-300"
+            >
               Get Started
             </Button>
           </div>
@@ -35,138 +45,131 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
       </header>
 
       {/* Hero Section */}
-      <main className="px-6 py-20">
-        <div className="max-w-7xl mx-auto text-center text-white">
+      <section className="px-6 py-20 md:py-28 relative overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-20 right-20 w-72 h-72 bg-pink-300/20 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-20 left-20 w-96 h-96 bg-blue-400/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        </div>
+
+        <div className="max-w-7xl mx-auto text-center text-white relative z-10">
           <div className="max-w-4xl mx-auto">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-              Validate Your 
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight tracking-tight">
+              Validate Your
               <span className="text-pink-300"> Startup Ideas </span>
               Before You Build
             </h1>
-            <p className="text-base sm:text-lg md:text-xl text-blue-100 mb-8 leading-relaxed">
+            <p className="text-lg sm:text-xl md:text-2xl text-blue-50 mb-10 leading-relaxed font-light">
               Get instant clarity on your startup idea with deep insights into risks, opportunities, and what matters most to customers.
             </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" onClick={onGetStarted} className="text-lg px-10 py-4">
-                <span className="relative z-10">Get Started Free</span>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-20">
+              <Button
+                size="lg"
+                onClick={onGetStarted}
+                className="bg-white text-indigo-600 hover:bg-pink-50 text-lg px-12 py-6 shadow-2xl shadow-indigo-900/30 hover:scale-105 transition-all duration-300"
+              >
+                Get Started Free
               </Button>
-              <Button variant="secondary" size="lg" className="text-lg px-10 py-4">
+              <Button
+                variant="outline"
+                size="lg"
+                className="border-2 border-white/30 text-white hover:bg-white hover:text-indigo-600 text-lg px-12 py-6 backdrop-blur-sm transition-all duration-300"
+              >
                 See How It Works
               </Button>
             </div>
-          </div>
 
-          {/* Features Grid */}
-          <div className="mt-24 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-            <div className="bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-              <div className="w-12 h-12 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-xl flex items-center justify-center mb-4 mx-auto">
-                <Target className="w-6 h-6 text-white" />
+            {/* Features Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+              <div className="group bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20 hover:bg-white/15 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-pink-500/20">
+                <div className="w-14 h-14 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-xl flex items-center justify-center mb-5 mx-auto shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <Target className="w-7 h-7 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-white mb-3">Deep Analysis</h3>
+                <p className="text-blue-100 leading-relaxed">
+                  Uncover strengths, gaps, and hidden risks in your idea.
+                </p>
               </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-3">Deep Analysis</h3>
-              <p className="text-gray-600">
-                Uncover strengths, gaps, and hidden risks in your idea.
-              </p>
-            </div>
 
-            <div className="bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-              <div className="w-12 h-12 bg-pink-500 rounded-xl flex items-center justify-center mb-4 mx-auto">
-                <TrendingUp className="w-6 h-6 text-white" />
+              <div className="group bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20 hover:bg-white/15 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-pink-500/20">
+                <div className="w-14 h-14 bg-gradient-to-br from-pink-400 to-pink-500 rounded-xl flex items-center justify-center mb-5 mx-auto shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <TrendingUp className="w-7 h-7 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-white mb-3">Market Insights</h3>
+                <p className="text-blue-100 leading-relaxed">
+                  Spot real opportunities and understand customer needs.
+                </p>
               </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-3">Market Insights</h3>
-              <p className="text-gray-600">
-                Spot real opportunities and understand customer needs.
-              </p>
-            </div>
 
-            <div className="bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-              <div className="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center mb-4 mx-auto">
-                <Users className="w-6 h-6 text-white" />
+              <div className="group bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20 hover:bg-white/15 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-pink-500/20 sm:col-span-2 md:col-span-1">
+                <div className="w-14 h-14 bg-gradient-to-br from-blue-300 to-blue-400 rounded-xl flex items-center justify-center mb-5 mx-auto shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <Users className="w-7 h-7 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-white mb-3">Actionable Next Steps</h3>
+                <p className="text-blue-100 leading-relaxed">
+                  Clear guidance on what to build and prioritize first.
+                </p>
               </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-3">Actionable Next Steps</h3>
-              <p className="text-gray-600">
-                Clear guidance on what to build and prioritize first.
-              </p>
             </div>
           </div>
         </div>
-      </main>
+      </section>
 
       {/* The Problem Section */}
-      <section className="px-6 py-20 bg-gradient-to-br from-indigo-500 to-blue-500">
-        <div className="max-w-7xl mx-auto text-center text-white">
+      <section className="px-6 py-20 md:py-28 bg-gradient-to-br from-indigo-600 to-blue-600 relative">
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PHBhdGggZD0iTTM2IDM0djItMnptMC0ydjItMnptLTItMnYyLTJ6bS0yIDB2Mi0yem0tMiAwdjItMnptLTItMnYyLTJ6bS0yIDB2Mi0yem0tMiAwdjItMnptLTItMnYyLTJ6bS0yIDB2Mi0yem0tMiAwdjItMnptLTItMnYyLTJ6bS0yIDB2Mi0yem0tMiAwdjItMnptLTItMnYyLTJ6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-40"></div>
+
+        <div className="max-w-7xl mx-auto text-center text-white relative z-10">
           <div className="max-w-4xl mx-auto mb-16">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight tracking-tight">
               Most Startups Fail Before They Even Launch
             </h2>
-            <p className="text-base sm:text-lg md:text-xl text-blue-100 mb-8 leading-relaxed">
+            <p className="text-lg sm:text-xl text-blue-100 leading-relaxed font-light">
               Founders spend months building products nobody asked for. They burn money, time, and energy — only to realize customers didn't want it.
             </p>
           </div>
 
-          {/* Minimal Illustration */}
-          <div className="mb-20 relative">
+          {/* Problem Visualization */}
+          <div className="mb-16 relative">
             <div className="max-w-5xl mx-auto">
-              {/* Professional illustration container */}
-              <div className="relative bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-12 overflow-hidden">
-                {/* Subtle background pattern */}
-                <div className="absolute inset-0 opacity-5">
-                  <div className="absolute top-4 left-4 w-32 h-32 border border-white/20 rounded-full"></div>
-                  <div className="absolute bottom-4 right-4 w-24 h-24 border border-white/20 rounded-full"></div>
-                  <div className="absolute top-1/2 left-1/4 w-16 h-16 border border-white/20 rounded-full"></div>
-                </div>
-                
-                {/* Central content */}
+              <div className="relative bg-white/5 backdrop-blur-md rounded-3xl border border-white/20 p-8 md:p-12 overflow-hidden shadow-2xl">
                 <div className="relative z-10 text-center">
-                  {/* Sophisticated founder representation */}
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-white/10 border-2 border-white/30 rounded-xl mb-6">
-                    <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
-                      <div className="w-2 h-2 bg-white rounded-full"></div>
+                  <div className="inline-flex items-center justify-center w-20 h-20 bg-white/10 border-2 border-white/30 rounded-2xl mb-8">
+                    <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                      <div className="w-3 h-3 bg-white rounded-full animate-pulse"></div>
                     </div>
                   </div>
-                  
-                  <h3 className="text-white/90 text-lg font-medium mb-8">The Reality of Building Without Validation</h3>
-                  
-                  {/* Professional problem indicators */}
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
-                    <div className="bg-white/5 border border-white/10 rounded-lg p-4 text-center hover:bg-white/10 transition-all duration-300">
-                      <div className="text-red-300 text-sm font-medium mb-1">6 months</div>
-                      <div className="text-white/70 text-xs">Development time</div>
+
+                  <h3 className="text-white text-xl font-semibold mb-10">The Reality of Building Without Validation</h3>
+
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mb-8">
+                    <div className="bg-white/5 border border-white/20 rounded-xl p-6 text-center hover:bg-white/10 hover:scale-105 transition-all duration-300">
+                      <div className="text-pink-300 text-2xl font-bold mb-2">6 months</div>
+                      <div className="text-blue-100 text-sm">Development time</div>
                     </div>
-                    
-                    <div className="bg-white/5 border border-white/10 rounded-lg p-4 text-center hover:bg-white/10 transition-all duration-300">
-                      <div className="text-orange-300 text-sm font-medium mb-1">$50k+</div>
-                      <div className="text-white/70 text-xs">Wasted budget</div>
+
+                    <div className="bg-white/5 border border-white/20 rounded-xl p-6 text-center hover:bg-white/10 hover:scale-105 transition-all duration-300">
+                      <div className="text-pink-300 text-2xl font-bold mb-2">$50k+</div>
+                      <div className="text-blue-100 text-sm">Wasted budget</div>
                     </div>
-                    
-                    <div className="bg-white/5 border border-white/10 rounded-lg p-4 text-center hover:bg-white/10 transition-all duration-300">
-                      <div className="text-yellow-300 text-sm font-medium mb-1">0 users</div>
-                      <div className="text-white/70 text-xs">Product adoption</div>
+
+                    <div className="bg-white/5 border border-white/20 rounded-xl p-6 text-center hover:bg-white/10 hover:scale-105 transition-all duration-300">
+                      <div className="text-pink-300 text-2xl font-bold mb-2">0 users</div>
+                      <div className="text-blue-100 text-sm">Product adoption</div>
                     </div>
-                    
-                    <div className="bg-white/5 border border-white/10 rounded-lg p-4 text-center hover:bg-white/10 transition-all duration-300">
-                      <div className="text-pink-300 text-sm font-medium mb-1">90%</div>
-                      <div className="text-white/70 text-xs">Failure rate</div>
+
+                    <div className="bg-white/5 border border-white/20 rounded-xl p-6 text-center hover:bg-white/10 hover:scale-105 transition-all duration-300">
+                      <div className="text-pink-300 text-2xl font-bold mb-2">90%</div>
+                      <div className="text-blue-100 text-sm">Failure rate</div>
                     </div>
                   </div>
-                  
-                  {/* Key pain points */}
-                  <div className="mt-8 flex flex-wrap justify-center gap-2 sm:gap-3 max-w-3xl mx-auto">
-                    <span className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-white/70 text-sm">
-                      Building in isolation
-                    </span>
-                    <span className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-white/70 text-sm">
-                      Assuming customer needs
-                    </span>
-                    <span className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-white/70 text-sm">
-                      No market feedback
-                    </span>
-                    <span className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-white/70 text-sm">
-                      Feature bloat
-                    </span>
-                    <span className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-white/70 text-sm">
-                      Wrong priorities
-                    </span>
+
+                  <div className="flex flex-wrap justify-center gap-3">
+                    {['Building in isolation', 'Assuming customer needs', 'No market feedback', 'Feature bloat', 'Wrong priorities'].map((item, idx) => (
+                      <span key={idx} className="px-5 py-2 bg-white/5 border border-white/20 rounded-full text-blue-100 text-sm hover:bg-white/10 transition-all duration-300">
+                        {item}
+                      </span>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -174,48 +177,46 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
           </div>
 
           {/* Problem Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
-            <div className="bg-white/10 backdrop-blur-sm p-6 rounded-lg border border-white/20 hover:bg-white/15 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
-              <div className="flex items-start space-x-4 text-left">
-                <div className="flex-shrink-0 mt-1">
-                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <polyline points="12,6 12,12 16,14"></polyline>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20 hover:bg-white/15 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-2xl">
+              <div className="flex items-start gap-4 text-left">
+                <div className="flex-shrink-0 w-12 h-12 bg-pink-500/20 rounded-xl flex items-center justify-center">
+                  <svg className="w-6 h-6 text-pink-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" strokeWidth="2"></circle>
+                    <polyline points="12,6 12,12 16,14" strokeWidth="2"></polyline>
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-white mb-2">Months of work wasted</h3>
-                  <p className="text-blue-100 text-sm">Building features nobody wants</p>
+                  <h3 className="text-xl font-bold text-white mb-2">Months of work wasted</h3>
+                  <p className="text-blue-100">Building features nobody wants</p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white/10 backdrop-blur-sm p-6 rounded-lg border border-white/20 hover:bg-white/15 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
-              <div className="flex items-start space-x-4 text-left">
-                <div className="flex-shrink-0 mt-1">
-                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
-                  </svg>
+            <div className="bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20 hover:bg-white/15 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-2xl">
+              <div className="flex items-start gap-4 text-left">
+                <div className="flex-shrink-0 w-12 h-12 bg-pink-500/20 rounded-xl flex items-center justify-center">
+                  <Zap className="w-6 h-6 text-pink-300" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-white mb-2">Wrong features built</h3>
-                  <p className="text-blue-100 text-sm">Missing what customers actually need</p>
+                  <h3 className="text-xl font-bold text-white mb-2">Wrong features built</h3>
+                  <p className="text-blue-100">Missing what customers actually need</p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white/10 backdrop-blur-sm p-6 rounded-lg border border-white/20 hover:bg-white/15 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
-              <div className="flex items-start space-x-4 text-left">
-                <div className="flex-shrink-0 mt-1">
-                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <line x1="15" y1="9" x2="9" y2="15"></line>
-                    <line x1="9" y1="9" x2="15" y2="15"></line>
+            <div className="bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20 hover:bg-white/15 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-2xl">
+              <div className="flex items-start gap-4 text-left">
+                <div className="flex-shrink-0 w-12 h-12 bg-pink-500/20 rounded-xl flex items-center justify-center">
+                  <svg className="w-6 h-6 text-pink-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" strokeWidth="2"></circle>
+                    <line x1="15" y1="9" x2="9" y2="15" strokeWidth="2"></line>
+                    <line x1="9" y1="9" x2="15" y2="15" strokeWidth="2"></line>
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-white mb-2">No clear direction</h3>
-                  <p className="text-blue-100 text-sm">Guessing instead of knowing</p>
+                  <h3 className="text-xl font-bold text-white mb-2">No clear direction</h3>
+                  <p className="text-blue-100">Guessing instead of knowing</p>
                 </div>
               </div>
             </div>
@@ -223,55 +224,49 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
         </div>
       </section>
 
-      {/* The New Reality Section - Visually Stunning Redesign */}
-      <section className="px-6 py-20 bg-gradient-to-br from-indigo-500 to-blue-500 relative overflow-hidden">
-        {/* Animated background elements */}
+      {/* The New Reality Section */}
+      <section className="px-6 py-20 md:py-28 bg-gradient-to-br from-indigo-500 to-blue-500 relative overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl animate-pulse"></div>
           <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-pink-300/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
         </div>
 
         <div className="max-w-7xl mx-auto text-center text-white relative z-10">
-          {/* Minimal headline - let visuals do the talking */}
           <div className="max-w-5xl mx-auto mb-20">
-            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-8 leading-tight tracking-tight">
               Building is Easy.
               <br />
               <span className="text-pink-300">
                 Building the Right Thing is Hard.
               </span>
             </h2>
-            <p className="text-xl sm:text-2xl text-blue-100 font-light max-w-3xl mx-auto">
+            <p className="text-xl sm:text-2xl text-blue-100 font-light">
               The bottleneck isn't technology — it's clarity.
             </p>
           </div>
 
-          {/* Main Visual Split Screen */}
+          {/* Visual Split Screen */}
           <div className="mb-16 relative">
             <div className="max-w-7xl mx-auto">
-              <div className="relative bg-white/10 backdrop-blur-sm rounded-3xl border border-white/20 p-8 md:p-16 overflow-hidden shadow-2xl">
-                {/* Glowing orbs for depth */}
+              <div className="relative bg-white/10 backdrop-blur-md rounded-3xl border border-white/20 p-8 md:p-16 overflow-hidden shadow-2xl">
                 <div className="absolute top-0 left-1/4 w-64 h-64 bg-blue-400/20 rounded-full blur-3xl"></div>
                 <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-pink-300/20 rounded-full blur-3xl"></div>
 
                 <div className="relative z-10 grid md:grid-cols-2 gap-12 md:gap-16 items-stretch">
-                  {/* LEFT: AI-Powered Execution - EASY */}
+                  {/* LEFT: AI-Powered Execution */}
                   <div className="relative">
                     <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/20 p-8 h-full flex flex-col hover:bg-white/10 transition-all duration-500">
-                      {/* Icon with glow effect */}
                       <div className="mb-6 relative">
                         <div className="absolute inset-0 bg-blue-300/20 blur-2xl rounded-full"></div>
-                        <div className="relative inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-2xl shadow-lg shadow-blue-500/50 mx-auto">
-                          <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                          </svg>
+                        <div className="relative inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-2xl shadow-lg mx-auto">
+                          <Zap className="w-10 h-10 text-white" />
                         </div>
                       </div>
 
-                      <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">EASY</h3>
+                      <h3 className="text-3xl font-bold text-white mb-3">EASY</h3>
                       <p className="text-blue-100 text-lg mb-8">AI-Powered Execution</p>
 
-                      {/* AI Tools Grid - With Original Logos */}
+                      {/* AI Tools Grid */}
                       <div className="grid grid-cols-3 gap-4 mb-8 flex-grow items-center">
                         <div className="group relative">
                           <div className="absolute inset-0 bg-white/20 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -304,9 +299,9 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
                         </div>
                       </div>
 
-                      {/* Animated flow visualization */}
+                      {/* Flow visualization */}
                       <div className="flex items-center justify-center gap-4 mt-auto">
-                        <div className="bg-white/10 border border-white/20 rounded-lg px-4 py-3 backdrop-blur-sm">
+                        <div className="bg-white/10 border border-white/20 rounded-lg px-4 py-3">
                           <div className="text-blue-200 font-mono text-sm">&lt;code/&gt;</div>
                         </div>
                         <div className="flex flex-col gap-1">
@@ -314,14 +309,14 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
                           <div className="w-8 h-0.5 bg-gradient-to-r from-white/60 to-transparent animate-pulse delay-100"></div>
                           <div className="w-8 h-0.5 bg-gradient-to-r from-white/60 to-transparent animate-pulse delay-200"></div>
                         </div>
-                        <div className="bg-white/10 border border-white/20 rounded-lg px-4 py-3 backdrop-blur-sm">
+                        <div className="bg-white/10 border border-white/20 rounded-lg px-4 py-3">
                           <div className="text-blue-200 text-sm">✨ App</div>
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  {/* Vertical divider with VS badge */}
+                  {/* Vertical divider */}
                   <div className="hidden md:block absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
                     <div className="relative">
                       <div className="w-0.5 h-64 bg-gradient-to-b from-transparent via-white/40 to-transparent"></div>
@@ -331,62 +326,39 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
                     </div>
                   </div>
 
-                  {/* RIGHT: Strategic Direction - HARD */}
+                  {/* RIGHT: Strategic Direction */}
                   <div className="relative">
                     <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/20 p-8 h-full flex flex-col hover:bg-white/10 transition-all duration-500">
-                      {/* Icon with glow effect */}
                       <div className="mb-6 relative">
                         <div className="absolute inset-0 bg-pink-300/20 blur-2xl rounded-full"></div>
-                        <div className="relative inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-pink-400 to-pink-500 rounded-2xl shadow-lg shadow-pink-500/50 mx-auto">
+                        <div className="relative inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-pink-400 to-pink-500 rounded-2xl shadow-lg mx-auto">
                           <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                           </svg>
                         </div>
                       </div>
 
-                      <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">HARD</h3>
+                      <h3 className="text-3xl font-bold text-white mb-3">HARD</h3>
                       <p className="text-blue-100 text-lg mb-8">Strategic Direction</p>
 
-                      {/* Critical questions visualization */}
+                      {/* Questions */}
                       <div className="space-y-4 flex-grow">
-                        <div className="group relative">
-                          <div className="absolute inset-0 bg-pink-300/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                          <div className="relative bg-white/5 border border-white/20 rounded-xl p-5 hover:bg-white/10 transition-all duration-300 transform hover:scale-105">
-                            <div className="flex items-center justify-between">
-                              <span className="text-white font-medium">What problem?</span>
-                              <svg className="w-6 h-6 text-pink-300 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                              </svg>
+                        {['What problem?', 'Which market?', 'Which features?'].map((question, idx) => (
+                          <div key={idx} className="group relative">
+                            <div className="absolute inset-0 bg-pink-300/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div className="relative bg-white/5 border border-white/20 rounded-xl p-5 hover:bg-white/10 transition-all duration-300 transform hover:scale-105">
+                              <div className="flex items-center justify-between">
+                                <span className="text-white font-medium">{question}</span>
+                                <svg className={`w-6 h-6 text-pink-300 animate-pulse delay-${idx * 100}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                              </div>
                             </div>
                           </div>
-                        </div>
-
-                        <div className="group relative">
-                          <div className="absolute inset-0 bg-pink-300/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                          <div className="relative bg-white/5 border border-white/20 rounded-xl p-5 hover:bg-white/10 transition-all duration-300 transform hover:scale-105">
-                            <div className="flex items-center justify-between">
-                              <span className="text-white font-medium">Which market?</span>
-                              <svg className="w-6 h-6 text-pink-300 animate-pulse delay-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                              </svg>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="group relative">
-                          <div className="absolute inset-0 bg-pink-300/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                          <div className="relative bg-white/5 border border-white/20 rounded-xl p-5 hover:bg-white/10 transition-all duration-300 transform hover:scale-105">
-                            <div className="flex items-center justify-between">
-                              <span className="text-white font-medium">Which features?</span>
-                              <svg className="w-6 h-6 text-pink-300 animate-pulse delay-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                              </svg>
-                            </div>
-                          </div>
-                        </div>
+                        ))}
                       </div>
 
-                      {/* Human judgment icon */}
+                      {/* Footer */}
                       <div className="flex items-center justify-center gap-3 mt-8 pt-6 border-t border-white/20">
                         <div className="w-8 h-8 bg-gradient-to-br from-pink-400 to-pink-500 rounded-full flex items-center justify-center">
                           <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -399,7 +371,7 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
                   </div>
                 </div>
 
-                {/* Bottom insight banner */}
+                {/* Bottom insight */}
                 <div className="mt-12 text-center">
                   <div className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-full px-8 py-4 border border-white/20">
                     <svg className="w-5 h-5 text-pink-300" fill="currentColor" viewBox="0 0 20 20">
@@ -414,187 +386,95 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
             </div>
           </div>
 
-          {/* Simplified key insight cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            <div className="group relative">
-              <div className="absolute inset-0 bg-white/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <div className="relative bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 hover:bg-white/15 transition-all duration-300 transform hover:-translate-y-2">
-                <div className="text-4xl mb-4">💻</div>
-                <h4 className="text-xl font-bold text-white mb-2">Code is Cheap</h4>
-                <p className="text-blue-100">AI tools ship features in days</p>
+          {/* Key insights */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              { icon: '💻', title: 'Code is Cheap', desc: 'AI tools ship features in days' },
+              { icon: '🎯', title: 'Clarity is Scarce', desc: 'Knowing what to build is rare' },
+              { icon: '🚀', title: 'Strategy Wins', desc: 'Direction beats execution speed' }
+            ].map((item, idx) => (
+              <div key={idx} className="group relative">
+                <div className={`absolute inset-0 ${idx === 1 ? 'bg-pink-300/30' : 'bg-white/20'} rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
+                <div className="relative bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-8 hover:bg-white/15 transition-all duration-500 transform hover:-translate-y-2">
+                  <div className="text-5xl mb-4">{item.icon}</div>
+                  <h4 className="text-xl font-bold text-white mb-2">{item.title}</h4>
+                  <p className="text-blue-100">{item.desc}</p>
+                </div>
               </div>
-            </div>
-
-            <div className="group relative">
-              <div className="absolute inset-0 bg-pink-300/30 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <div className="relative bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 hover:bg-white/15 transition-all duration-300 transform hover:-translate-y-2">
-                <div className="text-4xl mb-4">🎯</div>
-                <h4 className="text-xl font-bold text-white mb-2">Clarity is Scarce</h4>
-                <p className="text-blue-100">Knowing what to build is rare</p>
-              </div>
-            </div>
-
-            <div className="group relative">
-              <div className="absolute inset-0 bg-blue-300/30 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <div className="relative bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 hover:bg-white/15 transition-all duration-300 transform hover:-translate-y-2">
-                <div className="text-4xl mb-4">🚀</div>
-                <h4 className="text-xl font-bold text-white mb-2">Strategy Wins</h4>
-                <p className="text-blue-100">Direction beats execution speed</p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* The Solution Section */}
-      <section className="px-6 py-20 bg-gradient-to-br from-indigo-500 to-blue-500">
+      {/* Solution Section */}
+      <section className="px-6 py-20 md:py-28 bg-gradient-to-br from-indigo-600 to-blue-600">
         <div className="max-w-7xl mx-auto text-center text-white">
           <div className="max-w-4xl mx-auto mb-16">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-              The LaunchScope Solution: Build What Matters
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight tracking-tight">
+              The LaunchScope Solution
             </h2>
-            <p className="text-base sm:text-lg md:text-xl text-blue-100 mb-8 leading-relaxed">
+            <p className="text-lg sm:text-xl text-blue-100 leading-relaxed font-light">
               LaunchScope empowers you to make data-driven decisions, ensuring every hour and dollar you invest goes into building products customers truly desire.
             </p>
           </div>
 
-          {/* Solution Showcase */}
-          <div className="mb-20 relative">
-            <div className="max-w-5xl mx-auto">
-              {/* Professional solution container */}
-              <div className="relative bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-12 overflow-hidden">
-                {/* Subtle background pattern */}
-                <div className="absolute inset-0 opacity-5">
-                  <div className="absolute top-6 right-6 w-28 h-28 border border-white/20 rounded-full"></div>
-                  <div className="absolute bottom-6 left-6 w-20 h-20 border border-white/20 rounded-full"></div>
-                  <div className="absolute top-1/2 right-1/4 w-12 h-12 border border-white/20 rounded-full"></div>
+          {/* Solution Benefits */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+            {[
+              { icon: TrendingUp, title: 'Data-Driven Validation', desc: 'Test against real market demand' },
+              { icon: Users, title: 'Customer Insights', desc: 'Understand real user needs' },
+              { icon: CheckCircle, title: 'Strategic Focus', desc: 'Build features that matter most' }
+            ].map((item, idx) => (
+              <div key={idx} className="bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20 hover:bg-white/15 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-2xl">
+                <div className="w-14 h-14 bg-gradient-to-br from-pink-400 to-pink-500 rounded-xl flex items-center justify-center mb-5 mx-auto shadow-lg">
+                  <item.icon className="w-7 h-7 text-white" />
                 </div>
-                
-                {/* Central content */}
-                <div className="relative z-10 text-center">
-                  {/* Solution icon */}
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-pink-500/20 to-amber-500/20 border-2 border-white/30 rounded-xl mb-6">
-                    <div className="w-8 h-8 bg-gradient-to-r from-pink-400 to-amber-400 rounded-full flex items-center justify-center">
-                      <div className="w-2 h-2 bg-white rounded-full"></div>
-                    </div>
-                  </div>
-                  
-                  <h3 className="text-white/90 text-lg font-medium mb-8">Transform Ideas Into Validated Opportunities</h3>
-                  
-                  {/* Solution benefits grid */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 max-w-4xl mx-auto">
-                    <div className="bg-white/5 border border-white/10 rounded-lg p-6 text-center hover:bg-white/10 transition-all duration-500 transform hover:-translate-y-1 hover:shadow-lg group">
-                      <div className="w-12 h-12 bg-gradient-to-r from-indigo-400 to-blue-400 rounded-xl flex items-center justify-center mb-4 mx-auto group-hover:scale-110 transition-transform duration-300">
-                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                        </svg>
-                      </div>
-                      <h4 className="text-white font-semibold mb-2">Data-Driven Validation</h4>
-                      <p className="text-white/70 text-sm">Test against real market demand</p>
-                    </div>
-                    
-                    <div className="bg-white/5 border border-white/10 rounded-lg p-6 text-center hover:bg-white/10 transition-all duration-500 transform hover:-translate-y-1 hover:shadow-lg group">
-                      <div className="w-12 h-12 bg-gradient-to-r from-pink-400 to-rose-400 rounded-xl flex items-center justify-center mb-4 mx-auto group-hover:scale-110 transition-transform duration-300">
-                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                        </svg>
-                      </div>
-                      <h4 className="text-white font-semibold mb-2">Customer Insights</h4>
-                      <p className="text-white/70 text-sm">Understand real user needs</p>
-                    </div>
-                    
-                    <div className="bg-white/5 border border-white/10 rounded-lg p-6 text-center hover:bg-white/10 transition-all duration-500 transform hover:-translate-y-1 hover:shadow-lg group">
-                      <div className="w-12 h-12 bg-gradient-to-r from-amber-400 to-orange-400 rounded-xl flex items-center justify-center mb-4 mx-auto group-hover:scale-110 transition-transform duration-300">
-                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                        </svg>
-                      </div>
-                      <h4 className="text-white font-semibold mb-2">Strategic Focus</h4>
-                      <p className="text-white/70 text-sm">Build features that matter most</p>
-                    </div>
-                  </div>
-                  
-                  {/* Success metrics */}
-                  <div className="mt-8 flex flex-wrap justify-center gap-3 max-w-3xl mx-auto">
-                    <span className="px-4 py-2 bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-400/30 rounded-full text-green-200 text-sm font-medium">
-                      ✓ Reduce development time by 60%
-                    </span>
-                    <span className="px-4 py-2 bg-gradient-to-r from-blue-500/20 to-indigo-500/20 border border-blue-400/30 rounded-full text-blue-200 text-sm font-medium">
-                      ✓ Increase user adoption by 3x
-                    </span>
-                    <span className="px-4 py-2 bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-400/30 rounded-full text-purple-200 text-sm font-medium">
-                      ✓ Save $25k+ in wasted features
-                    </span>
-                  </div>
-                </div>
+                <h4 className="text-xl font-bold text-white mb-3">{item.title}</h4>
+                <p className="text-blue-100">{item.desc}</p>
               </div>
-            </div>
+            ))}
           </div>
 
-          {/* How It Works Process */}
+          {/* How it works */}
           <div className="mb-16">
             <h3 className="text-3xl font-bold text-white mb-12">How LaunchScope Works</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 max-w-5xl mx-auto">
-              <div className="relative group">
-                <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20 hover:bg-white/15 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-xl">
-                  <div className="w-12 h-12 bg-gradient-to-r from-indigo-400 to-blue-400 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                    <span className="text-white font-bold text-lg">1</span>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {[
+                { num: '1', title: 'Submit Your Idea', desc: 'Share your startup concept and target market.' },
+                { num: '2', title: 'Get Deep Insights', desc: 'Receive comprehensive analysis with actionable recommendations.' },
+                { num: '3', title: 'Build With Confidence', desc: 'Use our prioritized roadmap to build what customers want.' }
+              ].map((step, idx) => (
+                <div key={idx} className="relative group">
+                  <div className="bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20 hover:bg-white/15 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-2xl">
+                    <div className="w-14 h-14 bg-gradient-to-br from-pink-400 to-pink-500 rounded-xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                      <span className="text-white font-bold text-2xl">{step.num}</span>
+                    </div>
+                    <h4 className="text-xl font-bold text-white mb-4">{step.title}</h4>
+                    <p className="text-blue-100 leading-relaxed">{step.desc}</p>
                   </div>
-                  <h4 className="text-xl font-semibold text-white mb-4">Submit Your Idea</h4>
-                  <p className="text-blue-100 leading-relaxed">
-                    Share your startup concept and target market. Our AI analyzes your idea against market trends and competitor landscape.
-                  </p>
+                  {idx < 2 && (
+                    <div className="hidden md:block absolute top-1/2 -right-4 w-8 h-0.5 bg-white/30 transform -translate-y-1/2"></div>
+                  )}
                 </div>
-                {/* Connecting line */}
-                <div className="hidden md:block absolute top-1/2 -right-4 w-8 h-0.5 bg-white/30 transform -translate-y-1/2"></div>
-              </div>
-              
-              <div className="relative group">
-                <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20 hover:bg-white/15 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-xl">
-                  <div className="w-12 h-12 bg-gradient-to-r from-pink-400 to-rose-400 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                    <span className="text-white font-bold text-lg">2</span>
-                  </div>
-                  <h4 className="text-xl font-semibold text-white mb-4">Get Deep Insights</h4>
-                  <p className="text-blue-100 leading-relaxed">
-                    Receive comprehensive analysis including market size, competition, risks, and opportunities with actionable recommendations.
-                  </p>
-                </div>
-                {/* Connecting line */}
-                <div className="hidden md:block absolute top-1/2 -right-4 w-8 h-0.5 bg-white/30 transform -translate-y-1/2"></div>
-              </div>
-              
-              <div className="relative group">
-                <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20 hover:bg-white/15 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-xl">
-                  <div className="w-12 h-12 bg-gradient-to-r from-amber-400 to-orange-400 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                    <span className="text-white font-bold text-lg">3</span>
-                  </div>
-                  <h4 className="text-xl font-semibold text-white mb-4">Build With Confidence</h4>
-                  <p className="text-blue-100 leading-relaxed">
-                    Use our prioritized roadmap and validation framework to build features customers actually want and need.
-                  </p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
-
         </div>
       </section>
 
       {/* Pricing Section */}
-      <section className="px-6 py-20 bg-gradient-to-br from-indigo-500 to-blue-500">
+      <section className="px-6 py-20 md:py-28 bg-gradient-to-br from-indigo-500 to-blue-500">
         <div className="max-w-7xl mx-auto text-center text-white">
           <div className="max-w-4xl mx-auto mb-16">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight tracking-tight">
               Ready to Validate Your Idea?
             </h2>
-            <p className="text-base sm:text-lg md:text-xl text-blue-100 mb-8 leading-relaxed">
-              Get started for free or unlock unlimited analysis with our paid plan. Validate your idea, reduce risk, and stop building what nobody wants.
+            <p className="text-lg sm:text-xl text-blue-100 leading-relaxed font-light">
+              Get started for free or unlock unlimited analysis with our paid plan.
             </p>
           </div>
 
-          {/* Pricing Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-4xl mx-auto mb-16">
-            {/* Free Plan */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
             <PricingCard
               title="Free to Start"
               price="$0"
@@ -607,7 +487,6 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
               onGetStarted={onGetStarted}
             />
 
-            {/* Pro Plan */}
             <PricingCard
               title="Unlock Unlimited Insights"
               price="$5"
@@ -626,107 +505,45 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
         </div>
       </section>
 
-      {/* Final Closing Section */}
-      <section className="px-6 py-20 bg-gradient-to-br from-indigo-500 to-blue-500">
+      {/* Final CTA */}
+      <section className="px-6 py-20 md:py-28 bg-gradient-to-br from-indigo-600 to-blue-600">
         <div className="max-w-7xl mx-auto text-center text-white">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight tracking-tight">
               Don't Waste Months Building the Wrong Thing
             </h2>
-            <p className="text-base sm:text-lg md:text-xl text-blue-100 mb-12 leading-relaxed">
+            <p className="text-lg sm:text-xl text-blue-100 mb-12 leading-relaxed font-light">
               Get clarity in minutes. LaunchScope gives you the insights you need before you write a single line of code.
             </p>
-            
-            {/* Animated CTA */}
-            <div className="relative">
-              <div className="animate-fade-in-up">
-                <Button 
-                  size="lg" 
-                  onClick={onGetStarted}
-                  className="text-xl px-12 py-5 bg-gradient-to-r from-pink-300 to-pink-400 hover:from-pink-400 hover:to-pink-500 transform hover:scale-110 transition-all duration-300 shadow-2xl hover:shadow-pink-300/25 animate-pulse-glow"
-                >
-                  Start Validating Your Idea
-                </Button>
-              </div>
-              
-              {/* Subtle background glow */}
-              <div className="absolute inset-0 bg-gradient-to-r from-pink-300/20 to-pink-400/20 rounded-full blur-3xl -z-10 animate-pulse"></div>
+
+            <div className="relative inline-block">
+              <Button
+                size="lg"
+                onClick={onGetStarted}
+                className="bg-white text-indigo-600 hover:bg-pink-50 text-xl px-16 py-7 shadow-2xl shadow-indigo-900/30 hover:scale-110 transition-all duration-300 relative z-10"
+              >
+                Start Validating Your Idea
+              </Button>
+              <div className="absolute inset-0 bg-pink-300/30 rounded-full blur-3xl -z-10 animate-pulse"></div>
             </div>
-            
-            {/* Final encouragement */}
-            <p className="text-blue-200 mt-8 text-lg">
+
+            <p className="text-blue-100 mt-8 text-lg">
               Join thousands of founders who validated first, built second.
             </p>
           </div>
         </div>
       </section>
-      
-      {/* Remove the old solution section */}
-      <section className="py-16" style={{ display: 'none' }}>
-        <div className="text-center mb-12 text-white">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            The LaunchScope Solution: Build What Matters
-          </h2>
-        </div>
-        <div className="mx-6 md:mx-12 lg:mx-16">
-          <div className="bg-white p-8 md:p-12 lg:p-16 rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:-translate-y-1">
-            <div className="text-center mb-8">
-              <p className="text-xl text-gray-600 leading-relaxed max-w-4xl mx-auto">
-                LaunchScope empowers you to make data-driven decisions, ensuring every hour and dollar you invest goes into building products customers truly desire.
-              </p>
-            </div>
 
-            {/* Solution Benefits */}
-            <div className="space-y-6 mb-8">
-              <div className="flex items-start space-x-4">
-                <div className="w-6 h-6 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                  <div className="w-2 h-2 bg-white rounded-full"></div>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-800 mb-2">Data-Driven Validation</h3>
-                  <p className="text-gray-600">Test your ideas against real market demand, not assumptions.</p>
-                </div>
-              </div>
-              
-              <div className="flex items-start space-x-4">
-                <div className="w-6 h-6 bg-pink-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                  <div className="w-2 h-2 bg-white rounded-full"></div>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-800 mb-2">Targeted Insights</h3>
-                  <p className="text-gray-600">Understand your ideal customer and their unmet needs.</p>
-                </div>
-              </div>
-              
-              <div className="flex items-start space-x-4">
-                <div className="w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                  <div className="w-2 h-2 bg-white rounded-full"></div>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-800 mb-2">Strategic Prioritization</h3>
-                  <p className="text-gray-600">Focus on features that deliver maximum value and impact.</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="text-center">
-              <Button size="lg" onClick={onGetStarted} className="text-lg px-10 py-4">
-                Start Validating Your Ideas
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
       {/* Footer */}
-      <footer className="px-6 py-12 border-t border-white/20">
+      <footer className="px-6 py-12 bg-indigo-900/50 backdrop-blur-sm border-t border-white/10">
         <div className="max-w-7xl mx-auto text-center text-white">
-          <div className="flex items-center justify-center space-x-3 mb-4">
-            <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
-              <Rocket className="w-5 h-5 text-indigo-500" />
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-lg">
+              <Rocket className="w-5 h-5 text-indigo-600" />
             </div>
-            <span className="text-xl font-bold">LaunchScope</span>
+            <span className="text-xl font-bold tracking-tight">LaunchScope</span>
           </div>
-          <p className="text-blue-100">
+          <p className="text-blue-200 font-light">
             Empowering makers to build what matters
           </p>
         </div>

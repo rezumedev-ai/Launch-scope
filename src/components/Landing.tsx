@@ -28,7 +28,6 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
               variant="outline"
               size="sm"
               onClick={onSignIn}
-              className="text-white border-white/30 hover:bg-white hover:text-indigo-600 transition-all duration-300"
             >
               Sign In
             </Button>
@@ -36,7 +35,6 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
               variant="secondary"
               size="sm"
               onClick={onGetStarted}
-              className="bg-white text-indigo-600 hover:bg-pink-50 hover:scale-105 transition-all duration-300"
             >
               Get Started
             </Button>
@@ -64,16 +62,17 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-20">
               <Button
+                variant="secondary"
                 size="lg"
                 onClick={onGetStarted}
-                className="bg-white text-indigo-600 hover:bg-pink-50 text-lg px-12 py-6 shadow-2xl shadow-indigo-900/30 hover:scale-105 transition-all duration-300"
+                className="px-12 py-6 text-lg hover:scale-105 shadow-2xl shadow-indigo-900/30"
               >
                 Get Started Free
               </Button>
               <Button
                 variant="outline"
                 size="lg"
-                className="border-2 border-white/30 text-white hover:bg-white hover:text-indigo-600 text-lg px-12 py-6 backdrop-blur-sm transition-all duration-300"
+                className="px-12 py-6 text-lg"
               >
                 See How It Works
               </Button>
@@ -518,9 +517,10 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
 
             <div className="relative inline-block">
               <Button
+                variant="secondary"
                 size="lg"
                 onClick={onGetStarted}
-                className="bg-white text-indigo-600 hover:bg-pink-50 text-xl px-16 py-7 shadow-2xl shadow-indigo-900/30 hover:scale-110 transition-all duration-300 relative z-10"
+                className="px-16 py-7 text-xl hover:scale-110 shadow-2xl shadow-indigo-900/30 relative z-10"
               >
                 Start Validating Your Idea
               </Button>

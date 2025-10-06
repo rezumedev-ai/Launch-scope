@@ -17,9 +17,9 @@ export function Button({
   const baseStyles = 'inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed';
 
   const variantStyles = {
-    primary: 'bg-indigo-600 hover:bg-indigo-700 text-white focus:ring-indigo-500',
-    secondary: 'bg-slate-600 hover:bg-slate-700 text-white focus:ring-slate-500',
-    outline: 'border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-50 focus:ring-indigo-500',
+    primary: 'bg-indigo-600 hover:bg-indigo-700 text-white focus:ring-indigo-500 shadow-lg',
+    secondary: 'bg-white hover:bg-pink-50 text-indigo-600 focus:ring-pink-500 shadow-lg',
+    outline: 'border-2 border-white text-white hover:bg-white hover:text-indigo-600 focus:ring-white backdrop-blur-sm',
   };
 
   const sizeStyles = {

@@ -1,11 +1,11 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
+import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
-serve(async (req) => {
+Deno.serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
@@ -62,6 +62,19 @@ Rules of engagement:
 - Maintain a professional, matter-of-fact tone (think "startup analyst who respects their time").
 - If the idea is weak or non-viable, state that clearly and explain why.
 
+SCORING DISCIPLINE:
+- Most ideas will score 4-6 overall. This is normal and expected.
+- Score 7-8: Reserved for ideas with clear product-market fit, validated demand, and unique positioning
+- Score 8-10: Only for exceptional ideas with obvious competitive advantages and strong market signals
+- Score 1-3: Fatal flaws, no clear path to viability, saturated markets with no differentiation
+- Do NOT be generous. A "me-too" SaaS in a crowded space is a 4-5, not a 7.
+- Each dimension should be scored independently based on evidence, not optimism.
+
+SCORING CALIBRATION EXAMPLES:
+- "A todo app with AI features": Market Demand: 3 (saturated), Technical: 8 (easy), Differentiation: 3 (me-too), Monetization: 4 (hard to charge), Timing: 5 (okay) = Overall: ~4.0
+- "B2B tool automating a painful manual process for accountants": Market Demand: 8 (clear pain), Technical: 7 (achievable), Differentiation: 7 (specific niche), Monetization: 8 (B2B will pay), Timing: 7 (good) = Overall: ~7.5
+- "Generic social network for a broad audience": Market Demand: 4 (uncertain), Technical: 5 (complex), Differentiation: 2 (commodity), Monetization: 3 (ads only), Timing: 3 (late) = Overall: ~3.3
+
 Analyze the following startup idea:
 
 Startup Idea: "${ideaToAnalyze}"
@@ -104,6 +117,33 @@ Respond strictly in the following JSON format:
     "competitionDensity": "Competitive landscape assessment (e.g., 'Highly saturated market with major players', 'Emerging space with few established competitors', 'Niche market with specialized players')",
     "adoptionStage": "Market maturity and adoption phase (e.g., 'Early adopter phase', 'Mainstream adoption beginning', 'Mature market with established patterns')"
   },
+  "detailedViabilityBreakdown": {
+    "marketDemand": {
+      "score": 1-10 (number),
+      "justification": "Assess if there's proven demand. Score 8-10: validated demand with evidence, 6-7: moderate signals, 4-5: uncertain demand, 1-3: no clear demand or saturated market"
+    },
+    "technicalFeasibility": {
+      "score": 1-10 (number),
+      "justification": "Can a solo dev realistically build this? Score 8-10: easily achievable, 6-7: doable with effort, 4-5: challenging but possible, 1-3: requires team/expertise beyond solo dev"
+    },
+    "differentiation": {
+      "score": 1-10 (number),
+      "justification": "What makes this unique? Score 8-10: clear competitive advantage, 6-7: some differentiation, 4-5: minor differences, 1-3: commodity/me-too product"
+    },
+    "monetizationPotential": {
+      "score": 1-10 (number),
+      "justification": "How realistic is revenue generation? Score 8-10: clear willingness to pay, 6-7: viable models exist, 4-5: uncertain monetization, 1-3: no realistic revenue path"
+    },
+    "timing": {
+      "score": 1-10 (number),
+      "justification": "Is now the right time? Score 8-10: perfect timing/emerging trend, 6-7: good timing, 4-5: okay timing, 1-3: too early/too late/declining market"
+    },
+    "weightedOverallScore": "Calculate using: (marketDemand × 0.25) + (monetizationPotential × 0.25) + (technicalFeasibility × 0.20) + (differentiation × 0.20) + (timing × 0.10). Return as string with 1 decimal (e.g., '5.8')",
+    "overallJustification": "2-3 sentence summary explaining the overall score"
+  },
+  "viabilityScore": "Format as: '{rounded score} - {verdict text}' where verdict is 'Excellent viability for indie development' (8-10), 'Good viability with manageable risks' (6-7), 'Fair viability requiring careful execution' (4-5), or 'Poor viability with significant challenges' (1-3)",
+  "verdict": "Your final honest assessment: is this worth building? Be direct."
+}
 `;
 
     // If this is a refinement, modify the prompt to focus on the changes
@@ -135,7 +175,7 @@ Focus your analysis on how these refinements impact the overall viability and pr
         messages: [
           {
             role: 'system',
-            content: 'You are an expert startup advisor. Always respond with valid JSON format as requested.'
+            content: 'You are an expert startup advisor with deep knowledge of indie hacker economics and market realities. You MUST respond with valid, complete JSON that includes ALL requested fields, especially the detailedViabilityBreakdown with numeric scores (1-10) for all five dimensions. Be precise with numbers. Do not use markdown code blocks, return pure JSON only.'
           },
           {
             role: 'user',
@@ -210,65 +250,43 @@ Focus your analysis on how these refinements impact the overall viability and pr
       )
     }
 
-    // Ensure detailedViabilityBreakdown is always present with proper structure
-    if (!parsedAnalysis.detailedViabilityBreakdown) {
-      // Extract numeric score from existing viabilityScore if available
-      const existingScore = parsedAnalysis.viabilityScore ? 
-        parseInt(parsedAnalysis.viabilityScore.split(' ')[0]) || 5 : 5;
-      
-      // Create varied detailed breakdown based on existing score with some differentiation
-      const baseScore = existingScore;
-      const variation = () => Math.max(1, Math.min(10, baseScore + Math.floor(Math.random() * 3) - 1));
-      
+    // Validate that all required scoring fields exist
+    const hasValidBreakdown = parsedAnalysis.detailedViabilityBreakdown &&
+      parsedAnalysis.detailedViabilityBreakdown.marketDemand &&
+      parsedAnalysis.detailedViabilityBreakdown.technicalFeasibility &&
+      parsedAnalysis.detailedViabilityBreakdown.differentiation &&
+      parsedAnalysis.detailedViabilityBreakdown.monetizationPotential &&
+      parsedAnalysis.detailedViabilityBreakdown.timing;
+
+    if (!hasValidBreakdown) {
+      console.error('CRITICAL: Model did not return detailedViabilityBreakdown. Raw response:', analysis);
+      console.error('This indicates a prompt issue. The model should return all 5 scoring dimensions.');
+      console.warn('Using fallback scoring - THIS SHOULD NOT HAPPEN IN PRODUCTION');
+
+      // Create minimal fallback with clear error indication
       parsedAnalysis.detailedViabilityBreakdown = {
-        marketDemand: {
-          score: variation(),
-          justification: "Market demand assessment based on overall analysis"
-        },
-        technicalFeasibility: {
-          score: variation(),
-          justification: "Technical feasibility assessment for solo developer"
-        },
-        differentiation: {
-          score: variation(),
-          justification: "Competitive differentiation analysis"
-        },
-        monetizationPotential: {
-          score: variation(),
-          justification: "Revenue generation potential assessment"
-        },
-        timing: {
-          score: variation(),
-          justification: "Market timing evaluation"
-        },
-        weightedOverallScore: baseScore.toFixed(1),
-        overallJustification: parsedAnalysis.verdict || "Overall viability assessment based on comprehensive analysis"
+        marketDemand: { score: 5, justification: "ERROR: Score not provided by AI model. Check prompt configuration." },
+        technicalFeasibility: { score: 5, justification: "ERROR: Score not provided by AI model. Check prompt configuration." },
+        differentiation: { score: 5, justification: "ERROR: Score not provided by AI model. Check prompt configuration." },
+        monetizationPotential: { score: 5, justification: "ERROR: Score not provided by AI model. Check prompt configuration." },
+        timing: { score: 5, justification: "ERROR: Score not provided by AI model. Check prompt configuration." },
+        weightedOverallScore: "5.0",
+        overallJustification: "ERROR: AI model did not return proper scoring data. Please review the analysis manually."
       };
     } else {
-      // Ensure all required fields exist in the detailed breakdown
+      // Validate scores are reasonable numbers
       const breakdown = parsedAnalysis.detailedViabilityBreakdown;
-      
-      // Validate and set varied default values for missing fields
-      const defaultScore = () => Math.floor(Math.random() * 4) + 4; // Random score between 4-7
-      
-      if (!breakdown.marketDemand) {
-        breakdown.marketDemand = { score: defaultScore(), justification: "Market demand assessment pending" };
-      }
-      if (!breakdown.technicalFeasibility) {
-        breakdown.technicalFeasibility = { score: defaultScore(), justification: "Technical feasibility assessment pending" };
-      }
-      if (!breakdown.differentiation) {
-        breakdown.differentiation = { score: defaultScore(), justification: "Differentiation analysis pending" };
-      }
-      if (!breakdown.monetizationPotential) {
-        breakdown.monetizationPotential = { score: defaultScore(), justification: "Monetization assessment pending" };
-      }
-      if (!breakdown.timing) {
-        breakdown.timing = { score: defaultScore(), justification: "Timing evaluation pending" };
-      }
-      
-      // Calculate weighted score if not provided
-      if (!breakdown.weightedOverallScore) {
+      ['marketDemand', 'technicalFeasibility', 'differentiation', 'monetizationPotential', 'timing'].forEach(key => {
+        const score = breakdown[key]?.score;
+        if (typeof score !== 'number' || score < 1 || score > 10) {
+          console.error(`Invalid score for ${key}: ${score}. Raw:`, breakdown[key]);
+          breakdown[key].score = 5; // Fallback only for invalid scores
+          breakdown[key].justification = `ERROR: Invalid score received (${score}). ${breakdown[key].justification || ''}`;
+        }
+      });
+
+      // Calculate weighted score if not provided or invalid
+      if (!breakdown.weightedOverallScore || isNaN(parseFloat(breakdown.weightedOverallScore))) {
         const weightedScore = (
           (breakdown.marketDemand.score * 0.25) +
           (breakdown.monetizationPotential.score * 0.25) +
@@ -277,11 +295,25 @@ Focus your analysis on how these refinements impact the overall viability and pr
           (breakdown.timing.score * 0.10)
         );
         breakdown.weightedOverallScore = weightedScore.toFixed(1);
+        console.warn('Calculated weightedOverallScore from component scores:', weightedScore);
       }
-      
+
       if (!breakdown.overallJustification) {
         breakdown.overallJustification = parsedAnalysis.verdict || "Comprehensive viability analysis completed";
       }
+
+      // Log score distribution for monitoring
+      console.log('Score distribution:', {
+        overall: breakdown.weightedOverallScore,
+        breakdown: {
+          marketDemand: breakdown.marketDemand.score,
+          technicalFeasibility: breakdown.technicalFeasibility.score,
+          differentiation: breakdown.differentiation.score,
+          monetizationPotential: breakdown.monetizationPotential.score,
+          timing: breakdown.timing.score
+        },
+        idea: ideaToAnalyze.substring(0, 100)
+      });
     }
 
     // Ensure nextSteps is present with defaults if missing

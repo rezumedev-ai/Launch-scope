@@ -2,7 +2,7 @@ import React from 'react';
 import { ArrowLeft, AlertTriangle, Target, Users, DollarSign, Clock, CheckCircle, Star, Lightbulb, Zap, TrendingUp, Code, Rocket, Search, TrendingDown, BarChart3, Shield, Calendar, Eye, Activity, Globe, Layers, CreditCard as Edit3, RefreshCw, X, Save, Sparkles, ArrowUp, ChevronRight } from 'lucide-react';
 import { Button } from './ui/Button';
 import { Input } from './ui/Input';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import type { ImprovementPlan } from '../types/improvement';
 import { AnimatedCard, ScoreCircle, MetricCard } from './ui/AnimatedCard';
@@ -93,6 +93,40 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
   const [improvementPlanData, setImprovementPlanData] = useState<ImprovementPlan | null>(null);
   const [isGeneratingImprovementPlan, setIsGeneratingImprovementPlan] = useState(false);
   const [improvementPlanError, setImprovementPlanError] = useState<string | null>(null);
+  const [hasExistingPlan, setHasExistingPlan] = useState(false);
+  const [isLoadingExistingPlan, setIsLoadingExistingPlan] = useState(false);
+
+  // Load existing improvement plan on mount
+  useEffect(() => {
+    const loadExistingPlan = async () => {
+      if (!analysisId) return;
+
+      setIsLoadingExistingPlan(true);
+      try {
+        const { data, error } = await supabase
+          .from('improvement_plans')
+          .select('plan_data')
+          .eq('analysis_id', analysisId)
+          .maybeSingle();
+
+        if (error) {
+          console.error('Error loading existing plan:', error);
+          return;
+        }
+
+        if (data && data.plan_data) {
+          setImprovementPlanData(data.plan_data);
+          setHasExistingPlan(true);
+        }
+      } catch (err) {
+        console.error('Error loading existing plan:', err);
+      } finally {
+        setIsLoadingExistingPlan(false);
+      }
+    };
+
+    loadExistingPlan();
+  }, [analysisId]);
 
   // Helper function to get the numeric viability score
   const getViabilityScoreValue = (analysis: AnalysisData): number => {
@@ -175,7 +209,7 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
     setImprovementPlanError(null);
     try {
       const { data, error: functionError } = await supabase.functions.invoke('generate-improvement-plan', {
-        body: { idea: idea, analysis: analysis }
+        body: { idea: idea, analysis: analysis, analysisId: analysisId }
       });
 
       if (functionError) {
@@ -187,12 +221,17 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
 
       setImprovementPlanData(data.plan);
       setShowImprovementPlan(true);
+      setHasExistingPlan(true);
     } catch (err) {
       console.error('Error generating improvement plan:', err);
       setImprovementPlanError(err instanceof Error ? err.message : 'An unexpected error occurred');
     } finally {
       setIsGeneratingImprovementPlan(false);
     }
+  };
+
+  const handleViewExistingPlan = () => {
+    setShowImprovementPlan(true);
   };
 
   const handleBackToAnalysis = () => {
@@ -269,6 +308,26 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
                   <h1 className="text-lg font-bold text-white">Improvement Plan</h1>
                 </div>
               </div>
+
+              <div className="flex justify-center">
+                <Button
+                  onClick={handleGenerateImprovementPlan}
+                  disabled={isGeneratingImprovementPlan}
+                  className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white px-4 py-2 text-sm"
+                >
+                  {isGeneratingImprovementPlan ? (
+                    <>
+                      <RefreshCw className="w-3 h-3 mr-2 animate-spin" />
+                      Regenerating...
+                    </>
+                  ) : (
+                    <>
+                      <RefreshCw className="w-3 h-3 mr-2" />
+                      Regenerate Plan
+                    </>
+                  )}
+                </Button>
+              </div>
             </div>
 
             {/* Desktop Layout */}
@@ -292,7 +351,23 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
                 <p className="text-slate-300 text-sm">AI-powered recommendations to boost your idea's viability</p>
               </div>
 
-              <div className="w-32"></div>
+              <Button
+                onClick={handleGenerateImprovementPlan}
+                disabled={isGeneratingImprovementPlan}
+                className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white"
+              >
+                {isGeneratingImprovementPlan ? (
+                  <>
+                    <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                    Regenerating...
+                  </>
+                ) : (
+                  <>
+                    <RefreshCw className="w-4 h-4 mr-2" />
+                    Regenerate Plan
+                  </>
+                )}
+              </Button>
             </div>
           </div>
         </header>
@@ -496,14 +571,24 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
                 <>
                   {overallScore < 7 && (
                     <Button
-                      onClick={handleGenerateImprovementPlan}
-                      disabled={isGeneratingImprovementPlan}
+                      onClick={hasExistingPlan ? handleViewExistingPlan : handleGenerateImprovementPlan}
+                      disabled={isGeneratingImprovementPlan || isLoadingExistingPlan}
                       className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white px-3 py-2 text-xs whitespace-nowrap flex-shrink-0"
                     >
                       {isGeneratingImprovementPlan ? (
                         <>
                           <RefreshCw className="w-3 h-3 mr-1 animate-spin" />
                           Generating...
+                        </>
+                      ) : isLoadingExistingPlan ? (
+                        <>
+                          <RefreshCw className="w-3 h-3 mr-1 animate-spin" />
+                          Loading...
+                        </>
+                      ) : hasExistingPlan ? (
+                        <>
+                          <Eye className="w-3 h-3 mr-1" />
+                          View Plan
                         </>
                       ) : (
                         <>
@@ -584,14 +669,24 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
                 <>
                   {overallScore < 7 && (
                     <Button
-                      onClick={handleGenerateImprovementPlan}
-                      disabled={isGeneratingImprovementPlan}
+                      onClick={hasExistingPlan ? handleViewExistingPlan : handleGenerateImprovementPlan}
+                      disabled={isGeneratingImprovementPlan || isLoadingExistingPlan}
                       className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white"
                     >
                       {isGeneratingImprovementPlan ? (
                         <>
                           <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
                           Generating...
+                        </>
+                      ) : isLoadingExistingPlan ? (
+                        <>
+                          <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                          Loading...
+                        </>
+                      ) : hasExistingPlan ? (
+                        <>
+                          <Eye className="w-4 h-4 mr-2" />
+                          View Improved Plan
                         </>
                       ) : (
                         <>

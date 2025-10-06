@@ -53,6 +53,27 @@ export function Dashboard() {
   const [showSubscription, setShowSubscription] = useState(false);
   const [showStripeTest, setShowStripeTest] = useState(false);
   const [currentAnalysisId, setCurrentAnalysisId] = useState<string | null>(null);
+  const [loadingPhrase, setLoadingPhrase] = useState('Getting market insights...');
+
+  const analysisLoadingPhrases = [
+    'Getting market insights...',
+    'Studying competitors...',
+    'Analyzing market demand...'
+  ];
+
+  useEffect(() => {
+    if (isAnalyzing) {
+      let phraseIndex = 0;
+      setLoadingPhrase(analysisLoadingPhrases[0]);
+
+      const interval = setInterval(() => {
+        phraseIndex = (phraseIndex + 1) % analysisLoadingPhrases.length;
+        setLoadingPhrase(analysisLoadingPhrases[phraseIndex]);
+      }, 2500);
+
+      return () => clearInterval(interval);
+    }
+  }, [isAnalyzing]);
 
   // Load analysis history and stats on component mount
   useEffect(() => {
@@ -446,7 +467,7 @@ export function Dashboard() {
                     <div className="absolute inset-0 animate-ping rounded-full h-6 w-6 border border-white opacity-30"></div>
                   </div>
                   <div className="text-left">
-                    <p className="text-white font-semibold">Analyzing your idea with AI...</p>
+                    <p className="text-white font-semibold">{loadingPhrase}</p>
                     <p className="text-blue-100 text-sm">This may take a few moments</p>
                   </div>
                 </div>

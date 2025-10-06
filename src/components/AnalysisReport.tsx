@@ -318,7 +318,7 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
                   {isGeneratingImprovementPlan ? (
                     <>
                       <RefreshCw className="w-3 h-3 mr-2 animate-spin" />
-                      Regenerating...
+                      Analyzing...
                     </>
                   ) : (
                     <>
@@ -359,7 +359,7 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
                 {isGeneratingImprovementPlan ? (
                   <>
                     <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
-                    Regenerating...
+                    Analyzing...
                   </>
                 ) : (
                   <>
@@ -578,7 +578,7 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
                       {isGeneratingImprovementPlan ? (
                         <>
                           <RefreshCw className="w-3 h-3 mr-1 animate-spin" />
-                          Generating...
+                          Creating...
                         </>
                       ) : isLoadingExistingPlan ? (
                         <>
@@ -676,7 +676,7 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
                       {isGeneratingImprovementPlan ? (
                         <>
                           <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
-                          Generating...
+                          Creating Plan...
                         </>
                       ) : isLoadingExistingPlan ? (
                         <>

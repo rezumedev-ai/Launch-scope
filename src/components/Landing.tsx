@@ -536,16 +536,81 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
 
       {/* Footer */}
       <footer className="px-6 py-12 bg-indigo-900/50 backdrop-blur-sm border-t border-white/10">
-        <div className="max-w-7xl mx-auto text-center text-white">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-lg">
-              <Rocket className="w-5 h-5 text-indigo-600" />
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+            <div className="text-center md:text-left">
+              <div className="flex items-center justify-center md:justify-start gap-3 mb-4">
+                <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-lg">
+                  <Rocket className="w-5 h-5 text-indigo-600" />
+                </div>
+                <span className="text-xl font-bold tracking-tight text-white">LaunchScope</span>
+              </div>
+              <p className="text-blue-200 font-light">
+                Empowering makers to build what matters
+              </p>
             </div>
-            <span className="text-xl font-bold tracking-tight">LaunchScope</span>
+
+            <div className="text-center md:text-left">
+              <h3 className="text-white font-semibold mb-4">Company</h3>
+              <ul className="space-y-2">
+                <li>
+                  <a href="#" className="text-blue-200 hover:text-white transition-colors">
+                    About Us
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="text-blue-200 hover:text-white transition-colors">
+                    Contact
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="text-blue-200 hover:text-white transition-colors">
+                    Support
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div className="text-center md:text-left">
+              <h3 className="text-white font-semibold mb-4">Legal</h3>
+              <ul className="space-y-2">
+                <li>
+                  <a href="/privacy" className="text-blue-200 hover:text-white transition-colors">
+                    Privacy Policy
+                  </a>
+                </li>
+                <li>
+                  <a href="/terms" className="text-blue-200 hover:text-white transition-colors">
+                    Terms of Service
+                  </a>
+                </li>
+                <li>
+                  <a href="/cookies" className="text-blue-200 hover:text-white transition-colors">
+                    Cookie Policy
+                  </a>
+                </li>
+                <li>
+                  <a href="/refund" className="text-blue-200 hover:text-white transition-colors">
+                    Refund Policy
+                  </a>
+                </li>
+                <li>
+                  <a href="/acceptable-use" className="text-blue-200 hover:text-white transition-colors">
+                    Acceptable Use
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
-          <p className="text-blue-200 font-light">
-            Empowering makers to build what matters
-          </p>
+
+          <div className="pt-8 border-t border-white/10 text-center">
+            <p className="text-blue-200 font-light">
+              &copy; 2025 LaunchScope. All rights reserved.
+            </p>
+            <p className="text-blue-300 text-sm mt-2">
+              Markham, Ontario, Canada
+            </p>
+          </div>
         </div>
       </footer>
     </div>

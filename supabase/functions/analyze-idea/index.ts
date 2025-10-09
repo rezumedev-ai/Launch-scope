@@ -1,4 +1,5 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
+import { createClient } from "jsr:@supabase/supabase-js@2";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -6,7 +7,6 @@ const corsHeaders = {
 }
 
 Deno.serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
   }
@@ -14,28 +14,89 @@ Deno.serve(async (req) => {
   try {
     const { idea, refinedData, parentAnalysisId } = await req.json()
 
-    // Handle both original idea analysis and refinement
-    let ideaToAnalyze: string;
-    let isRefinement = false;
-    
-    if (refinedData) {
-      // This is a refinement request
-      isRefinement = true;
-      ideaToAnalyze = refinedData.idea;
-    } else if (idea) {
-      // This is a regular idea analysis
-      ideaToAnalyze = idea;
-    } else {
+    const authHeader = req.headers.get('Authorization')
+    if (!authHeader) {
       return new Response(
-        JSON.stringify({ error: 'Startup idea is required' }),
-        { 
-          status: 400, 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        JSON.stringify({ error: 'Authorization required' }),
+        {
+          status: 401,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
         }
       )
     }
 
-    // Get OpenAI API key from environment variables
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!
+    const supabaseKey = Deno.env.get('SUPABASE_ANON_KEY')!
+    const supabase = createClient(supabaseUrl, supabaseKey, {
+      global: { headers: { Authorization: authHeader } }
+    })
+
+    const { data: { user }, error: userError } = await supabase.auth.getUser()
+    if (userError || !user) {
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized' }),
+        {
+          status: 401,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        }
+      )
+    }
+
+    let ideaToAnalyze: string;
+    let isRefinement = false;
+
+    if (refinedData) {
+      isRefinement = true;
+      ideaToAnalyze = refinedData.idea;
+    } else if (idea) {
+      ideaToAnalyze = idea;
+    } else {
+      return new Response(
+        JSON.stringify({ error: 'Startup idea is required' }),
+        {
+          status: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        }
+      )
+    }
+
+    const { data: subscriptionData } = await supabase
+      .from('stripe_user_subscriptions')
+      .select('subscription_status')
+      .maybeSingle()
+
+    const hasActiveSubscription = subscriptionData &&
+      (subscriptionData.subscription_status === 'active' ||
+       subscriptionData.subscription_status === 'trialing')
+
+    if (!hasActiveSubscription && !isRefinement) {
+      const now = new Date()
+      const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
+
+      const { count, error: countError } = await supabase
+        .from('analysis_history')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', user.id)
+        .is('parent_analysis_id', null)
+        .gte('created_at', firstDayOfMonth.toISOString())
+
+      if (countError) {
+        console.error('Error checking usage:', countError)
+      } else if (count && count >= 1) {
+        return new Response(
+          JSON.stringify({
+            error: 'Free plan limit reached',
+            message: 'You have reached your monthly limit of 1 analysis on the free plan. Upgrade to get unlimited analyses.',
+            limitReached: true
+          }),
+          {
+            status: 403,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+          }
+        )
+      }
+    }
+
     const openaiApiKey = Deno.env.get('OPENAI_API_KEY')
     
     if (!openaiApiKey) {
@@ -48,7 +109,6 @@ Deno.serve(async (req) => {
       )
     }
 
-    // Create the prompt for startup idea analysis
     let prompt = `
 You are LaunchScope AI — a brutally honest startup mentor for solo developers, indie hackers, and vibe coders. 
 Your role is NOT to validate every idea, but to give an unfiltered, professional, and reality-checked analysis. 
@@ -146,7 +206,6 @@ Respond strictly in the following JSON format:
 }
 `;
 
-    // If this is a refinement, modify the prompt to focus on the changes
     if (isRefinement && refinedData) {
       prompt += `
 
@@ -163,7 +222,6 @@ Focus your analysis on how these refinements impact the overall viability and pr
 `;
     }
 
-    // Make request to OpenAI API
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -227,10 +285,8 @@ Focus your analysis on how these refinements impact the overall viability and pr
       )
     }
 
-    // Try to parse the JSON response
     let parsedAnalysis
     try {
-      // Trim whitespace and check if response is empty
       const trimmedAnalysis = analysis.trim()
       if (!trimmedAnalysis) {
         throw new Error('Empty response from OpenAI')
@@ -250,7 +306,6 @@ Focus your analysis on how these refinements impact the overall viability and pr
       )
     }
 
-    // Validate that all required scoring fields exist
     const hasValidBreakdown = parsedAnalysis.detailedViabilityBreakdown &&
       parsedAnalysis.detailedViabilityBreakdown.marketDemand &&
       parsedAnalysis.detailedViabilityBreakdown.technicalFeasibility &&
@@ -263,7 +318,6 @@ Focus your analysis on how these refinements impact the overall viability and pr
       console.error('This indicates a prompt issue. The model should return all 5 scoring dimensions.');
       console.warn('Using fallback scoring - THIS SHOULD NOT HAPPEN IN PRODUCTION');
 
-      // Create minimal fallback with clear error indication
       parsedAnalysis.detailedViabilityBreakdown = {
         marketDemand: { score: 5, justification: "ERROR: Score not provided by AI model. Check prompt configuration." },
         technicalFeasibility: { score: 5, justification: "ERROR: Score not provided by AI model. Check prompt configuration." },
@@ -274,18 +328,16 @@ Focus your analysis on how these refinements impact the overall viability and pr
         overallJustification: "ERROR: AI model did not return proper scoring data. Please review the analysis manually."
       };
     } else {
-      // Validate scores are reasonable numbers
       const breakdown = parsedAnalysis.detailedViabilityBreakdown;
       ['marketDemand', 'technicalFeasibility', 'differentiation', 'monetizationPotential', 'timing'].forEach(key => {
         const score = breakdown[key]?.score;
         if (typeof score !== 'number' || score < 1 || score > 10) {
           console.error(`Invalid score for ${key}: ${score}. Raw:`, breakdown[key]);
-          breakdown[key].score = 5; // Fallback only for invalid scores
+          breakdown[key].score = 5;
           breakdown[key].justification = `ERROR: Invalid score received (${score}). ${breakdown[key].justification || ''}`;
         }
       });
 
-      // Calculate weighted score if not provided or invalid
       if (!breakdown.weightedOverallScore || isNaN(parseFloat(breakdown.weightedOverallScore))) {
         const weightedScore = (
           (breakdown.marketDemand.score * 0.25) +
@@ -302,7 +354,6 @@ Focus your analysis on how these refinements impact the overall viability and pr
         breakdown.overallJustification = parsedAnalysis.verdict || "Comprehensive viability analysis completed";
       }
 
-      // Log score distribution for monitoring
       console.log('Score distribution:', {
         overall: breakdown.weightedOverallScore,
         breakdown: {
@@ -316,7 +367,6 @@ Focus your analysis on how these refinements impact the overall viability and pr
       });
     }
 
-    // Ensure nextSteps is present with defaults if missing
     if (!parsedAnalysis.nextSteps || !Array.isArray(parsedAnalysis.nextSteps) || parsedAnalysis.nextSteps.length === 0) {
       parsedAnalysis.nextSteps = [
         "Validate the problem by interviewing 10-15 potential customers",
@@ -336,7 +386,6 @@ Focus your analysis on how these refinements impact the overall viability and pr
       ];
     }
 
-    // Ensure verdict is always present and is a string
     if (!parsedAnalysis.verdict || typeof parsedAnalysis.verdict !== 'string') {
       const weightedScore = parseFloat(parsedAnalysis.detailedViabilityBreakdown?.weightedOverallScore || '5');
       if (weightedScore >= 8) {
@@ -350,7 +399,6 @@ Focus your analysis on how these refinements impact the overall viability and pr
       }
     }
     
-    // Update the main viabilityScore to reflect the weighted score
     const weightedScore = parseFloat(parsedAnalysis.detailedViabilityBreakdown.weightedOverallScore);
     parsedAnalysis.viabilityScore = `${Math.round(weightedScore)} - ${
       weightedScore >= 8 ? 'Excellent viability for indie development' :

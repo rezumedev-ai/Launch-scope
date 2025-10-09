@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { Rocket, LogOut, BarChart3, Users, Lightbulb, TrendingUp, Clock, CheckCircle, Crown } from 'lucide-react';
+import { Rocket, LogOut, BarChart3, Users, Lightbulb, TrendingUp, Clock, CheckCircle, Crown, AlertTriangle } from 'lucide-react';
 import { Button } from './ui/Button';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
@@ -54,6 +54,9 @@ export function Dashboard() {
   const [showStripeTest, setShowStripeTest] = useState(false);
   const [currentAnalysisId, setCurrentAnalysisId] = useState<string | null>(null);
   const [loadingPhrase, setLoadingPhrase] = useState('Getting market insights...');
+  const [hasActiveSubscription, setHasActiveSubscription] = useState(false);
+  const [monthlyAnalysisCount, setMonthlyAnalysisCount] = useState(0);
+  const [loadingSubscription, setLoadingSubscription] = useState(true);
 
   const analysisLoadingPhrases = [
     'Getting market insights...',
@@ -79,8 +82,45 @@ export function Dashboard() {
   useEffect(() => {
     if (user) {
       loadAnalysisHistory();
+      checkSubscriptionAndUsage();
     }
   }, [user]);
+
+  const checkSubscriptionAndUsage = async () => {
+    try {
+      setLoadingSubscription(true);
+
+      // Check subscription status
+      const { data: subscriptionData } = await supabase
+        .from('stripe_user_subscriptions')
+        .select('subscription_status')
+        .maybeSingle();
+
+      const isActive = subscriptionData &&
+        (subscriptionData.subscription_status === 'active' ||
+         subscriptionData.subscription_status === 'trialing');
+      setHasActiveSubscription(isActive || false);
+
+      // Count this month's analyses (excluding refinements)
+      if (!isActive) {
+        const now = new Date();
+        const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+
+        const { count } = await supabase
+          .from('analysis_history')
+          .select('*', { count: 'exact', head: true })
+          .eq('user_id', user!.id)
+          .is('parent_analysis_id', null)
+          .gte('created_at', firstDayOfMonth.toISOString());
+
+        setMonthlyAnalysisCount(count || 0);
+      }
+    } catch (err) {
+      console.error('Error checking subscription:', err);
+    } finally {
+      setLoadingSubscription(false);
+    }
+  };
 
   const loadAnalysisHistory = async () => {
     try {
@@ -162,7 +202,7 @@ export function Dashboard() {
 
   const handleSearchSubmit = async (idea: string) => {
     if (!idea.trim()) return;
-    
+
     setIsAnalyzing(true);
     setError(null);
     setAnalysisResult(null);
@@ -178,16 +218,26 @@ export function Dashboard() {
       }
 
       if (data.error) {
+        // Check if it's a limit error
+        if (data.limitReached) {
+          setError(data.message);
+          // Optionally show upgrade modal
+          setShowSubscription(true);
+          return;
+        }
         throw new Error(data.error);
       }
 
       setAnalysisResult(data.analysis);
       setAnalyzedIdea(idea.trim());
       setSearchValue(''); // Clear the search after successful analysis
-      
+
       // Save to history
       const savedAnalysis = await saveAnalysisToHistory(idea.trim(), data.analysis);
-      
+
+      // Refresh usage count
+      await checkSubscriptionAndUsage();
+
       setShowReport(true); // Show the report page
     } catch (err) {
       console.error('Analysis error:', err);
@@ -454,8 +504,37 @@ export function Dashboard() {
                 value={searchValue}
                 onChange={setSearchValue}
                 onSubmit={() => handleSearchSubmit(searchValue)}
-                disabled={isAnalyzing}
+                disabled={isAnalyzing || (!hasActiveSubscription && monthlyAnalysisCount >= 1)}
               />
+
+              {/* Usage Indicator for Free Users */}
+              {!loadingSubscription && !hasActiveSubscription && (
+                <div className="mt-4 flex items-center justify-center">
+                  <div className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium ${
+                    monthlyAnalysisCount >= 1
+                      ? 'bg-red-500/20 border border-red-400/30 text-red-100'
+                      : 'bg-blue-500/20 border border-blue-400/30 text-blue-100'
+                  }`}>
+                    {monthlyAnalysisCount >= 1 ? (
+                      <>
+                        <AlertTriangle className="w-4 h-4 mr-2" />
+                        Free plan limit reached (1/1 this month)
+                      </>
+                    ) : (
+                      <>
+                        <CheckCircle className="w-4 h-4 mr-2" />
+                        {monthlyAnalysisCount}/1 analysis used this month
+                      </>
+                    )}
+                    <button
+                      onClick={handleShowSubscription}
+                      className="ml-3 underline hover:text-white transition-colors"
+                    >
+                      Upgrade
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Loading State */}

@@ -9,9 +9,10 @@ import { CursorLogo, ClaudeLogo, OpenAILogo } from './ui/AIToolLogos';
 interface LandingProps {
   onGetStarted: () => void;
   onSignIn: () => void;
+  onNavigateToLegal: (page: 'privacy' | 'terms' | 'cookies' | 'refund' | 'acceptable-use') => void;
 }
 
-export function Landing({ onGetStarted, onSignIn }: LandingProps) {
+export function Landing({ onGetStarted, onSignIn, onNavigateToLegal }: LandingProps) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-600 via-indigo-500 to-blue-500">
       {/* Header */}
@@ -554,17 +555,26 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
               <h3 className="text-white font-semibold mb-4">Company</h3>
               <ul className="space-y-2">
                 <li>
-                  <a href="#" className="text-blue-200 hover:text-white transition-colors">
+                  <button
+                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                    className="text-blue-200 hover:text-white transition-colors"
+                  >
                     About Us
-                  </a>
+                  </button>
                 </li>
                 <li>
-                  <a href="#" className="text-blue-200 hover:text-white transition-colors">
+                  <a
+                    href="mailto:launchscopeapp@gmail.com"
+                    className="text-blue-200 hover:text-white transition-colors"
+                  >
                     Contact
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-blue-200 hover:text-white transition-colors">
+                  <a
+                    href="mailto:launchscopeapp@gmail.com"
+                    className="text-blue-200 hover:text-white transition-colors"
+                  >
                     Support
                   </a>
                 </li>
@@ -575,29 +585,44 @@ export function Landing({ onGetStarted, onSignIn }: LandingProps) {
               <h3 className="text-white font-semibold mb-4">Legal</h3>
               <ul className="space-y-2">
                 <li>
-                  <a href="/privacy" className="text-blue-200 hover:text-white transition-colors">
+                  <button
+                    onClick={() => onNavigateToLegal('privacy')}
+                    className="text-blue-200 hover:text-white transition-colors"
+                  >
                     Privacy Policy
-                  </a>
+                  </button>
                 </li>
                 <li>
-                  <a href="/terms" className="text-blue-200 hover:text-white transition-colors">
+                  <button
+                    onClick={() => onNavigateToLegal('terms')}
+                    className="text-blue-200 hover:text-white transition-colors"
+                  >
                     Terms of Service
-                  </a>
+                  </button>
                 </li>
                 <li>
-                  <a href="/cookies" className="text-blue-200 hover:text-white transition-colors">
+                  <button
+                    onClick={() => onNavigateToLegal('cookies')}
+                    className="text-blue-200 hover:text-white transition-colors"
+                  >
                     Cookie Policy
-                  </a>
+                  </button>
                 </li>
                 <li>
-                  <a href="/refund" className="text-blue-200 hover:text-white transition-colors">
+                  <button
+                    onClick={() => onNavigateToLegal('refund')}
+                    className="text-blue-200 hover:text-white transition-colors"
+                  >
                     Refund Policy
-                  </a>
+                  </button>
                 </li>
                 <li>
-                  <a href="/acceptable-use" className="text-blue-200 hover:text-white transition-colors">
+                  <button
+                    onClick={() => onNavigateToLegal('acceptable-use')}
+                    className="text-blue-200 hover:text-white transition-colors"
+                  >
                     Acceptable Use
-                  </a>
+                  </button>
                 </li>
               </ul>
             </div>

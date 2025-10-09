@@ -301,9 +301,15 @@ export function CookiePolicy({ onBack }: CookiePolicyProps) {
         <h2 className="text-2xl font-bold text-gray-900 mb-4">10. More Information</h2>
         <p className="text-gray-700 mb-4">
           For more information about how we protect your privacy, please review our{' '}
-          <a href="/privacy" className="text-indigo-600 hover:text-indigo-800 underline">
+          <button
+            onClick={() => {
+              window.history.pushState({}, '', '/privacy');
+              window.location.href = '/privacy';
+            }}
+            className="text-indigo-600 hover:text-indigo-800 underline"
+          >
             Privacy Policy
-          </a>
+          </button>
           .
         </p>
         <p className="text-gray-700">

@@ -17,20 +17,44 @@ function AppContent() {
   const [currentLegalPage, setCurrentLegalPage] = useState<LegalPage>(null);
   const { user, loading } = useAuth();
 
-  useEffect(() => {
+  const checkAndSetRoute = () => {
     const path = window.location.pathname;
     if (path.startsWith('/privacy')) {
       setCurrentLegalPage('privacy');
+      setShowAuth(false);
     } else if (path.startsWith('/terms')) {
       setCurrentLegalPage('terms');
+      setShowAuth(false);
     } else if (path.startsWith('/cookies')) {
       setCurrentLegalPage('cookies');
+      setShowAuth(false);
     } else if (path.startsWith('/refund')) {
       setCurrentLegalPage('refund');
+      setShowAuth(false);
     } else if (path.startsWith('/acceptable-use')) {
       setCurrentLegalPage('acceptable-use');
+      setShowAuth(false);
+    } else {
+      setCurrentLegalPage(null);
     }
+  };
+
+  useEffect(() => {
+    checkAndSetRoute();
+
+    const handlePopState = () => {
+      checkAndSetRoute();
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
   }, []);
+
+  const handleNavigateToLegal = (page: LegalPage) => {
+    setCurrentLegalPage(page);
+    const path = page ? `/${page}` : '/';
+    window.history.pushState({}, '', path);
+  };
 
   const handleBackFromLegal = () => {
     setCurrentLegalPage(null);
@@ -69,7 +93,13 @@ function AppContent() {
     return <AuthForm onBack={() => setShowAuth(false)} initialMode={showAuth} />;
   }
 
-  return <Landing onGetStarted={() => setShowAuth('signup')} onSignIn={() => setShowAuth('signin')} />;
+  return (
+    <Landing
+      onGetStarted={() => setShowAuth('signup')}
+      onSignIn={() => setShowAuth('signin')}
+      onNavigateToLegal={handleNavigateToLegal}
+    />
+  );
 }
 
 function App() {

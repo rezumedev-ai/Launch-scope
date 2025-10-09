@@ -58,41 +58,56 @@ export function LegalLayout({ title, children, onBack, lastUpdated }: LegalLayou
         <div className="mt-8 bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
           <h3 className="text-white font-semibold mb-4">Other Legal Documents</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <a
-              href="/privacy"
+            <button
+              onClick={() => {
+                window.history.pushState({}, '', '/privacy');
+                window.location.href = '/privacy';
+              }}
               className="flex items-center p-3 bg-white/10 rounded-lg hover:bg-white/20 transition-all duration-300 text-white"
             >
               <Shield className="w-5 h-5 mr-3 text-blue-200" />
               <span>Privacy Policy</span>
-            </a>
-            <a
-              href="/terms"
+            </button>
+            <button
+              onClick={() => {
+                window.history.pushState({}, '', '/terms');
+                window.location.href = '/terms';
+              }}
               className="flex items-center p-3 bg-white/10 rounded-lg hover:bg-white/20 transition-all duration-300 text-white"
             >
               <FileText className="w-5 h-5 mr-3 text-blue-200" />
               <span>Terms of Service</span>
-            </a>
-            <a
-              href="/cookies"
+            </button>
+            <button
+              onClick={() => {
+                window.history.pushState({}, '', '/cookies');
+                window.location.href = '/cookies';
+              }}
               className="flex items-center p-3 bg-white/10 rounded-lg hover:bg-white/20 transition-all duration-300 text-white"
             >
               <Cookie className="w-5 h-5 mr-3 text-blue-200" />
               <span>Cookie Policy</span>
-            </a>
-            <a
-              href="/refund"
+            </button>
+            <button
+              onClick={() => {
+                window.history.pushState({}, '', '/refund');
+                window.location.href = '/refund';
+              }}
               className="flex items-center p-3 bg-white/10 rounded-lg hover:bg-white/20 transition-all duration-300 text-white"
             >
               <RefreshCw className="w-5 h-5 mr-3 text-blue-200" />
               <span>Refund Policy</span>
-            </a>
-            <a
-              href="/acceptable-use"
+            </button>
+            <button
+              onClick={() => {
+                window.history.pushState({}, '', '/acceptable-use');
+                window.location.href = '/acceptable-use';
+              }}
               className="flex items-center p-3 bg-white/10 rounded-lg hover:bg-white/20 transition-all duration-300 text-white"
             >
               <AlertTriangle className="w-5 h-5 mr-3 text-blue-200" />
               <span>Acceptable Use Policy</span>
-            </a>
+            </button>
           </div>
         </div>
       </main>

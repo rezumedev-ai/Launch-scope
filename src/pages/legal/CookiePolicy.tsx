@@ -4,11 +4,18 @@ import { LEGAL_INFO } from '../../types/legal';
 
 interface CookiePolicyProps {
   onBack: () => void;
+  onNavigate: (page: string) => void;
 }
 
-export function CookiePolicy({ onBack }: CookiePolicyProps) {
+export function CookiePolicy({ onBack, onNavigate }: CookiePolicyProps) {
+  const handlePrivacyNavigation = () => {
+    if (onNavigate) {
+      onNavigate('privacy');
+    }
+  };
+
   return (
-    <LegalLayout title="Cookie Policy" onBack={onBack}>
+    <LegalLayout title="Cookie Policy" onBack={onBack} onNavigate={onNavigate}>
       <section className="mb-8">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">Introduction</h2>
         <p className="text-gray-700 mb-4">
@@ -302,10 +309,7 @@ export function CookiePolicy({ onBack }: CookiePolicyProps) {
         <p className="text-gray-700 mb-4">
           For more information about how we protect your privacy, please review our{' '}
           <button
-            onClick={() => {
-              window.history.pushState({}, '', '/privacy');
-              window.location.href = '/privacy';
-            }}
+            onClick={handlePrivacyNavigation}
             className="text-indigo-600 hover:text-indigo-800 underline"
           >
             Privacy Policy

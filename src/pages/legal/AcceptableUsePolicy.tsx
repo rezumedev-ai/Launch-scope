@@ -4,11 +4,12 @@ import { LEGAL_INFO } from '../../types/legal';
 
 interface AcceptableUsePolicyProps {
   onBack: () => void;
+  onNavigate: (page: string) => void;
 }
 
-export function AcceptableUsePolicy({ onBack }: AcceptableUsePolicyProps) {
+export function AcceptableUsePolicy({ onBack, onNavigate }: AcceptableUsePolicyProps) {
   return (
-    <LegalLayout title="Acceptable Use Policy" onBack={onBack}>
+    <LegalLayout title="Acceptable Use Policy" onBack={onBack} onNavigate={onNavigate}>
       <section className="mb-8">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">Introduction</h2>
         <p className="text-gray-700 mb-4">

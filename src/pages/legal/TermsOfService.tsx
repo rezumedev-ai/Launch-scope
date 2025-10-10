@@ -4,11 +4,12 @@ import { LEGAL_INFO } from '../../types/legal';
 
 interface TermsOfServiceProps {
   onBack: () => void;
+  onNavigate: (page: string) => void;
 }
 
-export function TermsOfService({ onBack }: TermsOfServiceProps) {
+export function TermsOfService({ onBack, onNavigate }: TermsOfServiceProps) {
   return (
-    <LegalLayout title="Terms of Service" onBack={onBack}>
+    <LegalLayout title="Terms of Service" onBack={onBack} onNavigate={onNavigate}>
       <section className="mb-8">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">Agreement to Terms</h2>
         <p className="text-gray-700 mb-4">

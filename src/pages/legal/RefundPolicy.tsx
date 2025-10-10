@@ -4,11 +4,12 @@ import { LEGAL_INFO } from '../../types/legal';
 
 interface RefundPolicyProps {
   onBack: () => void;
+  onNavigate: (page: string) => void;
 }
 
-export function RefundPolicy({ onBack }: RefundPolicyProps) {
+export function RefundPolicy({ onBack, onNavigate }: RefundPolicyProps) {
   return (
-    <LegalLayout title="Refund Policy" onBack={onBack}>
+    <LegalLayout title="Refund Policy" onBack={onBack} onNavigate={onNavigate}>
       <section className="mb-8">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">Our Commitment to You</h2>
         <p className="text-gray-700 mb-4">

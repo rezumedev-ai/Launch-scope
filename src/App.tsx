@@ -62,23 +62,23 @@ function AppContent() {
   };
 
   if (currentLegalPage === 'privacy') {
-    return <PrivacyPolicy onBack={handleBackFromLegal} />;
+    return <PrivacyPolicy onBack={handleBackFromLegal} onNavigate={handleNavigateToLegal} />;
   }
 
   if (currentLegalPage === 'terms') {
-    return <TermsOfService onBack={handleBackFromLegal} />;
+    return <TermsOfService onBack={handleBackFromLegal} onNavigate={handleNavigateToLegal} />;
   }
 
   if (currentLegalPage === 'cookies') {
-    return <CookiePolicy onBack={handleBackFromLegal} />;
+    return <CookiePolicy onBack={handleBackFromLegal} onNavigate={handleNavigateToLegal} />;
   }
 
   if (currentLegalPage === 'refund') {
-    return <RefundPolicy onBack={handleBackFromLegal} />;
+    return <RefundPolicy onBack={handleBackFromLegal} onNavigate={handleNavigateToLegal} />;
   }
 
   if (currentLegalPage === 'acceptable-use') {
-    return <AcceptableUsePolicy onBack={handleBackFromLegal} />;
+    return <AcceptableUsePolicy onBack={handleBackFromLegal} onNavigate={handleNavigateToLegal} />;
   }
 
   if (loading) {

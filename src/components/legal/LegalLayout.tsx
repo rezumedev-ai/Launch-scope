@@ -8,9 +8,17 @@ interface LegalLayoutProps {
   children: React.ReactNode;
   onBack: () => void;
   lastUpdated?: string;
+  onNavigate?: (page: string) => void;
 }
 
-export function LegalLayout({ title, children, onBack, lastUpdated }: LegalLayoutProps) {
+export function LegalLayout({ title, children, onBack, lastUpdated, onNavigate }: LegalLayoutProps) {
+  const handleNavigation = (page: string) => {
+    if (onNavigate) {
+      onNavigate(page);
+    } else {
+      window.location.href = `/${page}`;
+    }
+  };
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-500 to-blue-500">
       <header className="bg-white/10 backdrop-blur-sm border-b border-white/20 px-6 py-4">
@@ -59,50 +67,35 @@ export function LegalLayout({ title, children, onBack, lastUpdated }: LegalLayou
           <h3 className="text-white font-semibold mb-4">Other Legal Documents</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <button
-              onClick={() => {
-                window.history.pushState({}, '', '/privacy');
-                window.location.href = '/privacy';
-              }}
+              onClick={() => handleNavigation('privacy')}
               className="flex items-center p-3 bg-white/10 rounded-lg hover:bg-white/20 transition-all duration-300 text-white"
             >
               <Shield className="w-5 h-5 mr-3 text-blue-200" />
               <span>Privacy Policy</span>
             </button>
             <button
-              onClick={() => {
-                window.history.pushState({}, '', '/terms');
-                window.location.href = '/terms';
-              }}
+              onClick={() => handleNavigation('terms')}
               className="flex items-center p-3 bg-white/10 rounded-lg hover:bg-white/20 transition-all duration-300 text-white"
             >
               <FileText className="w-5 h-5 mr-3 text-blue-200" />
               <span>Terms of Service</span>
             </button>
             <button
-              onClick={() => {
-                window.history.pushState({}, '', '/cookies');
-                window.location.href = '/cookies';
-              }}
+              onClick={() => handleNavigation('cookies')}
               className="flex items-center p-3 bg-white/10 rounded-lg hover:bg-white/20 transition-all duration-300 text-white"
             >
               <Cookie className="w-5 h-5 mr-3 text-blue-200" />
               <span>Cookie Policy</span>
             </button>
             <button
-              onClick={() => {
-                window.history.pushState({}, '', '/refund');
-                window.location.href = '/refund';
-              }}
+              onClick={() => handleNavigation('refund')}
               className="flex items-center p-3 bg-white/10 rounded-lg hover:bg-white/20 transition-all duration-300 text-white"
             >
               <RefreshCw className="w-5 h-5 mr-3 text-blue-200" />
               <span>Refund Policy</span>
             </button>
             <button
-              onClick={() => {
-                window.history.pushState({}, '', '/acceptable-use');
-                window.location.href = '/acceptable-use';
-              }}
+              onClick={() => handleNavigation('acceptable-use')}
               className="flex items-center p-3 bg-white/10 rounded-lg hover:bg-white/20 transition-all duration-300 text-white"
             >
               <AlertTriangle className="w-5 h-5 mr-3 text-blue-200" />

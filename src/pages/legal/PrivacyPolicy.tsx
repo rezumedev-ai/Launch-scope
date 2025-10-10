@@ -4,11 +4,12 @@ import { LEGAL_INFO } from '../../types/legal';
 
 interface PrivacyPolicyProps {
   onBack: () => void;
+  onNavigate: (page: string) => void;
 }
 
-export function PrivacyPolicy({ onBack }: PrivacyPolicyProps) {
+export function PrivacyPolicy({ onBack, onNavigate }: PrivacyPolicyProps) {
   return (
-    <LegalLayout title="Privacy Policy" onBack={onBack}>
+    <LegalLayout title="Privacy Policy" onBack={onBack} onNavigate={onNavigate}>
       <section className="mb-8">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">Introduction</h2>
         <p className="text-gray-700 mb-4">

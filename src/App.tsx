@@ -34,6 +34,10 @@ function AppContent() {
     } else if (path.startsWith('/acceptable-use')) {
       setCurrentLegalPage('acceptable-use');
       setShowAuth(false);
+    } else if (path.startsWith('/dashboard')) {
+      setCurrentLegalPage(null);
+      setShowAuth(false);
+      window.history.replaceState({}, '', '/');
     } else {
       setCurrentLegalPage(null);
     }

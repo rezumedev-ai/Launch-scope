@@ -63,8 +63,8 @@ export function StripeTestPanel() {
         const { data, error } = await supabase.functions.invoke('stripe-checkout', {
           body: {
             price_id: STRIPE_PRODUCTS.LAUNCHSCOPE_PRO.priceId,
-            success_url: `${window.location.origin}/dashboard?success=true`,
-            cancel_url: `${window.location.origin}/dashboard?canceled=true`,
+            success_url: `${window.location.origin}/?success=true`,
+            cancel_url: `${window.location.origin}/?canceled=true`,
             mode: 'subscription'
           }
         });

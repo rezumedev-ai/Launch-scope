@@ -38,8 +38,8 @@ serve(async (req) => {
         quantity: 1,
       }],
       customer_email: 'customer@example.com', // You might want to fetch the user's email from Supabase auth
-      success_url: `${req.headers.get('referer')}dashboard?success=true`,
-      cancel_url: `${req.headers.get('referer')}dashboard?canceled=true`,
+      success_url: `${req.headers.get('referer')}?success=true`,
+      cancel_url: `${req.headers.get('referer')}?canceled=true`,
       metadata: {
         userId: userId,
       },

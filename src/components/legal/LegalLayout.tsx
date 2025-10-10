@@ -62,47 +62,6 @@ export function LegalLayout({ title, children, onBack, lastUpdated, onNavigate }
             </p>
           </div>
         </div>
-
-        <div className="mt-8 bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-          <h3 className="text-white font-semibold mb-4">Other Legal Documents</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <button
-              onClick={() => handleNavigation('privacy')}
-              className="flex items-center p-3 bg-white/10 rounded-lg hover:bg-white/20 transition-all duration-300 text-white"
-            >
-              <Shield className="w-5 h-5 mr-3 text-blue-200" />
-              <span>Privacy Policy</span>
-            </button>
-            <button
-              onClick={() => handleNavigation('terms')}
-              className="flex items-center p-3 bg-white/10 rounded-lg hover:bg-white/20 transition-all duration-300 text-white"
-            >
-              <FileText className="w-5 h-5 mr-3 text-blue-200" />
-              <span>Terms of Service</span>
-            </button>
-            <button
-              onClick={() => handleNavigation('cookies')}
-              className="flex items-center p-3 bg-white/10 rounded-lg hover:bg-white/20 transition-all duration-300 text-white"
-            >
-              <Cookie className="w-5 h-5 mr-3 text-blue-200" />
-              <span>Cookie Policy</span>
-            </button>
-            <button
-              onClick={() => handleNavigation('refund')}
-              className="flex items-center p-3 bg-white/10 rounded-lg hover:bg-white/20 transition-all duration-300 text-white"
-            >
-              <RefreshCw className="w-5 h-5 mr-3 text-blue-200" />
-              <span>Refund Policy</span>
-            </button>
-            <button
-              onClick={() => handleNavigation('acceptable-use')}
-              className="flex items-center p-3 bg-white/10 rounded-lg hover:bg-white/20 transition-all duration-300 text-white"
-            >
-              <AlertTriangle className="w-5 h-5 mr-3 text-blue-200" />
-              <span>Acceptable Use Policy</span>
-            </button>
-          </div>
-        </div>
       </main>
 
       <footer className="bg-indigo-900/50 backdrop-blur-sm border-t border-white/10 px-6 py-8 mt-12">

@@ -632,9 +632,6 @@ export function Landing({ onGetStarted, onSignIn, onNavigateToLegal }: LandingPr
             <p className="text-blue-200 font-light">
               &copy; 2025 LaunchScope. All rights reserved.
             </p>
-            <p className="text-blue-300 text-sm mt-2">
-              Markham, Ontario, Canada
-            </p>
           </div>
         </div>
       </footer>

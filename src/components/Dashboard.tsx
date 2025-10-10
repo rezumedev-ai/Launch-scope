@@ -721,42 +721,52 @@ export function Dashboard() {
         </div>
 
         {/* Feature Showcase */}
-        <div className="bg-white rounded-3xl shadow-2xl p-8 mb-8">
+        <div className="bg-white rounded-3xl shadow-2xl p-6 sm:p-8 mb-8">
           <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-800 mb-4">What You Can Do With LaunchScope</h2>
-            <p className="text-gray-600 text-base sm:text-lg max-w-2xl mx-auto">
-              Powerful tools to validate, analyze, and refine your startup ideas before you build
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-3">What You Can Do With LaunchScope</h2>
+            <p className="text-gray-600 text-sm sm:text-base max-w-2xl mx-auto">
+              Comprehensive startup validation tools to test and refine your ideas
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
-            <div className="text-center group">
-              <div className="w-16 h-16 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-2xl flex items-center justify-center mb-4 mx-auto group-hover:scale-110 transition-transform duration-300">
-                <Lightbulb className="w-8 h-8 text-white" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            <div className="text-center p-4 rounded-xl hover:bg-gradient-to-br hover:from-indigo-50 hover:to-blue-50 transition-all duration-300 group">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-xl flex items-center justify-center mb-3 mx-auto group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
+                <Lightbulb className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">Idea Validation</h3>
-              <p className="text-gray-600">
-                Test your concepts against real market data and get structured feedback on viability.
+              <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-2">Instant Validation</h3>
+              <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">
+                Get AI-powered analysis of your startup idea in seconds with viability scoring
               </p>
             </div>
 
-            <div className="text-center group">
-              <div className="w-16 h-16 bg-gradient-to-r from-pink-500 to-rose-500 rounded-2xl flex items-center justify-center mb-4 mx-auto group-hover:scale-110 transition-transform duration-300">
-                <BarChart3 className="w-8 h-8 text-white" />
+            <div className="text-center p-4 rounded-xl hover:bg-gradient-to-br hover:from-pink-50 hover:to-rose-50 transition-all duration-300 group">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-r from-pink-500 to-rose-500 rounded-xl flex items-center justify-center mb-3 mx-auto group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
+                <BarChart3 className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">Market Analysis</h3>
-              <p className="text-gray-600">
-                Deep dive into market size, competition, and identify untapped opportunities.
+              <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-2">Market Research</h3>
+              <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">
+                Discover market size, competition landscape, and growth opportunities
               </p>
             </div>
 
-            <div className="text-center group">
-              <div className="w-16 h-16 bg-gradient-to-r from-amber-500 to-orange-500 rounded-2xl flex items-center justify-center mb-4 mx-auto group-hover:scale-110 transition-transform duration-300">
-                <Users className="w-8 h-8 text-white" />
+            <div className="text-center p-4 rounded-xl hover:bg-gradient-to-br hover:from-amber-50 hover:to-orange-50 transition-all duration-300 group">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-r from-amber-500 to-orange-500 rounded-xl flex items-center justify-center mb-3 mx-auto group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
+                <TrendingUp className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">Community Insights</h3>
-              <p className="text-gray-600">
-                Connect with other makers and get honest feedback from your target audience.
+              <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-2">Risk Assessment</h3>
+              <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">
+                Identify potential challenges and risks before investing time and money
+              </p>
+            </div>
+
+            <div className="text-center p-4 rounded-xl hover:bg-gradient-to-br hover:from-green-50 hover:to-emerald-50 transition-all duration-300 group">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl flex items-center justify-center mb-3 mx-auto group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
+                <CheckCircle className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
+              </div>
+              <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-2">Idea Refinement</h3>
+              <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">
+                Iterate and improve your concept with detailed suggestions and pivot options
               </p>
             </div>
           </div>

@@ -5,7 +5,6 @@ import type { User, AuthState } from '../types/auth';
 interface AuthContextType extends AuthState {
   signUp: (email: string, password: string) => Promise<{ error: any }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
-  signInWithOAuth: (provider: 'google' | 'twitter' | 'apple' | 'github') => Promise<{ error: any }>;
   signOut: () => Promise<void>;
 }
 
@@ -18,21 +17,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ? {
-        id: session.user.id,
-        email: session.user.email!,
-        user_metadata: session.user.user_metadata
-      } : null);
+      setUser(session?.user ? { id: session.user.id, email: session.user.email! } : null);
       setLoading(false);
     });
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ? {
-        id: session.user.id,
-        email: session.user.email!,
-        user_metadata: session.user.user_metadata
-      } : null);
+      setUser(session?.user ? { id: session.user.id, email: session.user.email! } : null);
       setLoading(false);
     });
 
@@ -58,28 +49,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return { error };
   };
 
-  const signInWithOAuth = async (provider: 'google' | 'twitter' | 'apple' | 'github') => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: provider,
-      options: {
-        redirectTo: window.location.origin,
-      },
-    });
-    return { error };
-  };
-
   const signOut = async () => {
     try {
       await supabase.auth.signOut();
     } catch (error) {
+      // If logout fails (e.g., session already expired), clear local state anyway
       console.warn('Logout error:', error);
     } finally {
+      // Ensure user state is cleared regardless of server response
       setUser(null);
     }
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, signUp, signIn, signInWithOAuth, signOut }}>
+    <AuthContext.Provider value={{ user, loading, signUp, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );

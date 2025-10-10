@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { ArrowLeft, Mail, Lock, AlertCircle, Loader, Eye, EyeOff } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
-import { OAuthButton } from './OAuthButton';
-import { useAuth } from '../../contexts/AuthContext';
 import { supabase } from '../../lib/supabase';
 
 interface AuthFormProps {
@@ -12,13 +10,11 @@ interface AuthFormProps {
 }
 
 export function AuthForm({ onBack, initialMode }: AuthFormProps) {
-  const { signInWithOAuth } = useAuth();
   const [mode, setMode] = useState<'signup' | 'signin'>(initialMode);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [oauthLoading, setOauthLoading] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -47,19 +43,6 @@ export function AuthForm({ onBack, initialMode }: AuthFormProps) {
     }
   };
 
-  const handleOAuthSignIn = async (provider: 'google' | 'twitter' | 'apple' | 'github') => {
-    setOauthLoading(provider);
-    setError(null);
-
-    try {
-      const { error } = await signInWithOAuth(provider);
-      if (error) throw error;
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
-      setOauthLoading(null);
-    }
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-900 flex items-center justify-center px-4">
       <div className="w-full max-w-md">
@@ -84,50 +67,13 @@ export function AuthForm({ onBack, initialMode }: AuthFormProps) {
             </p>
           </div>
 
-          {error && (
-            <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4 flex items-start space-x-3 mb-6">
-              <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
-              <p className="text-red-200 text-sm">{error}</p>
-            </div>
-          )}
-
-          <div className="space-y-3">
-            <OAuthButton
-              provider="google"
-              onClick={() => handleOAuthSignIn('google')}
-              loading={oauthLoading === 'google'}
-              disabled={loading || oauthLoading !== null}
-            />
-            <OAuthButton
-              provider="twitter"
-              onClick={() => handleOAuthSignIn('twitter')}
-              loading={oauthLoading === 'twitter'}
-              disabled={loading || oauthLoading !== null}
-            />
-            <OAuthButton
-              provider="apple"
-              onClick={() => handleOAuthSignIn('apple')}
-              loading={oauthLoading === 'apple'}
-              disabled={loading || oauthLoading !== null}
-            />
-            <OAuthButton
-              provider="github"
-              onClick={() => handleOAuthSignIn('github')}
-              loading={oauthLoading === 'github'}
-              disabled={loading || oauthLoading !== null}
-            />
-          </div>
-
-          <div className="relative my-6">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-white/10"></div>
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-transparent text-slate-400">Or continue with email</span>
-            </div>
-          </div>
-
           <form onSubmit={handleSubmit} className="space-y-6">
+            {error && (
+              <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4 flex items-start space-x-3">
+                <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
+                <p className="text-red-200 text-sm">{error}</p>
+              </div>
+            )}
 
             <div>
               <Input

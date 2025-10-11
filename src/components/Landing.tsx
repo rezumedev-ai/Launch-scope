@@ -73,6 +73,7 @@ export function Landing({ onGetStarted, onSignIn, onNavigateToLegal }: LandingPr
               <Button
                 variant="outline"
                 size="lg"
+                onClick={onGetStarted}
                 className="px-12 py-6 text-lg"
               >
                 See How It Works

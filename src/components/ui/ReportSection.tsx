@@ -1,69 +1,119 @@
 import React from 'react';
 
 interface ReportSectionProps {
-  title: string;
   children: React.ReactNode;
+  title?: string;
+  subtitle?: string;
   icon?: React.ReactNode;
+  gradient?: string;
   className?: string;
+  delay?: number;
 }
 
-export function ReportSection({ title, children, icon, className = '' }: ReportSectionProps) {
+export function ReportSection({
+  children,
+  title,
+  subtitle,
+  icon,
+  gradient = 'from-indigo-500/10 via-purple-500/10 to-pink-500/10',
+  className = '',
+  delay = 0
+}: ReportSectionProps) {
   return (
-    <div className={`bg-white rounded-2xl shadow-lg border border-gray-100 p-8 ${className}`}>
-      <div className="flex items-center gap-3 mb-6">
-        {icon && (
-          <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-blue-500 rounded-xl flex items-center justify-center text-white">
-            {icon}
-          </div>
-        )}
-        <h3 className="text-2xl font-bold text-gray-800">{title}</h3>
+    <section
+      className={`relative animate-fade-in ${className}`}
+      style={{ animationDelay: `${delay}ms` }}
+    >
+      {/* Background gradient */}
+      <div className={`absolute inset-0 bg-gradient-to-r ${gradient} rounded-3xl`} />
+
+      {/* Content */}
+      <div className="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl">
+        {/* Floating decorations */}
+        <div className="absolute top-4 right-4 w-32 h-32 bg-gradient-to-br from-purple-400/10 to-pink-400/10 rounded-full blur-2xl" />
+        <div className="absolute bottom-4 left-4 w-24 h-24 bg-gradient-to-br from-indigo-400/10 to-blue-400/10 rounded-full blur-xl" />
+
+        <div className="relative">
+          {/* Header */}
+          {(title || icon) && (
+            <div className="flex items-center mb-6">
+              {icon && (
+                <div className="mr-4 transform hover:scale-110 transition-transform duration-300">
+                  {icon}
+                </div>
+              )}
+              <div className="flex-1">
+                {title && (
+                  <h3 className="text-2xl sm:text-3xl font-bold text-white mb-1">
+                    {title}
+                  </h3>
+                )}
+                {subtitle && (
+                  <p className="text-slate-300 text-sm sm:text-base">{subtitle}</p>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Content */}
+          {children}
+        </div>
       </div>
-      {children}
-    </div>
+    </section>
   );
 }
 
 interface InfoCardProps {
   title: string;
-  description: string;
+  content?: string | string[];
   icon?: React.ReactNode;
-  color?: string;
+  variant?: 'default' | 'success' | 'warning' | 'danger' | 'info';
+  children?: React.ReactNode;
 }
 
-export function InfoCard({ title, description, icon, color = 'indigo' }: InfoCardProps) {
-  const colorClasses = {
-    indigo: 'bg-indigo-50 border-indigo-200',
-    blue: 'bg-blue-50 border-blue-200',
-    green: 'bg-green-50 border-green-200',
-    yellow: 'bg-yellow-50 border-yellow-200',
-    red: 'bg-red-50 border-red-200',
-    pink: 'bg-pink-50 border-pink-200',
-    purple: 'bg-purple-50 border-purple-200'
+export function InfoCard({ title, content, icon, variant = 'default', children }: InfoCardProps) {
+  const variantStyles = {
+    default: 'bg-slate-800/50 border-slate-700/50',
+    success: 'bg-emerald-900/30 border-emerald-500/30',
+    warning: 'bg-amber-900/30 border-amber-500/30',
+    danger: 'bg-red-900/30 border-red-500/30',
+    info: 'bg-blue-900/30 border-blue-500/30'
   };
 
-  const iconColorClasses = {
-    indigo: 'text-indigo-600',
-    blue: 'text-blue-600',
-    green: 'text-green-600',
-    yellow: 'text-yellow-600',
-    red: 'text-red-600',
-    pink: 'text-pink-600',
-    purple: 'text-purple-600'
+  const iconColors = {
+    default: 'text-indigo-400',
+    success: 'text-emerald-400',
+    warning: 'text-amber-400',
+    danger: 'text-red-400',
+    info: 'text-blue-400'
   };
 
   return (
-    <div className={`${colorClasses[color as keyof typeof colorClasses] || colorClasses.indigo} border rounded-xl p-6 transition-all hover:shadow-md`}>
-      <div className="flex items-start gap-4">
+    <div className={`${variantStyles[variant]} rounded-2xl p-6 border transition-all duration-300 hover:scale-[1.02]`}>
+      <div className="flex items-start space-x-3 mb-3">
         {icon && (
-          <div className={`flex-shrink-0 ${iconColorClasses[color as keyof typeof iconColorClasses] || iconColorClasses.indigo}`}>
+          <div className={`flex-shrink-0 ${iconColors[variant]}`}>
             {icon}
           </div>
         )}
-        <div className="flex-1">
-          <h4 className="text-lg font-bold text-gray-800 mb-2">{title}</h4>
-          <p className="text-gray-700 leading-relaxed">{description}</p>
-        </div>
+        <h4 className="text-lg sm:text-xl font-semibold text-white flex-1">{title}</h4>
       </div>
+      {children ? (
+        <div>{children}</div>
+      ) : content ? (
+        Array.isArray(content) ? (
+          <ul className="space-y-2">
+            {content.map((item, idx) => (
+              <li key={idx} className="text-slate-300 text-sm sm:text-base leading-relaxed flex items-start">
+                <span className="text-indigo-400 mr-2">•</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-slate-300 text-sm sm:text-base leading-relaxed">{content}</p>
+        )
+      ) : null}
     </div>
   );
 }

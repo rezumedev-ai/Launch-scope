@@ -16,7 +16,7 @@
   flex-direction: column;
   justify-content: space-between;
   position: relative;
-  min-height: 200px;
+  min-height: auto;
   width: 100%;
   max-width: 100%;
   padding: 2rem;
@@ -80,13 +80,17 @@
 }
 
 .bento-card__activity-item {
-  padding: 0.75rem;
+  padding: 0.625rem 0.75rem;
   background: rgba(255, 255, 255, 0.05);
   border-radius: 0.75rem;
   margin-bottom: 0.5rem;
   transition: all 0.2s ease;
   cursor: pointer;
   border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.bento-card__activity-item:last-child {
+  margin-bottom: 0;
 }
 
 .bento-card__activity-item:hover {
@@ -113,47 +117,58 @@
 
 .bento-card__view-more {
   text-align: center;
-  padding: 0.75rem;
+  padding: 0.625rem 0.75rem;
   font-size: 0.875rem;
   color: white;
   font-weight: 500;
   text-decoration: underline;
   cursor: pointer;
   transition: all 0.2s ease;
-  margin-top: 0.5rem;
+  margin-top: 0.75rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .bento-card__view-more:hover {
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 1);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
-.bento-card--border-glow::after {
+.bento-card--border-glow::before {
   content: '';
   position: absolute;
-  inset: 0;
+  inset: -2px;
   padding: 2px;
   background: radial-gradient(
-    var(--glow-radius) circle at var(--glow-x) var(--glow-y),
-    var(--glow-color-primary) 0%,
-    var(--glow-color-secondary) 30%,
+    400px circle at var(--glow-x) var(--glow-y),
+    rgba(236, 72, 153, calc(var(--glow-intensity) * 0.8)) 0%,
+    rgba(99, 102, 241, calc(var(--glow-intensity) * 0.5)) 30%,
     transparent 60%
   );
   border-radius: inherit;
   mask:
     linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
-  mask-composite: subtract;
+  mask-composite: exclude;
   -webkit-mask:
     linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   pointer-events: none;
-  transition: opacity 0.3s ease;
-  z-index: 10;
+  z-index: -1;
+  opacity: 1;
+  transition: all 0.2s ease;
 }
 
-.bento-card--border-glow:hover::after {
-  opacity: 1;
+.bento-card--border-glow:hover::before {
+  background: radial-gradient(
+    400px circle at var(--glow-x) var(--glow-y),
+    rgba(236, 72, 153, 0.9) 0%,
+    rgba(99, 102, 241, 0.6) 30%,
+    transparent 60%
+  );
 }
 
 .particle-container {

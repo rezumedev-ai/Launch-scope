@@ -23,20 +23,20 @@ export const RecentActivityCard: React.FC<RecentActivityCardProps> = ({
   const recentItems = analysisHistory.slice(0, 5);
 
   return (
-    <div className="bento-card__content" style={{ height: '100%', justifyContent: 'space-between' }}>
-      <div>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
-          <h3 className="bento-card__title" style={{ margin: 0 }}>Recent Activity</h3>
-          <Clock className="w-5 h-5 text-white opacity-60" />
-        </div>
+    <div className="bento-card__content" style={{ justifyContent: 'flex-start', gap: '0' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+        <h3 className="bento-card__title" style={{ margin: 0 }}>Recent Activity</h3>
+        <Clock className="w-5 h-5 text-white opacity-60" />
+      </div>
 
-        {analysisHistory.length === 0 ? (
-          <div className="bento-card__activity-item" style={{ cursor: 'default' }}>
-            <p className="bento-card__activity-item-title">No ideas tested yet</p>
-            <p className="bento-card__activity-item-meta">Start by submitting your first startup idea above</p>
-          </div>
-        ) : (
-          <div style={{ maxHeight: '280px', overflowY: 'auto' }}>
+      {analysisHistory.length === 0 ? (
+        <div className="bento-card__activity-item" style={{ cursor: 'default' }}>
+          <p className="bento-card__activity-item-title">No ideas tested yet</p>
+          <p className="bento-card__activity-item-meta">Start by submitting your first startup idea above</p>
+        </div>
+      ) : (
+        <>
+          <div>
             {recentItems.map((item) => (
               <div
                 key={item.id}
@@ -66,16 +66,16 @@ export const RecentActivityCard: React.FC<RecentActivityCardProps> = ({
               </div>
             ))}
           </div>
-        )}
-      </div>
 
-      {analysisHistory.length > 5 && (
-        <div
-          className="bento-card__view-more"
-          onClick={onViewAll}
-        >
-          View All {analysisHistory.length} Analyses →
-        </div>
+          {analysisHistory.length > 5 && (
+            <div
+              className="bento-card__view-more"
+              onClick={onViewAll}
+            >
+              View All {analysisHistory.length} Analyses →
+            </div>
+          )}
+        </>
       )}
     </div>
   );

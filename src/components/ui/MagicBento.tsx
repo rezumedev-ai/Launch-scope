@@ -7,12 +7,13 @@ const DEFAULT_SPOTLIGHT_RADIUS = 250;
 const MOBILE_BREAKPOINT = 768;
 
 interface CardData {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
+  icon?: React.ReactNode;
+  title?: string;
+  description?: string;
   gradient: string;
   glowColor: string;
   onClick?: () => void;
+  customContent?: React.ReactNode;
 }
 
 interface ParticleCardProps {
@@ -505,30 +506,46 @@ export const MagicBento: React.FC<MagicBentoProps> = ({
                 clickEffect={clickEffect}
                 enableMagnetism={enableMagnetism}
               >
-                <div className="bento-card__header">
-                  <div className="bento-card__icon" style={{ background: card.gradient }}>
-                    {card.icon}
-                  </div>
-                </div>
-                <div className="bento-card__content">
-                  <h3 className="bento-card__title">{card.title}</h3>
-                  <p className="bento-card__description">{card.description}</p>
-                </div>
+                {card.customContent ? (
+                  card.customContent
+                ) : (
+                  <>
+                    {card.icon && (
+                      <div className="bento-card__header">
+                        <div className="bento-card__icon" style={{ background: card.gradient }}>
+                          {card.icon}
+                        </div>
+                      </div>
+                    )}
+                    <div className="bento-card__content">
+                      {card.title && <h3 className="bento-card__title">{card.title}</h3>}
+                      {card.description && <p className="bento-card__description">{card.description}</p>}
+                    </div>
+                  </>
+                )}
               </ParticleCard>
             );
           }
 
           return (
             <div key={index} {...cardProps}>
-              <div className="bento-card__header">
-                <div className="bento-card__icon" style={{ background: card.gradient }}>
-                  {card.icon}
-                </div>
-              </div>
-              <div className="bento-card__content">
-                <h3 className="bento-card__title">{card.title}</h3>
-                <p className="bento-card__description">{card.description}</p>
-              </div>
+              {card.customContent ? (
+                card.customContent
+              ) : (
+                <>
+                  {card.icon && (
+                    <div className="bento-card__header">
+                      <div className="bento-card__icon" style={{ background: card.gradient }}>
+                        {card.icon}
+                      </div>
+                    </div>
+                  )}
+                  <div className="bento-card__content">
+                    {card.title && <h3 className="bento-card__title">{card.title}</h3>}
+                    {card.description && <p className="bento-card__description">{card.description}</p>}
+                  </div>
+                </>
+              )}
             </div>
           );
         })}

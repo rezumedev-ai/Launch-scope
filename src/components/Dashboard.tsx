@@ -9,6 +9,7 @@ import { AnalysisReport } from './AnalysisReport';
 import { StripeTestPanel } from './StripeTestPanel';
 import { SubscriptionManager } from './SubscriptionManager';
 import { MagicBento } from './ui/MagicBento';
+import { RecentActivityCard } from './ui/RecentActivityCard';
 
 interface RefinedIdeaData {
   idea: string;
@@ -631,14 +632,15 @@ export function Dashboard() {
           <MagicBento
             cards={[
               {
-                icon: <Clock className="w-6 h-6 text-white" />,
-                title: "Recent Activity",
-                description: analysisHistory.length === 0
-                  ? "No ideas tested yet. Start by submitting your first startup idea above."
-                  : `${analysisHistory.length} ideas analyzed. Click to view your recent validations.`,
                 gradient: 'linear-gradient(135deg, #6366f1 0%, #3b82f6 100%)',
                 glowColor: 'rgba(99, 102, 241, 0.6)',
-                onClick: () => analysisHistory.length > 0 && setShowHistory(true)
+                customContent: (
+                  <RecentActivityCard
+                    analysisHistory={analysisHistory}
+                    onViewReport={handleViewHistoryReport}
+                    onViewAll={() => setShowHistory(true)}
+                  />
+                )
               }
             ]}
             enableStars={true}

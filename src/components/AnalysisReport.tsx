@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, AlertTriangle, Target, Users, DollarSign, Clock, CheckCircle, Star, Lightbulb, Zap, TrendingUp, Code, Rocket, Search, TrendingDown, BarChart3, Shield, Calendar, Eye, Activity, Globe, Layers, CreditCard as Edit3, RefreshCw, X, Save, Sparkles, ArrowUp, ChevronRight } from 'lucide-react';
+import { ArrowLeft, AlertTriangle, Target, Users, DollarSign, Clock, CheckCircle, Star, Lightbulb, Zap, TrendingUp, Code, Rocket, Search, TrendingDown, BarChart3, Shield, Calendar, Eye, Activity, Globe, Layers, CreditCard as Edit3, RefreshCw, X, Save, Sparkles, ArrowUp, ChevronRight, Download, Share2 } from 'lucide-react';
 import { Button } from './ui/Button';
 import { Input } from './ui/Input';
 import { useState, useEffect } from 'react';
@@ -277,6 +277,311 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
       case 'high': return 'bg-red-500/20 text-red-200 border-red-400/30';
       default: return 'bg-slate-500/20 text-slate-200 border-slate-400/30';
     }
+  };
+
+  const handleDownloadPDF = () => {
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) return;
+
+    const overallScoreValue = getViabilityScoreValue(analysis);
+
+    const htmlContent = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>LaunchScope Analysis Report - ${idea.substring(0, 50)}</title>
+          <style>
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+            body {
+              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+              line-height: 1.6;
+              color: #1e293b;
+              padding: 40px;
+              max-width: 1000px;
+              margin: 0 auto;
+            }
+            .header {
+              text-align: center;
+              border-bottom: 3px solid #6366f1;
+              padding-bottom: 30px;
+              margin-bottom: 40px;
+            }
+            .logo-text {
+              font-size: 28px;
+              font-weight: bold;
+              color: #6366f1;
+              margin-bottom: 10px;
+            }
+            .report-title {
+              font-size: 22px;
+              color: #475569;
+              margin-bottom: 20px;
+            }
+            .idea-box {
+              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+              color: white;
+              padding: 30px;
+              border-radius: 12px;
+              margin-bottom: 30px;
+            }
+            .idea-box h2 { font-size: 20px; margin-bottom: 15px; }
+            .idea-box p { font-size: 16px; line-height: 1.8; }
+            .section {
+              margin-bottom: 35px;
+              page-break-inside: avoid;
+            }
+            .section-title {
+              font-size: 20px;
+              font-weight: bold;
+              color: #1e293b;
+              margin-bottom: 15px;
+              padding-bottom: 8px;
+              border-bottom: 2px solid #e2e8f0;
+            }
+            .score-box {
+              display: inline-block;
+              background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+              color: white;
+              padding: 20px 40px;
+              border-radius: 12px;
+              text-align: center;
+              margin: 20px 0;
+            }
+            .score-number { font-size: 48px; font-weight: bold; }
+            .score-label { font-size: 14px; opacity: 0.9; margin-top: 5px; }
+            .verdict-box {
+              background: #f1f5f9;
+              border-left: 4px solid #6366f1;
+              padding: 20px;
+              border-radius: 8px;
+              margin: 20px 0;
+            }
+            .grid {
+              display: grid;
+              grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+              gap: 20px;
+              margin: 20px 0;
+            }
+            .card {
+              background: #f8fafc;
+              border: 1px solid #e2e8f0;
+              border-radius: 8px;
+              padding: 20px;
+            }
+            .card h4 {
+              font-size: 16px;
+              color: #475569;
+              margin-bottom: 10px;
+              font-weight: 600;
+            }
+            .card p {
+              font-size: 14px;
+              color: #64748b;
+              line-height: 1.6;
+            }
+            ul {
+              list-style: none;
+              padding: 0;
+            }
+            li {
+              padding: 12px 15px;
+              margin: 8px 0;
+              background: #f8fafc;
+              border-left: 3px solid #6366f1;
+              border-radius: 4px;
+            }
+            .strength-item { border-left-color: #10b981; }
+            .challenge-item { border-left-color: #ef4444; }
+            .metric {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              padding: 15px;
+              background: #f8fafc;
+              border-radius: 8px;
+              margin: 10px 0;
+            }
+            .metric-label { font-weight: 600; color: #475569; }
+            .metric-value {
+              font-weight: bold;
+              color: #6366f1;
+              font-size: 18px;
+            }
+            .footer {
+              margin-top: 50px;
+              padding-top: 20px;
+              border-top: 2px solid #e2e8f0;
+              text-align: center;
+              color: #64748b;
+              font-size: 12px;
+            }
+            @media print {
+              body { padding: 20px; }
+              .section { page-break-inside: avoid; }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <div class="logo-text">🚀 LaunchScope</div>
+            <div class="report-title">Startup Idea Validation Report</div>
+            <div style="color: #64748b; font-size: 14px;">${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
+          </div>
+
+          <div class="idea-box">
+            <h2>Your Startup Idea</h2>
+            <p>${idea}</p>
+          </div>
+
+          <div class="section">
+            <div style="text-align: center;">
+              <div class="score-box">
+                <div class="score-number">${overallScoreValue}/10</div>
+                <div class="score-label">Overall Viability Score</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <h3 class="section-title">Final Verdict</h3>
+            <div class="verdict-box">
+              <p style="font-size: 16px; line-height: 1.8;">${analysis.verdict}</p>
+            </div>
+          </div>
+
+          <div class="section">
+            <h3 class="section-title">Executive Summary</h3>
+            <p style="font-size: 15px; line-height: 1.8; color: #475569;">${analysis.summary}</p>
+          </div>
+
+          ${analysis.detailedViabilityBreakdown ? `
+          <div class="section">
+            <h3 class="section-title">Detailed Viability Breakdown</h3>
+            <div class="grid">
+              <div class="card">
+                <h4>Market Demand (25%)</h4>
+                <div class="metric-value" style="margin: 10px 0;">${analysis.detailedViabilityBreakdown.marketDemand.score}/10</div>
+                <p>${analysis.detailedViabilityBreakdown.marketDemand.justification}</p>
+              </div>
+              <div class="card">
+                <h4>Technical Feasibility (20%)</h4>
+                <div class="metric-value" style="margin: 10px 0;">${analysis.detailedViabilityBreakdown.technicalFeasibility.score}/10</div>
+                <p>${analysis.detailedViabilityBreakdown.technicalFeasibility.justification}</p>
+              </div>
+              <div class="card">
+                <h4>Differentiation (20%)</h4>
+                <div class="metric-value" style="margin: 10px 0;">${analysis.detailedViabilityBreakdown.differentiation.score}/10</div>
+                <p>${analysis.detailedViabilityBreakdown.differentiation.justification}</p>
+              </div>
+              <div class="card">
+                <h4>Monetization Potential (25%)</h4>
+                <div class="metric-value" style="margin: 10px 0;">${analysis.detailedViabilityBreakdown.monetizationPotential.score}/10</div>
+                <p>${analysis.detailedViabilityBreakdown.monetizationPotential.justification}</p>
+              </div>
+              <div class="card">
+                <h4>Timing (10%)</h4>
+                <div class="metric-value" style="margin: 10px 0;">${analysis.detailedViabilityBreakdown.timing.score}/10</div>
+                <p>${analysis.detailedViabilityBreakdown.timing.justification}</p>
+              </div>
+            </div>
+          </div>
+          ` : ''}
+
+          <div class="section">
+            <h3 class="section-title">Key Metrics</h3>
+            <div class="metric">
+              <span class="metric-label">Build Cost Estimate</span>
+              <span class="metric-value">${analysis.buildCost.estimate}</span>
+            </div>
+            <div class="metric">
+              <span class="metric-label">Time to MVP</span>
+              <span class="metric-value">${analysis.timeToMVP}</span>
+            </div>
+            <p style="margin-top: 15px; color: #64748b; font-size: 14px;">${analysis.buildCost.notes}</p>
+          </div>
+
+          <div class="section">
+            <h3 class="section-title">Key Strengths</h3>
+            <ul>
+              ${analysis.strengths.map(strength => `<li class="strength-item">${strength}</li>`).join('')}
+            </ul>
+          </div>
+
+          <div class="section">
+            <h3 class="section-title">Key Challenges</h3>
+            <ul>
+              ${analysis.challenges.map(challenge => `<li class="challenge-item">${challenge}</li>`).join('')}
+            </ul>
+          </div>
+
+          <div class="section">
+            <h3 class="section-title">Target Audience</h3>
+            <div class="grid">
+              <div class="card">
+                <h4>Primary Audience</h4>
+                <p>${analysis.audience.primary}</p>
+              </div>
+              ${analysis.audience.secondary ? `
+              <div class="card">
+                <h4>Secondary Audience</h4>
+                <p>${analysis.audience.secondary}</p>
+              </div>
+              ` : ''}
+            </div>
+          </div>
+
+          <div class="section">
+            <h3 class="section-title">Lean MVP Features</h3>
+            <ul>
+              ${analysis.leanMVP.map((feature, idx) => `<li><strong>${idx + 1}.</strong> ${feature}</li>`).join('')}
+            </ul>
+          </div>
+
+          <div class="section">
+            <h3 class="section-title">Distribution Channels</h3>
+            <ul>
+              ${analysis.distribution.map(channel => `<li>${channel}</li>`).join('')}
+            </ul>
+          </div>
+
+          <div class="section">
+            <h3 class="section-title">Revenue Models</h3>
+            <ul>
+              ${analysis.monetization.map(model => `<li>${model}</li>`).join('')}
+            </ul>
+          </div>
+
+          ${analysis.validationSteps && analysis.validationSteps.length > 0 ? `
+          <div class="section">
+            <h3 class="section-title">Validation Roadmap</h3>
+            <ul>
+              ${analysis.validationSteps.map((step, idx) => `<li><strong>Step ${idx + 1}:</strong> ${step}</li>`).join('')}
+            </ul>
+          </div>
+          ` : ''}
+
+          <div class="section">
+            <h3 class="section-title">Recommended Action Plan</h3>
+            <ul>
+              ${analysis.nextSteps.map((step, idx) => `<li><strong>${idx + 1}.</strong> ${step}</li>`).join('')}
+            </ul>
+          </div>
+
+          <div class="footer">
+            <p><strong>Generated by LaunchScope</strong></p>
+            <p>Professional Startup Validation Platform</p>
+            <p style="margin-top: 10px;">This report was generated on ${new Date().toLocaleString()}</p>
+          </div>
+        </body>
+      </html>
+    `;
+
+    printWindow.document.write(htmlContent);
+    printWindow.document.close();
+
+    setTimeout(() => {
+      printWindow.print();
+    }, 250);
   };
 
   const overallScore = getViabilityScoreValue(analysis);
@@ -567,6 +872,15 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
 
             {/* Bottom row: Action buttons */}
             <div className="flex items-center gap-2 overflow-x-auto pb-1">
+              {!isRefining && (
+                <Button
+                  onClick={handleDownloadPDF}
+                  className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white px-3 py-2 text-xs whitespace-nowrap flex-shrink-0"
+                >
+                  <Download className="w-3 h-3 mr-1" />
+                  PDF
+                </Button>
+              )}
               {!isRefining ? (
                 <>
                   {overallScore < 7 && (
@@ -665,6 +979,15 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
 
             {/* Refinement Controls */}
             <div className="flex items-center space-x-3">
+              {!isRefining && (
+                <Button
+                  onClick={handleDownloadPDF}
+                  className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white"
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  Download PDF
+                </Button>
+              )}
               {!isRefining ? (
                 <>
                   {overallScore < 7 && (

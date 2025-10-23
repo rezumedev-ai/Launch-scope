@@ -8,6 +8,7 @@ import { IdeaInputBox } from './ui/IdeaInputBox';
 import { AnalysisReport } from './AnalysisReport';
 import { StripeTestPanel } from './StripeTestPanel';
 import { SubscriptionManager } from './SubscriptionManager';
+import { MagicBento } from './ui/MagicBento';
 
 interface RefinedIdeaData {
   idea: string;
@@ -625,151 +626,121 @@ export function Dashboard() {
           </div>
         </div>
 
-        {/* Recent Activity & Features */}
+        {/* Recent Activity & Quick Actions */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 mb-12">
-          {/* Recent Activity */}
-          <div className="bg-white rounded-3xl shadow-2xl p-8">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-gray-800">Recent Activity</h2>
-              <Clock className="w-6 h-6 text-gray-400" />
-            </div>
-            
-            <div className="space-y-4">
-              {analysisHistory.length === 0 ? (
-                <div className="flex items-center p-4 bg-gray-50 rounded-xl">
-                  <div className="w-10 h-10 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-lg flex items-center justify-center mr-4">
-                    <Lightbulb className="w-5 h-5 text-white" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-gray-600 text-sm">No ideas tested yet</p>
-                    <p className="text-gray-400 text-xs">Start by submitting your first startup idea above</p>
-                  </div>
-                </div>
-              ) : (
-                <>
-                  {analysisHistory.slice(0, 3).map((item) => (
-                    <div key={item.id} className="flex items-center p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors cursor-pointer" onClick={() => handleViewHistoryReport(item)}>
-                      <div className="w-10 h-10 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-lg flex items-center justify-center mr-4">
-                        <Lightbulb className="w-5 h-5 text-white" />
-                      </div>
-                      <div className="flex-1">
-                        <p className="text-gray-800 text-sm font-medium line-clamp-1">{item.idea}</p>
-                        <p className="text-gray-500 text-xs">
-                          {new Date(item.created_at).toLocaleDateString()} • Score: {item.viability_score}/10
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                  {analysisHistory.length > 3 && (
-                    <button 
-                      onClick={() => setShowHistory(true)}
-                      className="w-full text-center p-3 text-indigo-600 hover:text-indigo-800 font-medium text-sm transition-colors"
-                    >
-                      View All {analysisHistory.length} Analyses →
-                    </button>
-                  )}
-                </>
-              )}
-            </div>
-          </div>
+          <MagicBento
+            cards={[
+              {
+                icon: <Clock className="w-6 h-6 text-white" />,
+                title: "Recent Activity",
+                description: analysisHistory.length === 0
+                  ? "No ideas tested yet. Start by submitting your first startup idea above."
+                  : `${analysisHistory.length} ideas analyzed. Click to view your recent validations.`,
+                gradient: 'linear-gradient(135deg, #6366f1 0%, #3b82f6 100%)',
+                glowColor: 'rgba(99, 102, 241, 0.6)',
+                onClick: () => analysisHistory.length > 0 && setShowHistory(true)
+              }
+            ]}
+            enableStars={true}
+            enableSpotlight={true}
+            enableBorderGlow={true}
+            enableTilt={true}
+            clickEffect={true}
+            enableMagnetism={true}
+            spotlightRadius={250}
+            particleCount={8}
+            className="lg:col-span-1"
+          />
 
-          {/* Quick Actions */}
-          <div className="bg-white rounded-3xl shadow-2xl p-8">
-            <h2 className="text-2xl font-bold text-gray-800 mb-6">Quick Actions</h2>
-            
-            <div className="space-y-4">
-              <button 
-                onClick={() => document.querySelector('input')?.focus()}
-                className="w-full flex items-center p-4 bg-gradient-to-r from-indigo-50 to-blue-50 rounded-xl hover:from-indigo-100 hover:to-blue-100 transition-all duration-300 transform hover:-translate-y-1 group"
-              >
-                <div className="w-10 h-10 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-lg flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
-                  <Lightbulb className="w-5 h-5 text-white" />
-                </div>
-                <div className="text-left">
-                  <h3 className="font-semibold text-gray-800">Test New Idea</h3>
-                  <p className="text-gray-600 text-sm">Submit a startup concept for validation</p>
-                </div>
-              </button>
-
-              <button 
-                onClick={() => setShowHistory(true)}
-                className="w-full flex items-center p-4 bg-gradient-to-r from-pink-50 to-rose-50 rounded-xl hover:from-pink-100 hover:to-rose-100 transition-all duration-300 transform hover:-translate-y-1 group"
-              >
-                <div className="w-10 h-10 bg-gradient-to-r from-pink-500 to-rose-500 rounded-lg flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
-                  <BarChart3 className="w-5 h-5 text-white" />
-                </div>
-                <div className="text-left">
-                  <h3 className="font-semibold text-gray-800">View Analysis History</h3>
-                  <p className="text-gray-600 text-sm">Review your previous startup validations</p>
-                </div>
-              </button>
-
-              <button 
-                onClick={handleShowSubscription}
-                className="w-full flex items-center p-4 bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl hover:from-amber-100 hover:to-orange-100 transition-all duration-300 transform hover:-translate-y-1 group"
-              >
-                <div className="w-10 h-10 bg-gradient-to-r from-amber-500 to-orange-500 rounded-lg flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
-                  <Crown className="w-5 h-5 text-white" />
-                </div>
-                <div className="text-left">
-                  <h3 className="font-semibold text-gray-800">Manage Subscription</h3>
-                  <p className="text-gray-600 text-sm">Upgrade or manage your billing</p>
-                </div>
-              </button>
-            </div>
-          </div>
+          <MagicBento
+            cards={[
+              {
+                icon: <Lightbulb className="w-6 h-6 text-white" />,
+                title: "Test New Idea",
+                description: "Submit a startup concept for validation and get instant AI-powered insights.",
+                gradient: 'linear-gradient(135deg, #6366f1 0%, #3b82f6 100%)',
+                glowColor: 'rgba(99, 102, 241, 0.6)',
+                onClick: () => document.querySelector('textarea')?.focus()
+              },
+              {
+                icon: <BarChart3 className="w-6 h-6 text-white" />,
+                title: "View Analysis History",
+                description: "Review your previous startup validations and track your progress.",
+                gradient: 'linear-gradient(135deg, #ec4899 0%, #f43f5e 100%)',
+                glowColor: 'rgba(236, 72, 153, 0.6)',
+                onClick: () => setShowHistory(true)
+              },
+              {
+                icon: <Crown className="w-6 h-6 text-white" />,
+                title: "Manage Subscription",
+                description: "Upgrade or manage your billing and unlock unlimited validations.",
+                gradient: 'linear-gradient(135deg, #f59e0b 0%, #f97316 100%)',
+                glowColor: 'rgba(245, 158, 11, 0.6)',
+                onClick: handleShowSubscription
+              }
+            ]}
+            enableStars={true}
+            enableSpotlight={true}
+            enableBorderGlow={true}
+            enableTilt={true}
+            clickEffect={true}
+            enableMagnetism={true}
+            spotlightRadius={250}
+            particleCount={8}
+            className="lg:col-span-1"
+          />
         </div>
 
         {/* Feature Showcase */}
-        <div className="bg-white rounded-3xl shadow-2xl p-6 sm:p-8 mb-8">
+        <div className="mb-8">
           <div className="text-center mb-8">
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-3">What You Can Do With LaunchScope</h2>
-            <p className="text-gray-600 text-sm sm:text-base max-w-2xl mx-auto">
+            <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3">What You Can Do With LaunchScope</h2>
+            <p className="text-blue-100 text-sm sm:text-base max-w-2xl mx-auto">
               Comprehensive startup validation tools to test and refine your ideas
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-            <div className="text-center p-4 rounded-xl hover:bg-gradient-to-br hover:from-indigo-50 hover:to-blue-50 transition-all duration-300 group">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-xl flex items-center justify-center mb-3 mx-auto group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
-                <Lightbulb className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
-              </div>
-              <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-2">Instant Validation</h3>
-              <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">
-                Get AI-powered analysis of your startup idea in seconds with viability scoring
-              </p>
-            </div>
-
-            <div className="text-center p-4 rounded-xl hover:bg-gradient-to-br hover:from-pink-50 hover:to-rose-50 transition-all duration-300 group">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-r from-pink-500 to-rose-500 rounded-xl flex items-center justify-center mb-3 mx-auto group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
-                <BarChart3 className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
-              </div>
-              <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-2">Market Research</h3>
-              <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">
-                Discover market size, competition landscape, and growth opportunities
-              </p>
-            </div>
-
-            <div className="text-center p-4 rounded-xl hover:bg-gradient-to-br hover:from-amber-50 hover:to-orange-50 transition-all duration-300 group">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-r from-amber-500 to-orange-500 rounded-xl flex items-center justify-center mb-3 mx-auto group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
-                <TrendingUp className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
-              </div>
-              <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-2">Risk Assessment</h3>
-              <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">
-                Identify potential challenges and risks before investing time and money
-              </p>
-            </div>
-
-            <div className="text-center p-4 rounded-xl hover:bg-gradient-to-br hover:from-green-50 hover:to-emerald-50 transition-all duration-300 group">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl flex items-center justify-center mb-3 mx-auto group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
-                <CheckCircle className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
-              </div>
-              <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-2">Idea Refinement</h3>
-              <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">
-                Iterate and improve your concept with detailed suggestions and pivot options
-              </p>
-            </div>
-          </div>
+          <MagicBento
+            cards={[
+              {
+                icon: <Lightbulb className="w-7 h-7 text-white" />,
+                title: "Instant Validation",
+                description: "Get AI-powered analysis of your startup idea in seconds with viability scoring.",
+                gradient: 'linear-gradient(135deg, #6366f1 0%, #3b82f6 100%)',
+                glowColor: 'rgba(99, 102, 241, 0.6)'
+              },
+              {
+                icon: <BarChart3 className="w-7 h-7 text-white" />,
+                title: "Market Research",
+                description: "Discover market size, competition landscape, and growth opportunities.",
+                gradient: 'linear-gradient(135deg, #ec4899 0%, #f43f5e 100%)',
+                glowColor: 'rgba(236, 72, 153, 0.6)'
+              },
+              {
+                icon: <TrendingUp className="w-7 h-7 text-white" />,
+                title: "Risk Assessment",
+                description: "Identify potential challenges and risks before investing time and money.",
+                gradient: 'linear-gradient(135deg, #f59e0b 0%, #f97316 100%)',
+                glowColor: 'rgba(245, 158, 11, 0.6)'
+              },
+              {
+                icon: <CheckCircle className="w-7 h-7 text-white" />,
+                title: "Idea Refinement",
+                description: "Iterate and improve your concept with detailed suggestions and pivot options.",
+                gradient: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                glowColor: 'rgba(16, 185, 129, 0.6)'
+              }
+            ]}
+            enableStars={true}
+            enableSpotlight={true}
+            enableBorderGlow={true}
+            enableTilt={true}
+            clickEffect={true}
+            enableMagnetism={true}
+            spotlightRadius={250}
+            particleCount={8}
+            className="grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
+          />
         </div>
 
         {/* Getting Started Guide */}

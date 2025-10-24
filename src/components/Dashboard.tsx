@@ -10,6 +10,7 @@ import { StripeTestPanel } from './StripeTestPanel';
 import { SubscriptionManager } from './SubscriptionManager';
 import { MagicBento } from './ui/MagicBento';
 import { RecentActivityCard } from './ui/RecentActivityCard';
+import { RecommendationsCard } from './ui/RecommendationsCard';
 
 interface RefinedIdeaData {
   idea: string;
@@ -27,6 +28,9 @@ interface AnalysisHistory {
   analysis_result: any;
   viability_score: number;
   created_at: string;
+  is_validated?: boolean;
+  validated_at?: string;
+  validation_notes?: string;
 }
 
 interface DashboardStats {
@@ -59,6 +63,9 @@ export function Dashboard() {
   const [hasActiveSubscription, setHasActiveSubscription] = useState(false);
   const [monthlyAnalysisCount, setMonthlyAnalysisCount] = useState(0);
   const [loadingSubscription, setLoadingSubscription] = useState(true);
+  const [showValidatedIdeas, setShowValidatedIdeas] = useState(false);
+  const [recommendations, setRecommendations] = useState<any[]>([]);
+  const [loadingRecommendations, setLoadingRecommendations] = useState(false);
 
   const analysisLoadingPhrases = [
     'Getting market insights...',
@@ -85,6 +92,7 @@ export function Dashboard() {
     if (user) {
       loadAnalysisHistory();
       checkSubscriptionAndUsage();
+      loadRecommendations();
     }
   }, [user]);
 
@@ -143,15 +151,15 @@ export function Dashboard() {
       
       // Calculate stats
       const totalIdeas = data?.length || 0;
-      const validatedIdeas = data?.filter(item => item.viability_score >= 7).length || 0;
+      const validatedIdeas = data?.filter(item => item.is_validated === true).length || 0;
       const opportunities = data?.reduce((acc, item) => {
         const opportunities = item.analysis_result?.opportunities?.length || 0;
         return acc + opportunities;
       }, 0) || 0;
-      
+
       setStats({
         totalIdeas,
-        marketInsights: totalIdeas, // Each analysis provides market insights
+        marketInsights: totalIdeas,
         opportunities,
         validatedIdeas
       });
@@ -314,6 +322,34 @@ export function Dashboard() {
     setShowSubscription(false);
   };
 
+  const loadRecommendations = async () => {
+    setLoadingRecommendations(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('get-validation-recommendations');
+
+      if (error) {
+        console.error('Error loading recommendations:', error);
+        return;
+      }
+
+      if (data.error) {
+        console.error('Error in recommendations:', data.error);
+        return;
+      }
+
+      setRecommendations(data.recommendations || []);
+    } catch (err) {
+      console.error('Error fetching recommendations:', err);
+    } finally {
+      setLoadingRecommendations(false);
+    }
+  };
+
+  const handleShowValidatedIdeas = () => {
+    setShowValidatedIdeas(true);
+    setShowHistory(false);
+  };
+
   // Show analysis report if we have results
   if (showReport && analysisResult) {
     return (
@@ -451,6 +487,138 @@ export function Dashboard() {
                     </p>
                     <Button size="sm" className="ml-4">
                       View Report
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </main>
+      </div>
+    );
+  }
+
+  // Show validated ideas view
+  if (showValidatedIdeas) {
+    const validatedIdeas = analysisHistory.filter(item => item.is_validated === true);
+
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-emerald-500 to-teal-500">
+        <header className="bg-white/10 backdrop-blur-sm border-b border-white/20 px-6 py-4">
+          <div className="max-w-7xl mx-auto flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center">
+                <Rocket className="w-6 h-6 text-emerald-600" />
+              </div>
+              <span className="text-2xl font-bold text-white">LaunchScope</span>
+            </div>
+
+            <div className="flex items-center space-x-4">
+              <Button variant="secondary" size="sm" onClick={() => setShowValidatedIdeas(false)}>
+                Back to Dashboard
+              </Button>
+              <Button variant="secondary" size="sm" onClick={handleShowSubscription}>
+                Subscription
+              </Button>
+              <Button variant="secondary" size="sm" onClick={handleSignOut}>
+                <LogOut className="w-4 h-4 mr-2" />
+                Sign Out
+              </Button>
+            </div>
+          </div>
+        </header>
+
+        <main className="max-w-7xl mx-auto px-6 py-12">
+          <div className="text-center text-white mb-12">
+            <div className="flex items-center justify-center space-x-4 mb-4">
+              <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center">
+                <CheckCircle className="w-10 h-10 text-white" />
+              </div>
+              <h1 className="text-4xl font-bold">Validated Ideas</h1>
+            </div>
+            <p className="text-emerald-100 text-lg">Ideas you've marked as worth pursuing</p>
+          </div>
+
+          {validatedIdeas.length === 0 ? (
+            <div className="text-center text-white">
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-12 border border-white/20">
+                <CheckCircle className="w-16 h-16 text-white/50 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold mb-2">No Validated Ideas Yet</h3>
+                <p className="text-emerald-100 mb-6">
+                  Start validating ideas by analyzing them and clicking the "Mark as Validated" button on promising concepts
+                </p>
+                <Button onClick={() => setShowValidatedIdeas(false)}>
+                  Back to Dashboard
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <div className="grid gap-6">
+              {validatedIdeas.map((item) => (
+                <div
+                  key={item.id}
+                  className="bg-white/10 backdrop-blur-sm border-2 border-emerald-300/40 rounded-2xl p-6 hover:bg-white/15 transition-all duration-300 cursor-pointer relative overflow-hidden"
+                  onClick={() => handleViewHistoryReport(item)}
+                >
+                  <div className="absolute top-4 right-4">
+                    <div className="bg-emerald-400 text-emerald-900 px-3 py-1 rounded-full text-xs font-bold flex items-center">
+                      <CheckCircle className="w-3 h-3 mr-1" />
+                      VALIDATED
+                    </div>
+                  </div>
+
+                  <div className="flex items-start justify-between mb-4 pr-28">
+                    <div className="flex-1">
+                      <h3 className="text-white font-semibold text-lg mb-2 line-clamp-2">
+                        {item.idea}
+                      </h3>
+                      <p className="text-emerald-100 text-sm mb-2">
+                        Validated on {new Date(item.validated_at).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric'
+                        })}
+                      </p>
+                      {item.validation_notes && (
+                        <p className="text-emerald-100 text-sm italic bg-white/5 rounded-lg p-3 mt-3">
+                          "{item.validation_notes}"
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-6">
+                      <div className="text-center">
+                        <div className={`text-2xl font-bold ${
+                          item.viability_score >= 8 ? 'text-emerald-300' :
+                          item.viability_score >= 6 ? 'text-yellow-300' :
+                          item.viability_score >= 4 ? 'text-orange-300' : 'text-red-300'
+                        }`}>
+                          {item.viability_score}/10
+                        </div>
+                        <div className="text-emerald-100 text-xs">Viability</div>
+                      </div>
+
+                      {item.analysis_result?.detailedViabilityBreakdown && (
+                        <>
+                          <div className="text-center">
+                            <div className="text-lg font-semibold text-white">
+                              {item.analysis_result.detailedViabilityBreakdown.marketDemand?.score}/10
+                            </div>
+                            <div className="text-emerald-100 text-xs">Market</div>
+                          </div>
+                          <div className="text-center">
+                            <div className="text-lg font-semibold text-white">
+                              {item.analysis_result.detailedViabilityBreakdown.monetizationPotential?.score}/10
+                            </div>
+                            <div className="text-emerald-100 text-xs">Revenue</div>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                    <Button size="sm" className="bg-white/20 hover:bg-white/30 text-white border-white/30">
+                      View Details
                     </Button>
                   </div>
                 </div>
@@ -615,7 +783,10 @@ export function Dashboard() {
             <p className="text-blue-100 text-sm">Market gaps found</p>
           </div>
 
-          <div className="bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 hover:bg-white/15 transition-all duration-300 transform hover:-translate-y-1">
+          <div
+            onClick={handleShowValidatedIdeas}
+            className="bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 hover:bg-white/20 transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
+          >
             <div className="flex items-center justify-between mb-4">
               <div className="w-12 h-12 bg-gradient-to-r from-green-400 to-emerald-400 rounded-xl flex items-center justify-center">
                 <CheckCircle className="w-6 h-6 text-white" />
@@ -623,9 +794,20 @@ export function Dashboard() {
               <span className="text-2xl font-bold text-white">{stats.validatedIdeas}</span>
             </div>
             <h3 className="text-white font-semibold mb-1">Validated Ideas</h3>
-            <p className="text-blue-100 text-sm">Ready to build</p>
+            <p className="text-blue-100 text-sm">Click to view →</p>
           </div>
         </div>
+
+        {/* Recommendations Section */}
+        {recommendations.length > 0 && (
+          <div className="mb-12">
+            <RecommendationsCard
+              recommendations={recommendations}
+              onViewReport={handleViewHistoryReport}
+              isLoading={loadingRecommendations}
+            />
+          </div>
+        )}
 
         {/* Recent Activity & Quick Actions */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 mb-12">

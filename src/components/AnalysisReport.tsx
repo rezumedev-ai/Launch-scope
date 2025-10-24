@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, AlertTriangle, Target, Users, DollarSign, Clock, CheckCircle, Star, Lightbulb, Zap, TrendingUp, Code, Rocket, Search, TrendingDown, BarChart3, Shield, Calendar, Eye, Activity, Globe, Layers, CreditCard as Edit3, RefreshCw, X, Save, Sparkles, ArrowUp, ChevronRight } from 'lucide-react';
+import { ArrowLeft, AlertTriangle, Target, Users, DollarSign, Clock, CheckCircle, Star, Lightbulb, Zap, TrendingUp, Code, Rocket, Search, TrendingDown, BarChart3, Shield, Calendar, Eye, Activity, Globe, Layers, CreditCard as Edit3, RefreshCw, X, Save, Sparkles, ArrowUp, ChevronRight, Award } from 'lucide-react';
 import { Button } from './ui/Button';
 import { Input } from './ui/Input';
 import { useState, useEffect } from 'react';
@@ -7,6 +7,7 @@ import { supabase } from '../lib/supabase';
 import type { ImprovementPlan } from '../types/improvement';
 import { AnimatedCard, ScoreCircle, MetricCard } from './ui/AnimatedCard';
 import { ReportSection, InfoCard } from './ui/ReportSection';
+import { ValidationModal } from './ui/ValidationModal';
 
 interface AnalysisData {
   summary: string;
@@ -95,37 +96,50 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
   const [improvementPlanError, setImprovementPlanError] = useState<string | null>(null);
   const [hasExistingPlan, setHasExistingPlan] = useState(false);
   const [isLoadingExistingPlan, setIsLoadingExistingPlan] = useState(false);
+  const [isValidated, setIsValidated] = useState(false);
+  const [showValidationModal, setShowValidationModal] = useState(false);
+  const [isValidating, setIsValidating] = useState(false);
 
-  // Load existing improvement plan on mount
+  // Load existing improvement plan and validation status on mount
   useEffect(() => {
-    const loadExistingPlan = async () => {
+    const loadData = async () => {
       if (!analysisId) return;
 
       setIsLoadingExistingPlan(true);
       try {
-        const { data, error } = await supabase
-          .from('improvement_plans')
-          .select('plan_data')
-          .eq('analysis_id', analysisId)
-          .maybeSingle();
+        const [planResult, analysisResult] = await Promise.all([
+          supabase
+            .from('improvement_plans')
+            .select('plan_data')
+            .eq('analysis_id', analysisId)
+            .maybeSingle(),
+          supabase
+            .from('analysis_history')
+            .select('is_validated')
+            .eq('id', analysisId)
+            .maybeSingle()
+        ]);
 
-        if (error) {
-          console.error('Error loading existing plan:', error);
-          return;
-        }
-
-        if (data && data.plan_data) {
-          setImprovementPlanData(data.plan_data);
+        if (planResult.error) {
+          console.error('Error loading existing plan:', planResult.error);
+        } else if (planResult.data && planResult.data.plan_data) {
+          setImprovementPlanData(planResult.data.plan_data);
           setHasExistingPlan(true);
         }
+
+        if (analysisResult.error) {
+          console.error('Error loading validation status:', analysisResult.error);
+        } else if (analysisResult.data) {
+          setIsValidated(analysisResult.data.is_validated || false);
+        }
       } catch (err) {
-        console.error('Error loading existing plan:', err);
+        console.error('Error loading data:', err);
       } finally {
         setIsLoadingExistingPlan(false);
       }
     };
 
-    loadExistingPlan();
+    loadData();
   }, [analysisId]);
 
   // Helper function to get the numeric viability score
@@ -237,6 +251,71 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
   const handleBackToAnalysis = () => {
     setShowImprovementPlan(false);
     setImprovementPlanError(null);
+  };
+
+  const handleValidateIdea = () => {
+    setShowValidationModal(true);
+  };
+
+  const handleConfirmValidation = async (notes: string) => {
+    if (!analysisId) return;
+
+    setIsValidating(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('validate-idea', {
+        body: {
+          analysisId,
+          isValidated: true,
+          validationNotes: notes || null
+        }
+      });
+
+      if (error) {
+        throw new Error(error.message || 'Failed to validate idea');
+      }
+
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
+      setIsValidated(true);
+      setShowValidationModal(false);
+    } catch (err) {
+      console.error('Error validating idea:', err);
+      alert('Failed to validate idea. Please try again.');
+    } finally {
+      setIsValidating(false);
+    }
+  };
+
+  const handleRemoveValidation = async () => {
+    if (!analysisId) return;
+    if (!confirm('Are you sure you want to remove validation from this idea?')) return;
+
+    setIsValidating(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('validate-idea', {
+        body: {
+          analysisId,
+          isValidated: false
+        }
+      });
+
+      if (error) {
+        throw new Error(error.message || 'Failed to remove validation');
+      }
+
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
+      setIsValidated(false);
+    } catch (err) {
+      console.error('Error removing validation:', err);
+      alert('Failed to remove validation. Please try again.');
+    } finally {
+      setIsValidating(false);
+    }
   };
 
   const getImpactColor = (impact: string) => {
@@ -569,11 +648,30 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
             <div className="flex items-center gap-2 overflow-x-auto pb-1">
               {!isRefining ? (
                 <>
+                  {!isValidated ? (
+                    <Button
+                      onClick={handleValidateIdea}
+                      disabled={isValidating}
+                      className="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white px-3 py-2 text-xs whitespace-nowrap flex-shrink-0"
+                    >
+                      <Award className="w-3 h-3 mr-1" />
+                      Validate
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={handleRemoveValidation}
+                      disabled={isValidating}
+                      className="bg-emerald-500/20 border border-emerald-400/30 text-emerald-200 hover:bg-emerald-500/30 px-3 py-2 text-xs whitespace-nowrap flex-shrink-0"
+                    >
+                      <CheckCircle className="w-3 h-3 mr-1" />
+                      Validated
+                    </Button>
+                  )}
                   {overallScore < 7 && (
                     <Button
                       onClick={hasExistingPlan ? handleViewExistingPlan : handleGenerateImprovementPlan}
                       disabled={isGeneratingImprovementPlan || isLoadingExistingPlan}
-                      className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white px-3 py-2 text-xs whitespace-nowrap flex-shrink-0"
+                      className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white px-3 py-2 text-xs whitespace-nowrap flex-shrink-0"
                     >
                       {isGeneratingImprovementPlan ? (
                         <>
@@ -667,11 +765,30 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
             <div className="flex items-center space-x-3">
               {!isRefining ? (
                 <>
+                  {!isValidated ? (
+                    <Button
+                      onClick={handleValidateIdea}
+                      disabled={isValidating}
+                      className="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white"
+                    >
+                      <Award className="w-4 h-4 mr-2" />
+                      Mark as Validated
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={handleRemoveValidation}
+                      disabled={isValidating}
+                      className="bg-emerald-500/20 border border-emerald-400/30 text-emerald-200 hover:bg-emerald-500/30"
+                    >
+                      <CheckCircle className="w-4 h-4 mr-2" />
+                      Validated
+                    </Button>
+                  )}
                   {overallScore < 7 && (
                     <Button
                       onClick={hasExistingPlan ? handleViewExistingPlan : handleGenerateImprovementPlan}
                       disabled={isGeneratingImprovementPlan || isLoadingExistingPlan}
-                      className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white"
+                      className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white"
                     >
                       {isGeneratingImprovementPlan ? (
                         <>
@@ -1394,6 +1511,14 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
           </div>
         </section>
       </main>
+
+      <ValidationModal
+        isOpen={showValidationModal}
+        onClose={() => setShowValidationModal(false)}
+        onConfirm={handleConfirmValidation}
+        ideaSummary={idea}
+        isLoading={isValidating}
+      />
     </div>
   );
 }

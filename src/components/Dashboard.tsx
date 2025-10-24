@@ -11,6 +11,7 @@ import { SubscriptionManager } from './SubscriptionManager';
 import { MagicBento } from './ui/MagicBento';
 import { RecentActivityCard } from './ui/RecentActivityCard';
 import { RecommendationsCard } from './ui/RecommendationsCard';
+import { MarketKnowledgeModal } from './ui/MarketKnowledgeModal';
 
 interface RefinedIdeaData {
   idea: string;
@@ -36,8 +37,15 @@ interface AnalysisHistory {
 interface DashboardStats {
   totalIdeas: number;
   marketInsights: number;
-  opportunities: number;
+  opportunityScore: number;
   validatedIdeas: number;
+  activeProjects: number;
+}
+
+interface MarketKnowledge {
+  total_score: number;
+  current_level: number;
+  domains_explored: any[];
 }
 
 export function Dashboard() {
@@ -52,9 +60,12 @@ export function Dashboard() {
   const [stats, setStats] = useState<DashboardStats>({
     totalIdeas: 0,
     marketInsights: 0,
-    opportunities: 0,
-    validatedIdeas: 0
+    opportunityScore: 0,
+    validatedIdeas: 0,
+    activeProjects: 0
   });
+  const [marketKnowledge, setMarketKnowledge] = useState<MarketKnowledge | null>(null);
+  const [showMarketKnowledge, setShowMarketKnowledge] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
   const [showSubscription, setShowSubscription] = useState(false);
   const [showStripeTest, setShowStripeTest] = useState(false);
@@ -93,6 +104,7 @@ export function Dashboard() {
       loadAnalysisHistory();
       checkSubscriptionAndUsage();
       loadRecommendations();
+      loadMarketKnowledge();
     }
   }, [user]);
 
@@ -148,20 +160,30 @@ export function Dashboard() {
       if (error) throw error;
 
       setAnalysisHistory(data || []);
-      
+
       // Calculate stats
       const totalIdeas = data?.length || 0;
       const validatedIdeas = data?.filter(item => item.is_validated === true).length || 0;
-      const opportunities = data?.reduce((acc, item) => {
-        const opportunities = item.analysis_result?.opportunities?.length || 0;
-        return acc + opportunities;
-      }, 0) || 0;
+
+      // Calculate average opportunity quality score (0-100)
+      const opportunityScores = data?.map(item => item.opportunity_quality_score || 0).filter(score => score > 0) || [];
+      const avgOpportunityScore = opportunityScores.length > 0
+        ? Math.round(opportunityScores.reduce((a, b) => a + b, 0) / opportunityScores.length)
+        : 0;
+
+      // Count active projects (validated, building, or launched)
+      const activeProjects = data?.filter(item =>
+        item.project_status === 'validated' ||
+        item.project_status === 'building' ||
+        item.project_status === 'launched'
+      ).length || 0;
 
       setStats({
         totalIdeas,
         marketInsights: totalIdeas,
-        opportunities,
-        validatedIdeas
+        opportunityScore: avgOpportunityScore,
+        validatedIdeas,
+        activeProjects
       });
     } catch (err) {
       console.error('Error loading analysis history:', err);
@@ -197,8 +219,10 @@ export function Dashboard() {
       // Update current analysis ID for refinement tracking
       if (insertedData) {
         setCurrentAnalysisId(insertedData.id);
+        // Update market knowledge with the new analysis
+        await updateMarketKnowledge(insertedData.id);
       }
-      
+
       // Reload history to update stats
       await loadAnalysisHistory();
     } catch (err) {
@@ -342,6 +366,37 @@ export function Dashboard() {
       console.error('Error fetching recommendations:', err);
     } finally {
       setLoadingRecommendations(false);
+    }
+  };
+
+  const loadMarketKnowledge = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('user_market_knowledge')
+        .select('*')
+        .eq('user_id', user!.id)
+        .maybeSingle();
+
+      if (error) {
+        console.error('Error loading market knowledge:', error);
+        return;
+      }
+
+      setMarketKnowledge(data);
+    } catch (err) {
+      console.error('Error fetching market knowledge:', err);
+    }
+  };
+
+  const updateMarketKnowledge = async (analysisId?: string) => {
+    try {
+      await supabase.functions.invoke('update-market-knowledge', {
+        body: { userId: user!.id, analysisId }
+      });
+      // Reload market knowledge after update
+      await loadMarketKnowledge();
+    } catch (err) {
+      console.error('Error updating market knowledge:', err);
     }
   };
 
@@ -786,7 +841,7 @@ export function Dashboard() {
         </div>
 
         {/* Quick Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 sm:gap-6 mb-12">
           <div className="bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 hover:bg-white/15 transition-all duration-300 transform hover:-translate-y-1">
             <div className="flex items-center justify-between mb-4">
               <div className="w-12 h-12 bg-gradient-to-r from-indigo-400 to-blue-400 rounded-xl flex items-center justify-center">
@@ -809,15 +864,18 @@ export function Dashboard() {
             <p className="text-blue-100 text-sm">Deep analysis reports</p>
           </div>
 
-          <div className="bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 hover:bg-white/15 transition-all duration-300 transform hover:-translate-y-1">
+          <div
+            onClick={() => setShowMarketKnowledge(true)}
+            className="bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 hover:bg-white/20 transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
+          >
             <div className="flex items-center justify-between mb-4">
               <div className="w-12 h-12 bg-gradient-to-r from-amber-400 to-orange-400 rounded-xl flex items-center justify-center">
                 <TrendingUp className="w-6 h-6 text-white" />
               </div>
-              <span className="text-2xl font-bold text-white">{stats.opportunities}</span>
+              <span className="text-2xl font-bold text-white">{stats.opportunityScore}</span>
             </div>
-            <h3 className="text-white font-semibold mb-1">Opportunities</h3>
-            <p className="text-blue-100 text-sm">Market gaps found</p>
+            <h3 className="text-white font-semibold mb-1">Opportunity Score</h3>
+            <p className="text-blue-100 text-sm">Quality rating →</p>
           </div>
 
           <div
@@ -832,6 +890,17 @@ export function Dashboard() {
             </div>
             <h3 className="text-white font-semibold mb-1">Validated Ideas</h3>
             <p className="text-blue-100 text-sm">Click to view →</p>
+          </div>
+
+          <div className="bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 hover:bg-white/15 transition-all duration-300 transform hover:-translate-y-1">
+            <div className="flex items-center justify-between mb-4">
+              <div className="w-12 h-12 bg-gradient-to-r from-purple-400 to-pink-400 rounded-xl flex items-center justify-center">
+                <Rocket className="w-6 h-6 text-white" />
+              </div>
+              <span className="text-2xl font-bold text-white">{stats.activeProjects}</span>
+            </div>
+            <h3 className="text-white font-semibold mb-1">Active Projects</h3>
+            <p className="text-blue-100 text-sm">Ideas in motion</p>
           </div>
         </div>
 
@@ -991,6 +1060,14 @@ export function Dashboard() {
           </div>
         </div>
       </main>
+
+      {/* Market Knowledge Modal */}
+      <MarketKnowledgeModal
+        isOpen={showMarketKnowledge}
+        onClose={() => setShowMarketKnowledge(false)}
+        marketKnowledge={marketKnowledge}
+        stats={stats}
+      />
     </div>
   );
 }

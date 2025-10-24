@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { Rocket, LogOut, BarChart3, Users, Lightbulb, TrendingUp, Clock, CheckCircle, Crown, AlertTriangle } from 'lucide-react';
+import { Rocket, LogOut, BarChart3, Users, Lightbulb, TrendingUp, Clock, CheckCircle, Crown, AlertTriangle, ArrowLeft } from 'lucide-react';
 import { Button } from './ui/Button';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
@@ -504,28 +504,42 @@ export function Dashboard() {
 
     return (
       <div className="min-h-screen bg-gradient-to-br from-emerald-500 to-teal-500">
-        <header className="bg-white/10 backdrop-blur-sm border-b border-white/20 px-4 sm:px-6 py-4">
+        <header className="bg-white/10 backdrop-blur-sm border-b border-white/20 px-4 sm:px-6 py-3 sm:py-4">
           <div className="max-w-7xl mx-auto">
             {/* Mobile Layout */}
-            <div className="flex md:hidden items-center justify-between mb-3">
+            <div className="flex md:hidden items-center justify-between">
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
-                  <Rocket className="w-5 h-5 text-emerald-600" />
+                <div className="w-6 h-6 bg-white rounded-lg flex items-center justify-center">
+                  <Rocket className="w-3.5 h-3.5 text-emerald-600" />
                 </div>
-                <span className="text-lg font-bold text-white">LaunchScope</span>
+                <span className="text-sm font-bold text-white">LaunchScope</span>
               </div>
-            </div>
-            <div className="flex md:hidden items-center gap-2 overflow-x-auto pb-1">
-              <Button variant="secondary" size="sm" onClick={() => setShowValidatedIdeas(false)} className="text-xs whitespace-nowrap flex-shrink-0">
-                Back
-              </Button>
-              <Button variant="secondary" size="sm" onClick={handleShowSubscription} className="text-xs whitespace-nowrap flex-shrink-0">
-                Subscription
-              </Button>
-              <Button variant="secondary" size="sm" onClick={handleSignOut} className="text-xs whitespace-nowrap flex-shrink-0">
-                <LogOut className="w-3 h-3 mr-1" />
-                Sign Out
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="secondary"
+                  onClick={() => setShowValidatedIdeas(false)}
+                  className="p-2 min-w-0"
+                  title="Back to Dashboard"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                </Button>
+                <Button
+                  variant="secondary"
+                  onClick={handleShowSubscription}
+                  className="p-2 min-w-0"
+                  title="Subscription"
+                >
+                  <Crown className="w-4 h-4" />
+                </Button>
+                <Button
+                  variant="secondary"
+                  onClick={handleSignOut}
+                  className="p-2 min-w-0"
+                  title="Sign Out"
+                >
+                  <LogOut className="w-4 h-4" />
+                </Button>
+              </div>
             </div>
 
             {/* Desktop Layout */}

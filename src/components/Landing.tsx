@@ -17,31 +17,27 @@ export function Landing({ onGetStarted, onSignIn, onNavigateToLegal }: LandingPr
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-600 via-indigo-500 to-blue-500">
       {/* Header */}
-      <header className="px-6 py-4 backdrop-blur-sm bg-white/5">
+      <header className="px-4 sm:px-6 py-3 backdrop-blur-sm bg-white/5 border-b border-white/10">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center shadow-lg shadow-indigo-900/20">
-              <Rocket className="w-4 h-4 text-indigo-600" />
+          <div className="flex items-center gap-2.5">
+            <div className="w-7 h-7 bg-white rounded-lg flex items-center justify-center shadow-md">
+              <Rocket className="w-3.5 h-3.5 text-indigo-600" />
             </div>
-            <span className="text-lg font-bold text-white tracking-tight">LaunchScope</span>
+            <span className="text-base font-semibold text-white tracking-tight">LaunchScope</span>
           </div>
-          <div className="flex items-center gap-3">
-            <Button
-              variant="outline"
-              size="sm"
+          <div className="flex items-center gap-2.5">
+            <button
               onClick={onSignIn}
-              className="rounded-full px-5 py-2 whitespace-nowrap"
+              className="px-4 py-1.5 text-sm font-medium text-white hover:text-white/90 transition-colors rounded-full hover:bg-white/10 whitespace-nowrap"
             >
               Sign In
-            </Button>
-            <Button
-              variant="secondary"
-              size="sm"
+            </button>
+            <button
               onClick={onGetStarted}
-              className="rounded-full px-5 py-2 whitespace-nowrap"
+              className="px-5 py-1.5 text-sm font-medium bg-white text-indigo-600 hover:bg-white/95 rounded-full shadow-lg shadow-white/20 transition-all hover:shadow-xl whitespace-nowrap"
             >
               Get Started
-            </Button>
+            </button>
           </div>
         </div>
       </header>

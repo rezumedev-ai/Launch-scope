@@ -17,24 +17,24 @@ export function Landing({ onGetStarted, onSignIn, onNavigateToLegal }: LandingPr
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-600 via-indigo-500 to-blue-500">
       {/* Header */}
-      <header className="px-4 sm:px-6 py-3 backdrop-blur-sm bg-white/5 border-b border-white/10">
+      <header className="px-4 sm:px-6 py-3 md:py-5 backdrop-blur-sm bg-white/5 border-b border-white/10">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 bg-white rounded-lg flex items-center justify-center shadow-md">
-              <Rocket className="w-3.5 h-3.5 text-indigo-600" />
+          <div className="flex items-center gap-2.5 md:gap-3">
+            <div className="w-7 h-7 md:w-10 md:h-10 bg-white rounded-lg md:rounded-xl flex items-center justify-center shadow-md">
+              <Rocket className="w-3.5 h-3.5 md:w-5 md:h-5 text-indigo-600" />
             </div>
-            <span className="text-base font-semibold text-white tracking-tight">LaunchScope</span>
+            <span className="text-base md:text-xl font-semibold md:font-bold text-white tracking-tight">LaunchScope</span>
           </div>
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2.5 md:gap-3">
             <button
               onClick={onSignIn}
-              className="px-4 py-1.5 text-sm font-medium text-white hover:text-white/90 transition-colors rounded-full hover:bg-white/10 whitespace-nowrap"
+              className="px-4 md:px-6 py-1.5 md:py-2.5 text-sm md:text-base font-medium text-white hover:text-white/90 transition-colors rounded-full hover:bg-white/10 whitespace-nowrap"
             >
               Sign In
             </button>
             <button
               onClick={onGetStarted}
-              className="px-5 py-1.5 text-sm font-medium bg-white text-indigo-600 hover:bg-white/95 rounded-full shadow-lg shadow-white/20 transition-all hover:shadow-xl whitespace-nowrap"
+              className="px-5 md:px-7 py-1.5 md:py-2.5 text-sm md:text-base font-medium bg-white text-indigo-600 hover:bg-white/95 rounded-full shadow-lg shadow-white/20 transition-all hover:shadow-xl whitespace-nowrap"
             >
               Get Started
             </button>

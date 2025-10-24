@@ -883,7 +883,7 @@ export function Dashboard() {
               {
                 icon: <Lightbulb className="w-6 h-6 text-white" />,
                 title: "Test New Idea",
-                description: "Submit a startup concept for validation and get instant AI-powered insights.",
+                description: "Submit a startup concept for validation and get instant market intelligence backed by data.",
                 gradient: 'linear-gradient(135deg, #6366f1 0%, #3b82f6 100%)',
                 glowColor: 'rgba(99, 102, 241, 0.6)',
                 onClick: () => document.querySelector('textarea')?.focus()
@@ -931,7 +931,7 @@ export function Dashboard() {
               {
                 icon: <Lightbulb className="w-7 h-7 text-white" />,
                 title: "Instant Validation",
-                description: "Get AI-powered analysis of your startup idea in seconds with viability scoring.",
+                description: "Get data-driven analysis of your startup idea in seconds with evidence-based viability scoring.",
                 gradient: 'linear-gradient(135deg, #6366f1 0%, #3b82f6 100%)',
                 glowColor: 'rgba(99, 102, 241, 0.6)'
               },

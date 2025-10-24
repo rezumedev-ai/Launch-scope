@@ -840,7 +840,12 @@ export function Dashboard() {
           <div className="mb-12">
             <RecommendationsCard
               recommendations={recommendations}
-              onViewReport={handleViewHistoryReport}
+              onViewReport={(id) => {
+                const item = analysisHistory.find(h => h.id === id);
+                if (item) {
+                  handleViewHistoryReport(item);
+                }
+              }}
               isLoading={loadingRecommendations}
             />
           </div>

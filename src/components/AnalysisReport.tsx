@@ -8,6 +8,7 @@ import type { ImprovementPlan } from '../types/improvement';
 import { AnimatedCard, ScoreCircle, MetricCard } from './ui/AnimatedCard';
 import { ReportSection, InfoCard } from './ui/ReportSection';
 import { ValidationModal } from './ui/ValidationModal';
+import { ProjectStatusSelector } from './ui/ProjectStatusSelector';
 
 interface AnalysisData {
   summary: string;
@@ -99,6 +100,7 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
   const [isValidated, setIsValidated] = useState(false);
   const [showValidationModal, setShowValidationModal] = useState(false);
   const [isValidating, setIsValidating] = useState(false);
+  const [projectStatus, setProjectStatus] = useState('exploring');
 
   // Load existing improvement plan and validation status on mount
   useEffect(() => {
@@ -115,7 +117,7 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
             .maybeSingle(),
           supabase
             .from('analysis_history')
-            .select('is_validated')
+            .select('is_validated, project_status')
             .eq('id', analysisId)
             .maybeSingle()
         ]);
@@ -131,6 +133,7 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
           console.error('Error loading validation status:', analysisResult.error);
         } else if (analysisResult.data) {
           setIsValidated(analysisResult.data.is_validated || false);
+          setProjectStatus(analysisResult.data.project_status || 'exploring');
         }
       } catch (err) {
         console.error('Error loading data:', err);
@@ -920,6 +923,17 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
             )}
           </InfoCard>
         </ReportSection>
+
+        {/* Project Status Selector - Only show if validated or beyond */}
+        {analysisId && (projectStatus !== 'exploring' || isValidated) && !isRefining && (
+          <AnimatedCard delay={150}>
+            <ProjectStatusSelector
+              analysisId={analysisId}
+              currentStatus={projectStatus}
+              onStatusChange={(newStatus) => setProjectStatus(newStatus)}
+            />
+          </AnimatedCard>
+        )}
 
         {/* Improvement Plan Error */}
         {improvementPlanError && (

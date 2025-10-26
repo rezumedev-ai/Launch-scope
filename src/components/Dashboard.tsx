@@ -12,6 +12,7 @@ import { MagicBento } from './ui/MagicBento';
 import { RecentActivityCard } from './ui/RecentActivityCard';
 import { RecommendationsCard } from './ui/RecommendationsCard';
 import { MarketKnowledgeModal } from './ui/MarketKnowledgeModal';
+import { ProjectsView } from './ProjectsView';
 
 interface RefinedIdeaData {
   idea: string;
@@ -77,6 +78,7 @@ export function Dashboard() {
   const [showValidatedIdeas, setShowValidatedIdeas] = useState(false);
   const [recommendations, setRecommendations] = useState<any[]>([]);
   const [loadingRecommendations, setLoadingRecommendations] = useState(false);
+  const [showProjects, setShowProjects] = useState(false);
 
   const analysisLoadingPhrases = [
     'Getting market insights...',
@@ -404,6 +406,21 @@ export function Dashboard() {
     setShowValidatedIdeas(true);
     setShowHistory(false);
   };
+
+  const handleShowProjects = () => {
+    setShowProjects(true);
+  };
+
+  // Show projects view
+  if (showProjects) {
+    return (
+      <ProjectsView
+        onBack={() => setShowProjects(false)}
+        onViewReport={handleViewHistoryReport}
+        onShowSubscription={handleShowSubscription}
+      />
+    );
+  }
 
   // Show analysis report if we have results
   if (showReport && analysisResult) {
@@ -892,7 +909,10 @@ export function Dashboard() {
             <p className="text-blue-100 text-sm">Click to view →</p>
           </div>
 
-          <div className="bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 hover:bg-white/15 transition-all duration-300 transform hover:-translate-y-1">
+          <div
+            onClick={handleShowProjects}
+            className="bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 hover:bg-white/20 transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
+          >
             <div className="flex items-center justify-between mb-4">
               <div className="w-12 h-12 bg-gradient-to-r from-purple-400 to-pink-400 rounded-xl flex items-center justify-center">
                 <Rocket className="w-6 h-6 text-white" />
@@ -900,7 +920,7 @@ export function Dashboard() {
               <span className="text-2xl font-bold text-white">{stats.activeProjects}</span>
             </div>
             <h3 className="text-white font-semibold mb-1">Active Projects</h3>
-            <p className="text-blue-100 text-sm">Ideas in motion</p>
+            <p className="text-blue-100 text-sm">Manage projects →</p>
           </div>
         </div>
 

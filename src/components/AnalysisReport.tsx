@@ -11,19 +11,45 @@ import { ValidationModal } from './ui/ValidationModal';
 
 interface AnalysisData {
   summary: string;
-  problemFit: string;
+  problemFit: {
+    description: string;
+    painLevel: string;
+    currentSolutions: string;
+    proofPoints: string;
+  } | string;
   audience: {
     primary: string;
     secondary: string;
   };
+  opportunities?: string[];
   strengths: string[];
   challenges: string[];
+  riskFactors?: Array<{
+    risk: string;
+    severity: string;
+    mitigation: string;
+  }>;
+  competitiveAnalysis?: {
+    directCompetitors: string[];
+    competitiveAdvantages: string[];
+    barrierToEntry: string;
+  };
   leanMVP: string[];
   buildCost: {
     estimate: string;
     notes: string;
   };
   timeToMVP: string;
+  customerAcquisition?: {
+    primaryChannel: string;
+    estimatedCAC: string;
+    earlyAdopterStrategy: string;
+  };
+  successMetrics?: {
+    mvpValidation: string;
+    pmfIndicators: string;
+    revenueGoal: string;
+  };
   marketSignals?: {
     searchVolume: string;
     fundingActivity: string;
@@ -34,6 +60,11 @@ interface AnalysisData {
   monetization: string[];
   validationSteps?: string[];
   nextSteps: string[];
+  founderFit?: {
+    skillsRequired: string[];
+    learningCurve: string;
+    domainKnowledge: string;
+  };
   verdict: string;
   viabilityScore: string;
   detailedViabilityBreakdown?: {
@@ -83,7 +114,10 @@ interface RefinedIdeaData {
 export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisId }: AnalysisReportProps) {
   const [isRefining, setIsRefining] = useState(false);
   const [refinedIdea, setRefinedIdea] = useState(idea);
-  const [refinedProblemFit, setRefinedProblemFit] = useState(analysis.problemFit);
+  const problemFitText = typeof analysis.problemFit === 'string'
+    ? analysis.problemFit
+    : analysis.problemFit.description;
+  const [refinedProblemFit, setRefinedProblemFit] = useState(problemFitText);
   const [refinedPrimaryAudience, setRefinedPrimaryAudience] = useState(analysis.audience.primary);
   const [refinedSecondaryAudience, setRefinedSecondaryAudience] = useState(analysis.audience.secondary || '');
   const [refinedLeanMVP, setRefinedLeanMVP] = useState(analysis.leanMVP.join('\n'));
@@ -185,7 +219,7 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
     setIsRefining(false);
     // Reset all fields to original values
     setRefinedIdea(idea);
-    setRefinedProblemFit(analysis.problemFit);
+    setRefinedProblemFit(problemFitText);
     setRefinedPrimaryAudience(analysis.audience.primary);
     setRefinedSecondaryAudience(analysis.audience.secondary || '');
     setRefinedLeanMVP(analysis.leanMVP.join('\n'));
@@ -1300,6 +1334,222 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
             </div>
           </AnimatedCard>
         </div>
+
+        {/* Opportunities Section */}
+        {analysis.opportunities && analysis.opportunities.length > 0 && (
+          <AnimatedCard delay={1020}>
+            <div className="bg-gradient-to-br from-amber-500/10 to-yellow-500/10 backdrop-blur-sm border border-amber-500/30 rounded-3xl p-6 sm:p-8 shadow-2xl">
+              <div className="flex items-center mb-6">
+                <div className="w-12 h-12 bg-gradient-to-r from-amber-500 to-yellow-500 rounded-xl flex items-center justify-center mr-4 shadow-lg">
+                  <Star className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-white">Market Opportunities</h3>
+              </div>
+              <div className="space-y-3">
+                {analysis.opportunities.map((opportunity, index) => (
+                  <div key={index} className="flex items-start space-x-3 bg-amber-500/10 rounded-xl p-4 border border-amber-500/20 hover:bg-amber-500/15 transition-all duration-300">
+                    <div className="w-6 h-6 bg-gradient-to-r from-amber-500 to-yellow-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 shadow-md">
+                      <Star className="w-3 h-3 text-white" />
+                    </div>
+                    <span className="text-slate-200 leading-relaxed flex-1">{opportunity}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </AnimatedCard>
+        )}
+
+        {/* Competitive Analysis */}
+        {analysis.competitiveAnalysis && (
+          <AnimatedCard delay={1040}>
+            <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 shadow-xl">
+              <div className="flex items-center mb-6">
+                <div className="w-10 h-10 bg-purple-500/20 rounded-xl flex items-center justify-center mr-4">
+                  <Shield className="w-6 h-6 text-purple-400" />
+                </div>
+                <h3 className="text-2xl font-bold text-white">Competitive Landscape</h3>
+              </div>
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="bg-purple-500/5 rounded-xl p-6 border border-purple-500/20">
+                  <h4 className="font-semibold text-white mb-4">Direct Competitors</h4>
+                  <div className="space-y-3">
+                    {analysis.competitiveAnalysis.directCompetitors.map((competitor, index) => (
+                      <div key={index} className="flex items-start space-x-2">
+                        <div className="w-2 h-2 bg-purple-400 rounded-full mt-2 flex-shrink-0"></div>
+                        <span className="text-slate-300 text-sm leading-relaxed">{competitor}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="bg-emerald-500/5 rounded-xl p-6 border border-emerald-500/20">
+                  <h4 className="font-semibold text-white mb-4">Your Competitive Advantages</h4>
+                  <div className="space-y-3">
+                    {analysis.competitiveAnalysis.competitiveAdvantages.map((advantage, index) => (
+                      <div key={index} className="flex items-start space-x-2">
+                        <CheckCircle className="w-4 h-4 text-emerald-400 mt-1 flex-shrink-0" />
+                        <span className="text-slate-300 text-sm leading-relaxed">{advantage}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div className="mt-4 bg-slate-800/40 rounded-xl p-4 border border-slate-600/30">
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-300 font-medium">Barrier to Entry:</span>
+                  <span className={`px-3 py-1 rounded-full text-sm font-bold ${
+                    analysis.competitiveAnalysis.barrierToEntry.toLowerCase() === 'high'
+                      ? 'bg-emerald-500/20 text-emerald-300'
+                      : analysis.competitiveAnalysis.barrierToEntry.toLowerCase() === 'medium'
+                      ? 'bg-yellow-500/20 text-yellow-300'
+                      : 'bg-red-500/20 text-red-300'
+                  }`}>
+                    {analysis.competitiveAnalysis.barrierToEntry}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </AnimatedCard>
+        )}
+
+        {/* Risk Factors */}
+        {analysis.riskFactors && analysis.riskFactors.length > 0 && (
+          <AnimatedCard delay={1060}>
+            <div className="bg-gradient-to-br from-red-500/10 to-orange-500/10 backdrop-blur-sm border border-red-500/30 rounded-2xl p-8 shadow-xl">
+              <div className="flex items-center mb-6">
+                <div className="w-10 h-10 bg-red-500/20 rounded-xl flex items-center justify-center mr-4">
+                  <AlertTriangle className="w-6 h-6 text-red-400" />
+                </div>
+                <h3 className="text-2xl font-bold text-white">Risk Assessment & Mitigation</h3>
+              </div>
+              <div className="space-y-4">
+                {analysis.riskFactors.map((riskFactor, index) => (
+                  <div key={index} className="bg-red-500/5 rounded-xl p-6 border border-red-500/20">
+                    <div className="flex items-start justify-between mb-3">
+                      <h4 className="text-white font-semibold flex-1">{riskFactor.risk}</h4>
+                      <span className={`px-3 py-1 rounded-full text-xs font-bold ml-4 ${
+                        riskFactor.severity.toLowerCase() === 'high'
+                          ? 'bg-red-500/30 text-red-200'
+                          : riskFactor.severity.toLowerCase() === 'medium'
+                          ? 'bg-orange-500/30 text-orange-200'
+                          : 'bg-yellow-500/30 text-yellow-200'
+                      }`}>
+                        {riskFactor.severity} Risk
+                      </span>
+                    </div>
+                    <div className="bg-emerald-500/10 rounded-lg p-4 border border-emerald-500/20">
+                      <p className="text-sm text-slate-300 mb-1"><strong className="text-emerald-300">Mitigation:</strong></p>
+                      <p className="text-slate-300 text-sm leading-relaxed">{riskFactor.mitigation}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </AnimatedCard>
+        )}
+
+        {/* Customer Acquisition & Success Metrics */}
+        {(analysis.customerAcquisition || analysis.successMetrics) && (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Customer Acquisition */}
+            {analysis.customerAcquisition && (
+              <AnimatedCard delay={1080}>
+                <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 shadow-xl h-full">
+                  <div className="flex items-center mb-6">
+                    <div className="w-10 h-10 bg-blue-500/20 rounded-xl flex items-center justify-center mr-4">
+                      <Users className="w-6 h-6 text-blue-400" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-white">Customer Acquisition</h3>
+                  </div>
+                  <div className="space-y-4">
+                    <div className="bg-blue-500/5 rounded-xl p-4 border border-blue-500/20">
+                      <h4 className="text-blue-300 font-semibold mb-2 text-sm">Primary Channel</h4>
+                      <p className="text-slate-200 leading-relaxed">{analysis.customerAcquisition.primaryChannel}</p>
+                    </div>
+                    <div className="bg-green-500/5 rounded-xl p-4 border border-green-500/20">
+                      <h4 className="text-green-300 font-semibold mb-2 text-sm">Estimated CAC</h4>
+                      <p className="text-slate-200">{analysis.customerAcquisition.estimatedCAC}</p>
+                    </div>
+                    <div className="bg-purple-500/5 rounded-xl p-4 border border-purple-500/20">
+                      <h4 className="text-purple-300 font-semibold mb-2 text-sm">Early Adopter Strategy</h4>
+                      <p className="text-slate-200 leading-relaxed text-sm">{analysis.customerAcquisition.earlyAdopterStrategy}</p>
+                    </div>
+                  </div>
+                </div>
+              </AnimatedCard>
+            )}
+
+            {/* Success Metrics */}
+            {analysis.successMetrics && (
+              <AnimatedCard delay={1100}>
+                <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 shadow-xl h-full">
+                  <div className="flex items-center mb-6">
+                    <div className="w-10 h-10 bg-emerald-500/20 rounded-xl flex items-center justify-center mr-4">
+                      <Target className="w-6 h-6 text-emerald-400" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-white">Success Metrics</h3>
+                  </div>
+                  <div className="space-y-4">
+                    <div className="bg-emerald-500/5 rounded-xl p-4 border border-emerald-500/20">
+                      <h4 className="text-emerald-300 font-semibold mb-2 text-sm">MVP Validation</h4>
+                      <p className="text-slate-200 leading-relaxed text-sm">{analysis.successMetrics.mvpValidation}</p>
+                    </div>
+                    <div className="bg-blue-500/5 rounded-xl p-4 border border-blue-500/20">
+                      <h4 className="text-blue-300 font-semibold mb-2 text-sm">Product-Market Fit Indicators</h4>
+                      <p className="text-slate-200 leading-relaxed text-sm">{analysis.successMetrics.pmfIndicators}</p>
+                    </div>
+                    <div className="bg-amber-500/5 rounded-xl p-4 border border-amber-500/20">
+                      <h4 className="text-amber-300 font-semibold mb-2 text-sm">First Year Revenue Goal</h4>
+                      <p className="text-slate-200 font-semibold">{analysis.successMetrics.revenueGoal}</p>
+                    </div>
+                  </div>
+                </div>
+              </AnimatedCard>
+            )}
+          </div>
+        )}
+
+        {/* Founder Fit */}
+        {analysis.founderFit && (
+          <AnimatedCard delay={1120}>
+            <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 shadow-xl">
+              <div className="flex items-center mb-6">
+                <div className="w-10 h-10 bg-indigo-500/20 rounded-xl flex items-center justify-center mr-4">
+                  <Users className="w-6 h-6 text-indigo-400" />
+                </div>
+                <h3 className="text-2xl font-bold text-white">Founder Fit Assessment</h3>
+              </div>
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="bg-indigo-500/5 rounded-xl p-6 border border-indigo-500/20">
+                  <h4 className="text-indigo-300 font-semibold mb-4">Skills Required</h4>
+                  <ul className="space-y-2">
+                    {analysis.founderFit.skillsRequired.map((skill, index) => (
+                      <li key={index} className="flex items-start space-x-2">
+                        <CheckCircle className="w-4 h-4 text-indigo-400 mt-0.5 flex-shrink-0" />
+                        <span className="text-slate-300 text-sm">{skill}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="bg-purple-500/5 rounded-xl p-6 border border-purple-500/20">
+                  <h4 className="text-purple-300 font-semibold mb-4">Learning Curve</h4>
+                  <div className={`inline-flex px-4 py-2 rounded-full font-bold ${
+                    analysis.founderFit.learningCurve.toLowerCase() === 'low'
+                      ? 'bg-emerald-500/20 text-emerald-300'
+                      : analysis.founderFit.learningCurve.toLowerCase() === 'medium'
+                      ? 'bg-yellow-500/20 text-yellow-300'
+                      : 'bg-red-500/20 text-red-300'
+                  }`}>
+                    {analysis.founderFit.learningCurve}
+                  </div>
+                </div>
+                <div className="bg-blue-500/5 rounded-xl p-6 border border-blue-500/20">
+                  <h4 className="text-blue-300 font-semibold mb-3">Domain Knowledge</h4>
+                  <p className="text-slate-300 text-sm leading-relaxed">{analysis.founderFit.domainKnowledge}</p>
+                </div>
+              </div>
+            </div>
+          </AnimatedCard>
+        )}
 
         {/* Target Audience */}
         <section className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 shadow-xl">

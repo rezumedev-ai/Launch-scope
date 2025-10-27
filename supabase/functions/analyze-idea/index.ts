@@ -134,6 +134,9 @@ SCORING CALIBRATION EXAMPLES:
 - "A todo app with AI features": Market Demand: 3 (saturated), Technical: 8 (easy), Differentiation: 3 (me-too), Monetization: 4 (hard to charge), Timing: 5 (okay) = Overall: ~4.0
 - "B2B tool automating a painful manual process for accountants": Market Demand: 8 (clear pain), Technical: 7 (achievable), Differentiation: 7 (specific niche), Monetization: 8 (B2B will pay), Timing: 7 (good) = Overall: ~7.5
 - "Generic social network for a broad audience": Market Demand: 4 (uncertain), Technical: 5 (complex), Differentiation: 2 (commodity), Monetization: 3 (ads only), Timing: 3 (late) = Overall: ~3.3
+- "Notion alternative for X niche": Market: 4 (saturated note-taking), Technical: 7 (doable), Differentiation: 5 (niche helps but Notion dominates), Monetization: 6 (freemium works), Timing: 5 (market mature) = Overall: ~5.3
+- "WhatsApp bot for restaurant reservations": Market: 7 (real pain point), Technical: 8 (API integration), Differentiation: 6 (geographic advantage), Monetization: 7 (B2B SaaS), Timing: 8 (WhatsApp Business API recently launched) = Overall: ~7.3
+- "AI-powered resume builder": Market: 3 (saturated), Technical: 6 (needs AI integration), Differentiation: 3 (dozens exist), Monetization: 4 (race to bottom on pricing), Timing: 4 (trend cooling) = Overall: ~3.8
 
 Analyze the following startup idea:
 
@@ -143,17 +146,41 @@ Respond strictly in the following JSON format:
 
 {
   "summary": "2-3 sentence objective description of the idea",
-  "problemFit": "Does this solve a proven problem or is it a solution in search of a problem?",
+  "problemFit": {
+    "description": "Clear statement of the problem being solved",
+    "painLevel": "Critical/High/Medium/Low - how painful is this problem for users?",
+    "currentSolutions": "How do people solve this today and why is it inadequate?",
+    "proofPoints": "Evidence that this problem exists (searches, forums, complaints, workarounds). Be specific with examples."
+  },
   "audience": {
     "primary": "Main group that would realistically use this",
     "secondary": "Other possible but less likely groups"
   },
+  "opportunities": [
+    "3-5 specific, actionable opportunities: underserved market segments, emerging trends to leverage, gaps in competitor offerings, technological advantages, timing-based windows. Be concrete and tactical, not generic."
+  ],
   "strengths": [
     "3-4 grounded advantages if they exist (omit if none)"
   ],
   "challenges": [
     "3-4 blunt risks or roadblocks — technical, financial, or market"
   ],
+  "riskFactors": [
+    {
+      "risk": "Specific risk description",
+      "severity": "High/Medium/Low",
+      "mitigation": "Concrete mitigation strategy"
+    }
+  ],
+  "competitiveAnalysis": {
+    "directCompetitors": [
+      "2-3 main direct competitors or competitive forces with brief notes on their positioning and weaknesses"
+    ],
+    "competitiveAdvantages": [
+      "2-3 specific, defensible ways this idea could differentiate and win"
+    ],
+    "barrierToEntry": "Low/Medium/High - how easy is it for others to copy this once you prove it works?"
+  },
   "leanMVP": [
     "3-5 features that could realistically be built/tested first (if viable)"
   ],
@@ -171,35 +198,52 @@ Respond strictly in the following JSON format:
   "nextSteps": [
     "3-5 concrete, actionable next steps for the founder to take immediately"
   ],
+  "customerAcquisition": {
+    "primaryChannel": "Most promising channel with specific reasoning why it will work for this idea",
+    "estimatedCAC": "Low (<$50), Medium ($50-$200), or High (>$200) - rough customer acquisition cost estimate",
+    "earlyAdopterStrategy": "Concrete plan for getting first 10, then 50, then 100 customers"
+  },
+  "successMetrics": {
+    "mvpValidation": "What specific metrics would prove the MVP is working? (e.g., '50 signups in month 1', '20% weekly active', '15% conversion rate')",
+    "pmfIndicators": "What signals would indicate product-market fit? (e.g., '40% users active weekly', 'Organic referrals >20%', 'Users complain if service goes down')",
+    "revenueGoal": "Realistic first-year revenue target based on this model (be specific with numbers)"
+  },
   "marketSignals": {
-    "searchVolume": "Qualitative assessment of search interest (e.g., 'High interest in productivity tools', 'Moderate searches for B2B solutions', 'Low awareness of this problem space')",
-    "fundingActivity": "Recent funding trends in this space (e.g., 'Growing VC interest in fintech', 'Limited funding for consumer apps', 'Strong investor appetite for AI tools')",
-    "competitionDensity": "Competitive landscape assessment (e.g., 'Highly saturated market with major players', 'Emerging space with few established competitors', 'Niche market with specialized players')",
-    "adoptionStage": "Market maturity and adoption phase (e.g., 'Early adopter phase', 'Mainstream adoption beginning', 'Mature market with established patterns')"
+    "searchVolume": "Be specific with numbers when possible: e.g., '10K-50K monthly searches for X keyword', 'Growing 20% YoY based on Google Trends', 'Reddit has 50K members in r/problemspace'. Cite evidence.",
+    "fundingActivity": "Cite specific examples: 'CompanyX raised $Nm in 2024', 'Y VC funds actively investing', 'Z recent acquisitions in space'. Be concrete with names and numbers.",
+    "competitionDensity": "Quantify: 'X major players control Y% market share', 'Z total companies in space per Crunchbase', 'Market dominated by NAME', 'Fragmented with no clear leader'",
+    "adoptionStage": "Be specific about adoption curve position with evidence of where the market is and momentum direction"
   },
   "detailedViabilityBreakdown": {
     "marketDemand": {
       "score": 1-10 (number),
-      "justification": "Assess if there's proven demand. Score 8-10: validated demand with evidence, 6-7: moderate signals, 4-5: uncertain demand, 1-3: no clear demand or saturated market"
+      "justification": "MUST include: (1) specific evidence or data point, (2) comparison to benchmark, (3) key factor influencing score, (4) one action to improve score by 1-2 points. Score 8-10: validated demand with evidence, 6-7: moderate signals, 4-5: uncertain demand, 1-3: no clear demand or saturated market"
     },
     "technicalFeasibility": {
       "score": 1-10 (number),
-      "justification": "Can a solo dev realistically build this? Score 8-10: easily achievable, 6-7: doable with effort, 4-5: challenging but possible, 1-3: requires team/expertise beyond solo dev"
+      "justification": "MUST include: (1) specific technical requirements, (2) comparison to similar builds, (3) key complexity factor, (4) one action to de-risk. Score 8-10: easily achievable, 6-7: doable with effort, 4-5: challenging but possible, 1-3: requires team/expertise beyond solo dev"
     },
     "differentiation": {
       "score": 1-10 (number),
-      "justification": "What makes this unique? Score 8-10: clear competitive advantage, 6-7: some differentiation, 4-5: minor differences, 1-3: commodity/me-too product"
+      "justification": "MUST include: (1) specific differentiator, (2) how it compares to alternatives, (3) defensibility factor, (4) one way to strengthen uniqueness. Score 8-10: clear competitive advantage, 6-7: some differentiation, 4-5: minor differences, 1-3: commodity/me-too product"
     },
     "monetizationPotential": {
       "score": 1-10 (number),
-      "justification": "How realistic is revenue generation? Score 8-10: clear willingness to pay, 6-7: viable models exist, 4-5: uncertain monetization, 1-3: no realistic revenue path"
+      "justification": "MUST include: (1) specific revenue model, (2) willingness-to-pay evidence, (3) pricing benchmark, (4) one way to improve monetization. Score 8-10: clear willingness to pay, 6-7: viable models exist, 4-5: uncertain monetization, 1-3: no realistic revenue path"
     },
     "timing": {
       "score": 1-10 (number),
-      "justification": "Is now the right time? Score 8-10: perfect timing/emerging trend, 6-7: good timing, 4-5: okay timing, 1-3: too early/too late/declining market"
+      "justification": "MUST include: (1) specific market trend, (2) timing evidence, (3) window of opportunity, (4) timing risk to watch. Score 8-10: perfect timing/emerging trend, 6-7: good timing, 4-5: okay timing, 1-3: too early/too late/declining market"
     },
     "weightedOverallScore": "Calculate using: (marketDemand × 0.25) + (monetizationPotential × 0.25) + (technicalFeasibility × 0.20) + (differentiation × 0.20) + (timing × 0.10). Return as string with 1 decimal (e.g., '5.8')",
     "overallJustification": "2-3 sentence summary explaining the overall score"
+  },
+  "founderFit": {
+    "skillsRequired": [
+      "2-3 critical skills needed to execute this successfully (e.g., 'Cold email outreach', 'Technical SEO', 'B2B sales', 'Community building')"
+    ],
+    "learningCurve": "Low/Medium/High - complexity of skills required for a solo technical founder",
+    "domainKnowledge": "How important is industry expertise? Can it be learned quickly or is deep experience required?"
   },
   "viabilityScore": "Format as: '{rounded score} - {verdict text}' where verdict is 'Excellent viability for indie development' (8-10), 'Good viability with manageable risks' (6-7), 'Fair viability requiring careful execution' (4-5), or 'Poor viability with significant challenges' (1-3)",
   "verdict": "Your final honest assessment: is this worth building? Be direct."

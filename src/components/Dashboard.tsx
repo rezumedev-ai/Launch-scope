@@ -841,7 +841,7 @@ export function Dashboard() {
         </div>
 
         {/* Quick Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 sm:gap-6 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-12">
           <div className="bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 hover:bg-white/15 transition-all duration-300 transform hover:-translate-y-1">
             <div className="flex items-center justify-between mb-4">
               <div className="w-12 h-12 bg-gradient-to-r from-indigo-400 to-blue-400 rounded-xl flex items-center justify-center">
@@ -851,17 +851,6 @@ export function Dashboard() {
             </div>
             <h3 className="text-white font-semibold mb-1">Ideas Tested</h3>
             <p className="text-blue-100 text-sm">Total validations</p>
-          </div>
-
-          <div className="bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 hover:bg-white/15 transition-all duration-300 transform hover:-translate-y-1">
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 bg-gradient-to-r from-pink-400 to-rose-400 rounded-xl flex items-center justify-center">
-                <BarChart3 className="w-6 h-6 text-white" />
-              </div>
-              <span className="text-2xl font-bold text-white">{stats.marketInsights}</span>
-            </div>
-            <h3 className="text-white font-semibold mb-1">Market Insights</h3>
-            <p className="text-blue-100 text-sm">Deep analysis reports</p>
           </div>
 
           <div
@@ -890,17 +879,6 @@ export function Dashboard() {
             </div>
             <h3 className="text-white font-semibold mb-1">Validated Ideas</h3>
             <p className="text-blue-100 text-sm">Click to view →</p>
-          </div>
-
-          <div className="bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 hover:bg-white/15 transition-all duration-300 transform hover:-translate-y-1">
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 bg-gradient-to-r from-purple-400 to-pink-400 rounded-xl flex items-center justify-center">
-                <Rocket className="w-6 h-6 text-white" />
-              </div>
-              <span className="text-2xl font-bold text-white">{stats.activeProjects}</span>
-            </div>
-            <h3 className="text-white font-semibold mb-1">Active Projects</h3>
-            <p className="text-blue-100 text-sm">Ideas in motion</p>
           </div>
         </div>
 

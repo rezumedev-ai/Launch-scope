@@ -217,23 +217,23 @@ Respond strictly in the following JSON format:
   "detailedViabilityBreakdown": {
     "marketDemand": {
       "score": 1-10 (number),
-      "justification": "MUST include: (1) specific evidence or data point, (2) comparison to benchmark, (3) key factor influencing score, (4) one action to improve score by 1-2 points. Score 8-10: validated demand with evidence, 6-7: moderate signals, 4-5: uncertain demand, 1-3: no clear demand or saturated market"
+      "justification": "Format as exactly 4 numbered points using format '(1) Label: content; (2) Label: content; (3) Label: content; (4) Label: content'. MUST include: (1) Evidence: specific evidence or data point; (2) Benchmark: comparison to benchmark or similar products; (3) Key Factor: primary factor influencing this score; (4) Action: one concrete action to improve score by 1-2 points. Score 8-10: validated demand with evidence, 6-7: moderate signals, 4-5: uncertain demand, 1-3: no clear demand or saturated market"
     },
     "technicalFeasibility": {
       "score": 1-10 (number),
-      "justification": "MUST include: (1) specific technical requirements, (2) comparison to similar builds, (3) key complexity factor, (4) one action to de-risk. Score 8-10: easily achievable, 6-7: doable with effort, 4-5: challenging but possible, 1-3: requires team/expertise beyond solo dev"
+      "justification": "Format as exactly 4 numbered points using format '(1) Label: content; (2) Label: content; (3) Label: content; (4) Label: content'. MUST include: (1) Technical Requirements: specific technical requirements or stack; (2) Benchmark: comparison to similar builds or projects; (3) Key Complexity: primary complexity factor or technical challenge; (4) Action: one action to de-risk or simplify. Score 8-10: easily achievable, 6-7: doable with effort, 4-5: challenging but possible, 1-3: requires team/expertise beyond solo dev"
     },
     "differentiation": {
       "score": 1-10 (number),
-      "justification": "MUST include: (1) specific differentiator, (2) how it compares to alternatives, (3) defensibility factor, (4) one way to strengthen uniqueness. Score 8-10: clear competitive advantage, 6-7: some differentiation, 4-5: minor differences, 1-3: commodity/me-too product"
+      "justification": "Format as exactly 4 numbered points using format '(1) Label: content; (2) Label: content; (3) Label: content; (4) Label: content'. MUST include: (1) Differentiator: specific unique value proposition or differentiator; (2) Benchmark: how it compares to alternatives in market; (3) Defensibility: key defensibility factor or moat; (4) Action: one way to strengthen uniqueness or competitive position. Score 8-10: clear competitive advantage, 6-7: some differentiation, 4-5: minor differences, 1-3: commodity/me-too product"
     },
     "monetizationPotential": {
       "score": 1-10 (number),
-      "justification": "MUST include: (1) specific revenue model, (2) willingness-to-pay evidence, (3) pricing benchmark, (4) one way to improve monetization. Score 8-10: clear willingness to pay, 6-7: viable models exist, 4-5: uncertain monetization, 1-3: no realistic revenue path"
+      "justification": "Format as exactly 4 numbered points using format '(1) Label: content; (2) Label: content; (3) Label: content; (4) Label: content'. MUST include: (1) Revenue Model: specific revenue model or monetization approach; (2) Willingness to Pay: evidence of willingness-to-pay in this market; (3) Pricing Benchmark: pricing benchmark from comparable products; (4) Action: one way to improve monetization or pricing. Score 8-10: clear willingness to pay, 6-7: viable models exist, 4-5: uncertain monetization, 1-3: no realistic revenue path"
     },
     "timing": {
       "score": 1-10 (number),
-      "justification": "MUST include: (1) specific market trend, (2) timing evidence, (3) window of opportunity, (4) timing risk to watch. Score 8-10: perfect timing/emerging trend, 6-7: good timing, 4-5: okay timing, 1-3: too early/too late/declining market"
+      "justification": "Format as exactly 4 numbered points using format '(1) Label: content; (2) Label: content; (3) Label: content; (4) Label: content'. MUST include: (1) Market Trend: specific market trend or macro shift; (2) Timing Evidence: concrete evidence for current timing; (3) Window: window of opportunity or market readiness; (4) Risk: timing risk to watch or urgency factor. Score 8-10: perfect timing/emerging trend, 6-7: good timing, 4-5: okay timing, 1-3: too early/too late/declining market"
     },
     "weightedOverallScore": "Calculate using: (marketDemand × 0.25) + (monetizationPotential × 0.25) + (technicalFeasibility × 0.20) + (differentiation × 0.20) + (timing × 0.10). Return as string with 1 decimal (e.g., '5.8')",
     "overallJustification": "2-3 sentence summary explaining the overall score"

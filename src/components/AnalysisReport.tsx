@@ -8,6 +8,7 @@ import type { ImprovementPlan } from '../types/improvement';
 import { AnimatedCard, ScoreCircle, MetricCard } from './ui/AnimatedCard';
 import { ReportSection, InfoCard } from './ui/ReportSection';
 import { ValidationModal } from './ui/ValidationModal';
+import { FormattedJustification } from './ui/FormattedJustification';
 
 interface AnalysisData {
   summary: string;
@@ -1105,7 +1106,7 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
                       analysis.detailedViabilityBreakdown.marketDemand.score >= 4 ? 'bg-orange-400' : 'bg-red-400'
                     }`}></div>
                   </div>
-                  <p className="text-slate-300 text-sm leading-relaxed">{analysis.detailedViabilityBreakdown.marketDemand.justification}</p>
+                  <FormattedJustification text={analysis.detailedViabilityBreakdown.marketDemand.justification} />
                 </div>
               </div>
 
@@ -1132,7 +1133,7 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
                       analysis.detailedViabilityBreakdown.technicalFeasibility.score >= 4 ? 'bg-orange-400' : 'bg-red-400'
                     }`}></div>
                   </div>
-                  <p className="text-slate-300 text-sm leading-relaxed">{analysis.detailedViabilityBreakdown.technicalFeasibility.justification}</p>
+                  <FormattedJustification text={analysis.detailedViabilityBreakdown.technicalFeasibility.justification} />
                 </div>
               </div>
 
@@ -1159,7 +1160,7 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
                       analysis.detailedViabilityBreakdown.differentiation.score >= 4 ? 'bg-orange-400' : 'bg-red-400'
                     }`}></div>
                   </div>
-                  <p className="text-slate-300 text-sm leading-relaxed">{analysis.detailedViabilityBreakdown.differentiation.justification}</p>
+                  <FormattedJustification text={analysis.detailedViabilityBreakdown.differentiation.justification} />
                 </div>
               </div>
 
@@ -1186,7 +1187,7 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
                       analysis.detailedViabilityBreakdown.monetizationPotential.score >= 4 ? 'bg-orange-400' : 'bg-red-400'
                     }`}></div>
                   </div>
-                  <p className="text-slate-300 text-sm leading-relaxed">{analysis.detailedViabilityBreakdown.monetizationPotential.justification}</p>
+                  <FormattedJustification text={analysis.detailedViabilityBreakdown.monetizationPotential.justification} />
                 </div>
               </div>
 
@@ -1213,7 +1214,7 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
                       analysis.detailedViabilityBreakdown.timing.score >= 4 ? 'bg-orange-400' : 'bg-red-400'
                     }`}></div>
                   </div>
-                  <p className="text-slate-300 text-sm leading-relaxed">{analysis.detailedViabilityBreakdown.timing.justification}</p>
+                  <FormattedJustification text={analysis.detailedViabilityBreakdown.timing.justification} />
                 </div>
               </div>
 

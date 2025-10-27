@@ -108,6 +108,38 @@ export function Dashboard() {
     }
   }, [user]);
 
+  // Refresh dashboard data when page becomes visible or window gains focus
+  useEffect(() => {
+    if (!user) return;
+
+    const refreshDashboardData = () => {
+      if (!showReport && !showHistory && !showSubscription && !showValidatedIdeas) {
+        loadAnalysisHistory();
+        checkSubscriptionAndUsage();
+        loadRecommendations();
+        loadMarketKnowledge();
+      }
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        refreshDashboardData();
+      }
+    };
+
+    const handleWindowFocus = () => {
+      refreshDashboardData();
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('focus', handleWindowFocus);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('focus', handleWindowFocus);
+    };
+  }, [user, showReport, showHistory, showSubscription, showValidatedIdeas]);
+
   const checkSubscriptionAndUsage = async () => {
     try {
       setLoadingSubscription(true);
@@ -286,6 +318,12 @@ export function Dashboard() {
     setAnalysisResult(null);
     setAnalyzedIdea('');
     setError(null);
+
+    // Refresh dashboard data when returning from report
+    loadAnalysisHistory();
+    checkSubscriptionAndUsage();
+    loadRecommendations();
+    loadMarketKnowledge();
   };
 
   const handleViewHistoryReport = (historyItem: AnalysisHistory) => {
@@ -344,6 +382,12 @@ export function Dashboard() {
 
   const handleBackFromSubscription = () => {
     setShowSubscription(false);
+
+    // Refresh dashboard data when returning from subscription
+    loadAnalysisHistory();
+    checkSubscriptionAndUsage();
+    loadRecommendations();
+    loadMarketKnowledge();
   };
 
   const loadRecommendations = async () => {
@@ -468,7 +512,13 @@ export function Dashboard() {
             </div>
             
             <div className="flex items-center space-x-4">
-              <Button variant="secondary" size="sm" onClick={() => setShowHistory(false)}>
+              <Button variant="secondary" size="sm" onClick={() => {
+                setShowHistory(false);
+                loadAnalysisHistory();
+                checkSubscriptionAndUsage();
+                loadRecommendations();
+                loadMarketKnowledge();
+              }}>
                 Back to Dashboard
               </Button>
               <Button variant="secondary" size="sm" onClick={handleShowSubscription}>
@@ -495,7 +545,13 @@ export function Dashboard() {
                 <Lightbulb className="w-16 h-16 text-white/50 mx-auto mb-4" />
                 <h3 className="text-xl font-semibold mb-2">No Analysis History Yet</h3>
                 <p className="text-blue-100 mb-6">Start by analyzing your first startup idea</p>
-                <Button onClick={() => setShowHistory(false)}>
+                <Button onClick={() => {
+                  setShowHistory(false);
+                  loadAnalysisHistory();
+                  checkSubscriptionAndUsage();
+                  loadRecommendations();
+                  loadMarketKnowledge();
+                }}>
                   Analyze Your First Idea
                 </Button>
               </div>
@@ -572,7 +628,13 @@ export function Dashboard() {
               <div className="flex items-center gap-2">
                 <Button
                   variant="secondary"
-                  onClick={() => setShowValidatedIdeas(false)}
+                  onClick={() => {
+                    setShowValidatedIdeas(false);
+                    loadAnalysisHistory();
+                    checkSubscriptionAndUsage();
+                    loadRecommendations();
+                    loadMarketKnowledge();
+                  }}
                   className="p-2 min-w-0"
                   title="Back to Dashboard"
                 >
@@ -606,7 +668,13 @@ export function Dashboard() {
                 <span className="text-2xl font-bold text-white">LaunchScope</span>
               </div>
               <div className="flex items-center space-x-4">
-                <Button variant="secondary" size="sm" onClick={() => setShowValidatedIdeas(false)}>
+                <Button variant="secondary" size="sm" onClick={() => {
+                  setShowValidatedIdeas(false);
+                  loadAnalysisHistory();
+                  checkSubscriptionAndUsage();
+                  loadRecommendations();
+                  loadMarketKnowledge();
+                }}>
                   Back to Dashboard
                 </Button>
                 <Button variant="secondary" size="sm" onClick={handleShowSubscription}>
@@ -640,7 +708,13 @@ export function Dashboard() {
                 <p className="text-emerald-100 mb-6 text-sm sm:text-base px-4">
                   Start validating ideas by analyzing them and clicking the "Mark as Validated" button on promising concepts
                 </p>
-                <Button onClick={() => setShowValidatedIdeas(false)}>
+                <Button onClick={() => {
+                  setShowValidatedIdeas(false);
+                  loadAnalysisHistory();
+                  checkSubscriptionAndUsage();
+                  loadRecommendations();
+                  loadMarketKnowledge();
+                }}>
                   Back to Dashboard
                 </Button>
               </div>

@@ -502,7 +502,7 @@ export function Landing({ onGetStarted, onSignIn, onNavigateToLegal }: LandingPr
               price="$0"
               description="Perfect for testing the waters"
               features={[
-                "3 validations per month",
+                "1 validation per month",
                 "Basic market analysis",
                 "Risk assessment"
               ]}

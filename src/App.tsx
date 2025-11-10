@@ -9,37 +9,51 @@ import { TermsOfService } from './pages/legal/TermsOfService';
 import { CookiePolicy } from './pages/legal/CookiePolicy';
 import { RefundPolicy } from './pages/legal/RefundPolicy';
 import { AcceptableUsePolicy } from './pages/legal/AcceptableUsePolicy';
+import { SharedReportView } from './components/SharedReportView';
 
 type LegalPage = 'privacy' | 'terms' | 'cookies' | 'refund' | 'acceptable-use' | null;
 
 function AppContent() {
   const [showAuth, setShowAuth] = useState<'signup' | 'signin' | false>(false);
   const [currentLegalPage, setCurrentLegalPage] = useState<LegalPage>(null);
+  const [shareToken, setShareToken] = useState<string | null>(null);
   const { user, loading } = useAuth();
 
   const checkAndSetRoute = () => {
     const path = window.location.pathname;
-    if (path.startsWith('/privacy')) {
+    if (path.startsWith('/share/')) {
+      const token = path.split('/share/')[1];
+      setShareToken(token);
+      setCurrentLegalPage(null);
+      setShowAuth(false);
+    } else if (path.startsWith('/privacy')) {
       setCurrentLegalPage('privacy');
       setShowAuth(false);
+      setShareToken(null);
     } else if (path.startsWith('/terms')) {
       setCurrentLegalPage('terms');
       setShowAuth(false);
+      setShareToken(null);
     } else if (path.startsWith('/cookies')) {
       setCurrentLegalPage('cookies');
       setShowAuth(false);
+      setShareToken(null);
     } else if (path.startsWith('/refund')) {
       setCurrentLegalPage('refund');
       setShowAuth(false);
+      setShareToken(null);
     } else if (path.startsWith('/acceptable-use')) {
       setCurrentLegalPage('acceptable-use');
       setShowAuth(false);
+      setShareToken(null);
     } else if (path.startsWith('/dashboard')) {
       setCurrentLegalPage(null);
       setShowAuth(false);
+      setShareToken(null);
       window.history.replaceState({}, '', '/');
     } else {
       setCurrentLegalPage(null);
+      setShareToken(null);
     }
   };
 
@@ -64,6 +78,10 @@ function AppContent() {
     setCurrentLegalPage(null);
     window.history.pushState({}, '', '/');
   };
+
+  if (shareToken) {
+    return <SharedReportView shareToken={shareToken} />;
+  }
 
   if (currentLegalPage === 'privacy') {
     return <PrivacyPolicy onBack={handleBackFromLegal} onNavigate={handleNavigateToLegal} />;

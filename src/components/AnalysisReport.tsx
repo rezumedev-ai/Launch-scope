@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, AlertTriangle, Target, Users, DollarSign, Clock, CheckCircle, Star, Lightbulb, Zap, TrendingUp, Code, Rocket, Search, TrendingDown, BarChart3, Shield, Calendar, Eye, Activity, Globe, Layers, CreditCard as Edit3, RefreshCw, X, Save, Sparkles, ArrowUp, ChevronRight, Award } from 'lucide-react';
+import { ArrowLeft, AlertTriangle, Target, Users, DollarSign, Clock, CheckCircle, Star, Lightbulb, Zap, TrendingUp, Code, Rocket, Search, TrendingDown, BarChart3, Shield, Calendar, Eye, Activity, Globe, Layers, CreditCard as Edit3, RefreshCw, X, Save, Sparkles, ArrowUp, ChevronRight, Award, Share2 } from 'lucide-react';
 import { Button } from './ui/Button';
 import { Input } from './ui/Input';
 import { useState, useEffect } from 'react';
@@ -8,6 +8,7 @@ import type { ImprovementPlan } from '../types/improvement';
 import { AnimatedCard, ScoreCircle, MetricCard } from './ui/AnimatedCard';
 import { ReportSection, InfoCard } from './ui/ReportSection';
 import { ValidationModal } from './ui/ValidationModal';
+import { ShareModal } from './ui/ShareModal';
 
 interface AnalysisData {
   summary: string;
@@ -133,6 +134,7 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
   const [isValidated, setIsValidated] = useState(false);
   const [showValidationModal, setShowValidationModal] = useState(false);
   const [isValidating, setIsValidating] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
 
   // Load existing improvement plan and validation status on mount
   useEffect(() => {
@@ -682,6 +684,15 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
             <div className="flex items-center gap-2 overflow-x-auto pb-1">
               {!isRefining ? (
                 <>
+                  {analysisId && (
+                    <Button
+                      onClick={() => setShowShareModal(true)}
+                      className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white px-3 py-2 text-xs whitespace-nowrap flex-shrink-0"
+                    >
+                      <Share2 className="w-3 h-3 mr-1" />
+                      Share
+                    </Button>
+                  )}
                   {!isValidated ? (
                     <Button
                       onClick={handleValidateIdea}
@@ -799,6 +810,15 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
             <div className="flex items-center space-x-3">
               {!isRefining ? (
                 <>
+                  {analysisId && (
+                    <Button
+                      onClick={() => setShowShareModal(true)}
+                      className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white"
+                    >
+                      <Share2 className="w-4 h-4 mr-2" />
+                      Share Report
+                    </Button>
+                  )}
                   {!isValidated ? (
                     <Button
                       onClick={handleValidateIdea}
@@ -1769,6 +1789,14 @@ export function AnalysisReport({ analysis, idea, onBack, onRefineIdea, analysisI
         ideaSummary={idea}
         isLoading={isValidating}
       />
+
+      {analysisId && (
+        <ShareModal
+          isOpen={showShareModal}
+          onClose={() => setShowShareModal(false)}
+          analysisId={analysisId}
+        />
+      )}
     </div>
   );
 }

@@ -22,15 +22,21 @@ export function SharedReportView({ shareToken }: SharedReportViewProps) {
         setLoading(true);
         setError(null);
 
+        console.log('Fetching shared report with token:', shareToken);
+
         const { data, error: functionError } = await supabase.functions.invoke('get-shared-report', {
           body: { shareToken }
         });
 
+        console.log('Response:', { data, error: functionError });
+
         if (functionError) {
+          console.error('Function error:', functionError);
           throw new Error(functionError.message || 'Failed to load shared report');
         }
 
         if (data.error) {
+          console.error('Data error:', data.error);
           throw new Error(data.error);
         }
 

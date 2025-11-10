@@ -22,10 +22,12 @@ function AppContent() {
   const checkAndSetRoute = () => {
     const path = window.location.pathname;
     if (path.startsWith('/share/')) {
-      const token = path.split('/share/')[1];
-      setShareToken(token);
-      setCurrentLegalPage(null);
-      setShowAuth(false);
+      const token = path.split('/share/')[1]?.split('/')[0]?.split('?')[0] || '';
+      if (token) {
+        setShareToken(token);
+        setCurrentLegalPage(null);
+        setShowAuth(false);
+      }
     } else if (path.startsWith('/privacy')) {
       setCurrentLegalPage('privacy');
       setShowAuth(false);
